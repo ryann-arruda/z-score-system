@@ -44,4 +44,9 @@ public abstract class Person {
 		Person other = (Person) obj;
 		return Objects.equals(date_birth, other.date_birth) && Objects.equals(name, other.name);
 	}	
+	
+	@Override
+	public String toString() {
+		return name + "(" + date_birth.toString() + ")";
+	}
 }
