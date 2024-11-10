@@ -13,8 +13,22 @@ public class Child extends Person{
 		zScores = new ArrayList<>();
 	}
 	
-	public void addZscore(MeasurementZscore mzs) {
+	public boolean addZscore(MeasurementZscore mzs) {
+		if(mzs == null) {
+			return false;
+		}
+		
 		zScores.add(mzs);
+		return true;
+	}
+	
+	public boolean removeZscore(MeasurementZscore mzs) {
+		if(mzs == null) {
+			return false;
+		}
+		
+		zScores.remove(mzs);
+		return true;
 	}
 	
 	public List<MeasurementZscore> getAllZscores(){

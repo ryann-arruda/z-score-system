@@ -30,6 +30,15 @@ public class LevelEducation {
 		return false;
 	}
 	
+	public boolean removeChild(Child c) {
+		if(c != null) {
+			children.remove(c);
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public List<Child> getAllChildren(){
 		return new ArrayList<>(children);
 	}
