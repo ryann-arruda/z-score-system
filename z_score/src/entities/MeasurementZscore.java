@@ -4,12 +4,21 @@ import java.util.Date;
 import java.util.Objects;
 
 public class MeasurementZscore {
+	private Long id;
 	private Double zScore;
 	private Date date;
 	
 	public MeasurementZscore(Double zScore, Date date) {
 		this.zScore = zScore;
 		this.date = date;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Double getzScore() {
