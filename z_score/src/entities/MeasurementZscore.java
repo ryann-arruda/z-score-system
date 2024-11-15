@@ -13,6 +13,10 @@ public class MeasurementZscore {
 		this.date = date;
 	}
 	
+	public MeasurementZscore() {
+		
+	}
+	
 	public Long getId() {
 		return id;
 	}
