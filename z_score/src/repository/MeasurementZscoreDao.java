@@ -5,9 +5,9 @@ import java.util.List;
 import entities.MeasurementZscore;
 
 public interface MeasurementZscoreDao {
-	boolean insert(MeasurementZscore obj);
+	Long insert(MeasurementZscore obj);
 	boolean update(MeasurementZscore obj);
-	boolean deleteById(Integer id);
-	MeasurementZscore findById(Integer id);
+	boolean deleteById(Long id);
+	MeasurementZscore findById(Long id);
 	List<MeasurementZscore> findAll();
 }
