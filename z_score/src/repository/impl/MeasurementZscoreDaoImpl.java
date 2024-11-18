@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -123,8 +124,26 @@ public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
 
 	@Override
 	public List<MeasurementZscore> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<MeasurementZscore> allMeasurementZscore = null;
+		
+		try {
+			ps = conn.prepareStatement("SELECT * FROM MeasurementZscore");
+			
+			rs = ps.executeQuery();
+			
+			allMeasurementZscore = new ArrayList<>();
+			while(rs.next()) {
+				MeasurementZscore mzs = instantiateMeasurementZscore(rs);
+				allMeasurementZscore.add(mzs);
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to retrieve z-score measurements");
+		}
+		
+		return allMeasurementZscore;
 	}
 
 }
