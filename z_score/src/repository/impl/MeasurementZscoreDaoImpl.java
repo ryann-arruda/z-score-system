@@ -67,7 +67,37 @@ public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
 
 	@Override
 	public boolean update(MeasurementZscore obj) {
-		// TODO Auto-generated method stub
+		PreparedStatement ps = null;
+		int rowsAffected = -1;
+		MeasurementZscore msz = null;
+		
+		try {
+			if(obj.getId() != null) {
+				msz = findById(obj.getId());
+				
+				if(msz != null) {
+					msz.setDate(obj.getDate());
+					msz.setzScore(obj.getzScore());
+					
+					ps = conn.prepareStatement("UPDATE MeasurementZscore SET zscore = ?, zscore_date = ? "+
+					                           "WHERE measurement_zscore_id = ?");
+					
+					ps.setDouble(1, msz.getzScore());
+					ps.setDate(2, new java.sql.Date(msz.getDate().getTime()));
+					ps.setLong(3, msz.getId());
+					
+					rowsAffected = ps.executeUpdate();
+					
+					if(rowsAffected > 0) {
+						return true;
+					}
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to update this measurement z-score");
+		}
+		
 		return false;
 	}
 
