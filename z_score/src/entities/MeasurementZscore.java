@@ -9,6 +9,7 @@ public class MeasurementZscore {
 	private Date date;
 	
 	public MeasurementZscore(Double zScore, Date date) {
+		this.id = null;
 		this.zScore = zScore;
 		this.date = date;
 	}
