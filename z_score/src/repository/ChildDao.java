@@ -5,9 +5,9 @@ import java.util.List;
 import entities.Child;
 
 public interface ChildDao {
-	boolean insert(Child obj);
+	Long insert(Child obj);
 	boolean update(Child obj);
-	boolean deleteById(Integer id);
-	Child findById(Integer id);
+	boolean deleteById(Long id);
+	Child findById(Long id);
 	List<Child> findAll();
 }
