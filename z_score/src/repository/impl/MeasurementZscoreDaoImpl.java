@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import db.DBException;
+import db.Database;
 import entities.MeasurementZscore;
 import repository.MeasurementZscoreDao;
 
@@ -61,6 +62,10 @@ public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
 		catch(NullPointerException e) {
 			throw new DBException("Cannot insert a null object");
 		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
 		
 		return measurementZscoreId;
 	}
@@ -97,6 +102,9 @@ public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
 		catch(SQLException e) {
 			throw new DBException("Unable to update this measurement z-score");
 		}
+		finally {
+			Database.closeStatement(ps);
+		}
 		
 		return false;
 	}
@@ -124,6 +132,9 @@ public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
 		catch(SQLException e) {
 			throw new DBException("Unable to remove this z-score measurement from the database");
 		}
+		finally {
+			Database.closeStatement(ps);
+		}
 		
 		return false;
 	}
@@ -148,20 +159,24 @@ public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
 		catch(SQLException e) {
 			throw new DBException("ID was null");
 		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
 		
 		return mzs;
 	}
 
 	@Override
 	public List<MeasurementZscore> findAll() {
-		PreparedStatement ps = null;
+		Statement st = null;
 		ResultSet rs = null;
 		List<MeasurementZscore> allMeasurementZscore = null;
 		
 		try {
-			ps = conn.prepareStatement("SELECT * FROM MeasurementZscore");
+			st = conn.createStatement();
 			
-			rs = ps.executeQuery();
+			rs = st.executeQuery("SELECT * FROM MeasurementZscore");
 			
 			allMeasurementZscore = new ArrayList<>();
 			while(rs.next()) {
@@ -171,6 +186,10 @@ public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
 		}
 		catch(SQLException e) {
 			throw new DBException("Unable to retrieve z-score measurements");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(st);
 		}
 		
 		return allMeasurementZscore;
