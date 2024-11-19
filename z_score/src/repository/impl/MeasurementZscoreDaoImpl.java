@@ -102,6 +102,9 @@ public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
 		catch(SQLException e) {
 			throw new DBException("Unable to update this measurement z-score");
 		}
+		catch(NullPointerException e) {
+			throw new DBException("Cannot insert a null object");
+		}	
 		finally {
 			Database.closeStatement(ps);
 		}
