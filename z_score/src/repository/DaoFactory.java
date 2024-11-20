@@ -1,17 +1,20 @@
 package repository;
 
-import java.sql.Connection;
-
+import db.Database;
+import repository.impl.ChildDaoImpl;
 import repository.impl.MeasurementZscoreDaoImpl;
 
-public class DaoFactory {
-	private Connection conn;
+public class DaoFactory {	
 	
-	public DaoFactory(Connection conn) {
-		this.conn = conn;
+	private DaoFactory() {
+		
 	}
 	
-	public MeasurementZscoreDao createMeasurementZscoreDao() {
-		return new MeasurementZscoreDaoImpl(conn);
+	public static MeasurementZscoreDao createMeasurementZscoreDao() {
+		return new MeasurementZscoreDaoImpl(Database.getConnection());
+	}
+	
+	public static ChildDao createChildDao() {
+		return new ChildDaoImpl(Database.getConnection());
 	}
 }
