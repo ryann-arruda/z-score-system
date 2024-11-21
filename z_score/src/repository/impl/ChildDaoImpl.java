@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import db.DBException;
 import db.Database;
@@ -22,6 +22,16 @@ public class ChildDaoImpl implements ChildDao{
 	
 	public ChildDaoImpl(Connection conn) {
 		this.conn = conn;
+	}
+	
+	private Child instantiateChild(ResultSet rs) throws SQLException{
+		Child child = new Child();
+		
+		child.setId(rs.getLong("child_id"));
+		child.setName(rs.getString("child_name"));
+		child.setDate_birth(new Date(rs.getDate("date_birth").getTime()));
+		
+		return child;
 	}
 
 	@Override
@@ -121,8 +131,75 @@ public class ChildDaoImpl implements ChildDao{
 
 	@Override
 	public Child findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Child child = null;
+		
+		try {
+			if(id != null) {
+				ps = conn.prepareStatement("SELECT * FROM Child WHERE child_id = ?");
+				
+				ps.setLong(1, id);
+				
+				rs = ps.executeQuery();
+				
+				while(rs.next()) {
+					child = instantiateChild(rs);
+					
+					if(child != null) {
+						List<MeasurementZscore> zScores = getMeasurementRelationships(child.getId());
+						
+						if(zScores != null) {
+							for(MeasurementZscore msz : zScores) {
+								child.addZscore(msz);
+							}
+						}
+					}
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to retrieve a Child object");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
+		
+		return child;
+	}
+
+	private List<MeasurementZscore> getMeasurementRelationships(Long id) {
+		MeasurementZscoreDao mszDao = DaoFactory.createMeasurementZscoreDao();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<MeasurementZscore> zScores = null;
+		
+		try {
+			ps = conn.prepareStatement("SELECT measurement_zscore_id FROM Child_MeasurementZscore WHERE child_id = ?");
+			
+			ps.setLong(1, id);
+			
+			rs = ps.executeQuery();
+			
+			zScores = new ArrayList<>();
+			while(rs.next()) {
+				MeasurementZscore msz = mszDao.findById(rs.getLong("measurement_zscore_id"));
+				
+				if(msz != null) {
+					zScores.add(msz);
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to retrieve z-score measure relationships from Child object");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
+		
+		return zScores;
 	}
 
 	@Override
