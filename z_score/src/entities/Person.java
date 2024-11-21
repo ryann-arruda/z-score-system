@@ -12,6 +12,10 @@ public abstract class Person {
 		this.name = name;
 		this.date_birth = date_birth;
 	}
+	
+	public Person() {
+		
+	}
 
 	public String getName() {
 		return name;
