@@ -15,6 +15,12 @@ public class Child extends Person{
 		zScores = new ArrayList<>();
 	}
 	
+	public Child() {
+		super();
+		
+		zScores = new ArrayList<>();
+	}
+	
 	public Long getId() {
 		return id;
 	}
