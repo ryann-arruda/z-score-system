@@ -41,10 +41,10 @@ public class MeasurementZscore {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(date, zScore);
+		return Objects.hash(date, id, zScore);
 	}
 
 	@Override
@@ -56,9 +56,9 @@ public class MeasurementZscore {
 		if (getClass() != obj.getClass())
 			return false;
 		MeasurementZscore other = (MeasurementZscore) obj;
-		return Objects.equals(date, other.date) && Objects.equals(zScore, other.zScore);
+		return Objects.equals(date, other.date) && Objects.equals(id, other.id) && Objects.equals(zScore, other.zScore);
 	}
-	
+
 	@Override
 	public String toString() {
 		return zScore.toString() + " (" + date.toString() + ")";
