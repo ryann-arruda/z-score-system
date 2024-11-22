@@ -119,7 +119,51 @@ public class ChildDaoImpl implements ChildDao{
 
 	@Override
 	public boolean update(Child obj) {
-		// TODO Auto-generated method stub
+		MeasurementZscoreDao mszDao = DaoFactory.createMeasurementZscoreDao();
+		PreparedStatement ps = null;
+		int rowsAffected = -1;
+		
+		try {
+			if(obj.getId() != null) {
+				Child child = findById(obj.getId());
+				
+				if(child != null) {
+					ps = conn.prepareStatement("UPDATE Child SET child_name = ?, date_birth = ? " + 
+											   "WHERE child_id = ?");
+					
+					conn.setAutoCommit(false);
+					
+					child.setName(obj.getName());
+					child.setDate_birth(obj.getDate_birth());
+					
+					ps.setString(1, child.getName());
+					ps.setDate(2, new java.sql.Date(child.getDate_birth().getTime()));
+					ps.setLong(3, child.getId());
+					
+					rowsAffected = ps.executeUpdate();
+					
+					if(rowsAffected > 0) {
+						for(MeasurementZscore msz : obj.getAllZscores()) {
+							mszDao.update(msz);
+						}
+						
+						conn.commit();
+						
+						return true;
+					}
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to update a Child object");
+		}
+		catch(NullPointerException e) {
+			throw new DBException("Cannot update a null object");
+		}
+		finally {
+			Database.closeStatement(ps);
+		}
+		
 		return false;
 	}
 
