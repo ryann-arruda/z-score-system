@@ -204,8 +204,41 @@ public class ChildDaoImpl implements ChildDao{
 
 	@Override
 	public List<Child> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		Statement st = null;
+		ResultSet rs = null;
+		List<Child> children = null;
+		
+		try {
+			st = conn.createStatement();
+			
+			rs = st.executeQuery("SELECT * FROM Child");
+			
+			children = new ArrayList<>();
+			while(rs.next()) {
+				Child child = instantiateChild(rs);
+				
+				if(child != null) {
+					List<MeasurementZscore> zScores = getMeasurementRelationships(child.getId());
+					
+					if(zScores != null) {
+						for(MeasurementZscore msz : zScores) {
+							child.addZscore(msz);
+						}
+					}
+				}
+				
+				children.add(child);
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to retrieve all Child objects");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(st);
+		}
+		
+		return children;
 	}
 
 }
