@@ -47,6 +47,22 @@ public class Child extends Person{
 		return true;
 	}
 	
+	public boolean updateZscore(MeasurementZscore mzs) {
+		if(mzs == null) {
+			return false;
+		}
+		
+		for(MeasurementZscore zscore : zScores) {
+			
+			if(zscore.getId() == mzs.getId()) {
+				zscore.setzScore(mzs.getzScore());
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public List<MeasurementZscore> getAllZscores(){
 		return new ArrayList<>(zScores);
 	}
