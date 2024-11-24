@@ -147,6 +147,8 @@ public class ChildDaoImpl implements ChildDao{
 							mszDao.update(msz);
 						}
 						
+						removeBrokenRelationships(obj);
+						
 						conn.commit();
 						
 						return true;
@@ -165,6 +167,49 @@ public class ChildDaoImpl implements ChildDao{
 		}
 		
 		return false;
+	}
+
+	private void removeBrokenRelationships(Child obj) {
+		MeasurementZscoreDao mszDao = DaoFactory.createMeasurementZscoreDao();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = conn.prepareStatement("SELECT * FROM Child_MeasurementZscore WHERE child_id = ?");
+			ps.setLong(1, obj.getId());
+			
+			rs = ps.executeQuery();
+			
+			List<MeasurementZscore> zscores = obj.getAllZscores();
+			while(rs.next()) {
+				ps = conn.prepareStatement("DELETE FROM Child_MeasurementZscore WHERE measurement_zscore_id = ?");
+				conn.setAutoCommit(false);
+				
+				Long id = rs.getLong("measurement_zscore_id");
+				
+				if(zscores.stream().noneMatch(x -> x.getId() == id)) {
+					ps.setLong(1, id);
+					ps.execute();
+					
+					mszDao.deleteById(id);
+					
+					conn.commit();
+				}
+			}
+		}
+		catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("It is not possible to break relationships between a child object and its z-score measurement and undo what has already been removed");
+			}
+			
+			throw new DBException("You cannot break relationships between a child object and its z-score measurement");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
 	}
 
 	@Override
