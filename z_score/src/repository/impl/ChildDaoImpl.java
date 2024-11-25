@@ -214,8 +214,82 @@ public class ChildDaoImpl implements ChildDao{
 
 	@Override
 	public boolean deleteById(Long id) {
-		// TODO Auto-generated method stub
+		PreparedStatement ps = null;
+		int rowsAffected = -1;
+		
+		try {
+			Child child = findById(id);
+			
+			if(child != null) {
+				conn.setAutoCommit(false);
+				
+				removeRelationships(id);
+				
+				ps = conn.prepareStatement("DELETE FROM Child WHERE child_id = ?");
+				ps.setLong(1, id);
+				
+				rowsAffected = ps.executeUpdate();
+				
+				if(rowsAffected > 0) {
+					conn.commit();
+					return true;
+				}
+			}
+		}
+		catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("It is not possible to delete the child object and undo the modifications already made");
+			}
+			
+			throw new DBException("Cannot delete Child object");
+		}
+		finally {
+			Database.closeStatement(ps);
+		}
+		
 		return false;
+	}
+
+	private void removeRelationships(Long id) {
+		MeasurementZscoreDao mszDao = DaoFactory.createMeasurementZscoreDao();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Long> zscoreIds = null;
+		
+		try {
+			ps = conn.prepareStatement("SELECT measurement_zscore_id FROM Child_MeasurementZscore WHERE child_id = ?");
+			
+			ps.setLong(1, id);
+			
+			rs = ps.executeQuery();
+			
+			zscoreIds = new ArrayList<>();
+			while(rs.next()) {
+				zscoreIds.add(rs.getLong(1));
+			}
+			
+			for(Long zscoreId : zscoreIds) {
+				ps = conn.prepareStatement("DELETE FROM Child_MeasurementZscore WHERE measurement_zscore_id = ?");
+				ps.setLong(1, zscoreId);
+				
+				if(ps.executeUpdate() < 0) {
+					throw new DBException("Cannot delete relationships from Child object");
+				}
+				
+				if(!mszDao.deleteById(zscoreId)) {
+					throw new DBException("Cannot delete relationships from Child object");
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Cannot delete relationships from Child object");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
 	}
 
 	@Override
