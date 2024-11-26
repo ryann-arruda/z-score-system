@@ -5,12 +5,21 @@ import java.util.List;
 import java.util.Objects;
 
 public class LevelEducation {
+	private Long id;
 	private String name;
 	private List<Child> children;
 	
 	public LevelEducation(String name) {
 		this.name = name;
 		children = new ArrayList<>();
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
