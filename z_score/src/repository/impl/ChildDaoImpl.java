@@ -175,7 +175,7 @@ public class ChildDaoImpl implements ChildDao{
 		ResultSet rs = null;
 		
 		try {
-			ps = conn.prepareStatement("SELECT * FROM Child_MeasurementZscore WHERE child_id = ?");
+			ps = conn.prepareStatement("SELECT measurement_zscore_id FROM Child_MeasurementZscore WHERE child_id = ?");
 			ps.setLong(1, obj.getId());
 			
 			rs = ps.executeQuery();
@@ -185,7 +185,7 @@ public class ChildDaoImpl implements ChildDao{
 				ps = conn.prepareStatement("DELETE FROM Child_MeasurementZscore WHERE measurement_zscore_id = ?");
 				conn.setAutoCommit(false);
 				
-				Long id = rs.getLong("measurement_zscore_id");
+				Long id = rs.getLong(1);
 				
 				if(zscores.stream().noneMatch(x -> x.getId() == id)) {
 					ps.setLong(1, id);
