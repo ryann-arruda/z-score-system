@@ -8,9 +8,13 @@ public abstract class Person {
 	private Date date_birth;
 	
 	public Person(String name, Date date_birth) {
-		// TODO Check if date of birth is null
-		this.name = name;
-		this.date_birth = date_birth;
+		if(name != null && date_birth != null) {
+			this.name = name;
+			this.date_birth = date_birth;
+		}
+		else {
+			throw new IllegalStateException("Parameters cannot be null");
+		}
 	}
 	
 	public Person() {
