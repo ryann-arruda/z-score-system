@@ -5,9 +5,9 @@ import java.util.List;
 import entities.LevelEducation;
 
 public interface LevelEducationDao {
-	boolean insert(LevelEducation obj);
+	Long insert(LevelEducation obj);
 	boolean update(LevelEducation obj);
-	boolean deleteById(Integer id);
-	LevelEducation findById(Integer id);
+	boolean deleteById(Long id);
+	LevelEducation findById(Long id);
 	List<LevelEducation> findAll();
 }
