@@ -96,15 +96,12 @@ public class ChildDaoImpl implements ChildDao{
 		
 		try {
 			for(Long id : measurementZscoreIds) {
-				int rowsAffected = -1;
 				ps = conn.prepareStatement("INSERT INTO Child_MeasurementZscore(child_id, measurement_zscore_id) VALUES(?,?)");
 				
 				ps.setLong(1, childId);
 				ps.setLong(2, id);
 				
-				rowsAffected = ps.executeUpdate();
-				
-				if(rowsAffected < 0) {
+				if(ps.executeUpdate() < 0) {
 					throw new DBException("Unable to insert relationship between Child object and MeasurementZscore object");
 				}
 			}
