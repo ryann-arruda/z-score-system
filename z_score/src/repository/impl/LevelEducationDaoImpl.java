@@ -34,6 +34,7 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 		try {
 			if(obj.getId() == null) {
 				conn.setAutoCommit(false);
+				int i = -1;
 				
 				ps = conn.prepareStatement("INSERT INTO LevelEducation(level_education_name) VALUES(?)", Statement.RETURN_GENERATED_KEYS);
 				ps.setString(1, obj.getName());
@@ -43,6 +44,10 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 					Long id = childDao.insert(child);
 					child.setId(id);
 					childIds.add(id);
+					
+					if(i < 0) {
+						throw new DBException("test");
+					}
 				}
 				
 				rowsAffected = ps.executeUpdate();
@@ -72,6 +77,15 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 		}
 		catch(NullPointerException e) {
 			throw new DBException("Cannot insert a null object");
+		}
+		catch(DBException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("Unable to insert a new LevelEducation object and undo the one already inserted");
+			}	
+			
+			throw e;
 		}
 		finally {
 			Database.closeResultSet(rs);
