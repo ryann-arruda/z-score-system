@@ -45,7 +45,6 @@ public class ChildDaoImpl implements ChildDao{
 		try {
 			if(obj.getId() == null) {
 				ps = conn.prepareStatement("INSERT INTO Child(child_name, date_birth) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
-				conn.setAutoCommit(false);
 				
 				ps.setString(1, obj.getName());
 				ps.setDate(2, new java.sql.Date(obj.getDate_birth().getTime()));
@@ -66,18 +65,11 @@ public class ChildDaoImpl implements ChildDao{
 						childId = rs.getLong(1);
 						
 						insertRelationships(measurementZscoreIds, childId);
-												
-						conn.commit();
 					}
 				}
 			}
 		}
 		catch(SQLException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e2) {
-				throw new DBException("It was not possible to insert a new Child object and undo the one that was already inserted");
-			}
 			throw new DBException("Unable to insert a new Child object into the database");
 		}
 		catch(NullPointerException e) {
@@ -128,8 +120,6 @@ public class ChildDaoImpl implements ChildDao{
 					ps = conn.prepareStatement("UPDATE Child SET child_name = ?, date_birth = ? " + 
 											   "WHERE child_id = ?");
 					
-					conn.setAutoCommit(false);
-					
 					child.setName(obj.getName());
 					child.setDate_birth(obj.getDate_birth());
 					
@@ -145,8 +135,6 @@ public class ChildDaoImpl implements ChildDao{
 						}
 						
 						removeBrokenRelationships(obj);
-						
-						conn.commit();
 						
 						return true;
 					}
@@ -180,7 +168,6 @@ public class ChildDaoImpl implements ChildDao{
 			List<MeasurementZscore> zscores = obj.getAllZscores();
 			while(rs.next()) {
 				ps = conn.prepareStatement("DELETE FROM Child_MeasurementZscore WHERE measurement_zscore_id = ?");
-				conn.setAutoCommit(false);
 				
 				Long id = rs.getLong(1);
 				
@@ -189,18 +176,10 @@ public class ChildDaoImpl implements ChildDao{
 					ps.execute();
 					
 					mszDao.deleteById(id);
-					
-					conn.commit();
 				}
 			}
 		}
-		catch(SQLException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e2) {
-				throw new DBException("It is not possible to break relationships between a child object and its z-score measurement and undo what has already been removed");
-			}
-			
+		catch(SQLException e) {			
 			throw new DBException("You cannot break relationships between a child object and its z-score measurement");
 		}
 		finally {
@@ -217,9 +196,7 @@ public class ChildDaoImpl implements ChildDao{
 		try {
 			Child child = findById(id);
 			
-			if(child != null) {
-				conn.setAutoCommit(false);
-				
+			if(child != null) {				
 				removeRelationships(id);
 				
 				ps = conn.prepareStatement("DELETE FROM Child WHERE child_id = ?");
@@ -228,18 +205,11 @@ public class ChildDaoImpl implements ChildDao{
 				rowsAffected = ps.executeUpdate();
 				
 				if(rowsAffected > 0) {
-					conn.commit();
 					return true;
 				}
 			}
 		}
-		catch(SQLException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e2) {
-				throw new DBException("It is not possible to delete the child object and undo the modifications already made");
-			}
-			
+		catch(SQLException e) {			
 			throw new DBException("Cannot delete Child object");
 		}
 		finally {
