@@ -130,10 +130,17 @@ public class ChildDaoImpl implements ChildDao{
 					rowsAffected = ps.executeUpdate();
 					
 					if(rowsAffected > 0) {
+						List<Long> newRelationshipsIds = new ArrayList<>();
+						
 						for(MeasurementZscore msz : obj.getAllZscores()) {
-							mszDao.update(msz);
+							if(!mszDao.update(msz)) {
+								Long id = mszDao.insert(msz);
+								msz.setId(id);
+								newRelationshipsIds.add(id);
+							}
 						}
 						
+						insertRelationships(newRelationshipsIds, child.getId());
 						removeBrokenRelationships(obj);
 						
 						return true;
