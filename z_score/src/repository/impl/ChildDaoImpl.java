@@ -31,6 +31,14 @@ public class ChildDaoImpl implements ChildDao{
 		child.setName(rs.getString("child_name"));
 		child.setDate_birth(new Date(rs.getDate("date_birth").getTime()));
 		
+		List<MeasurementZscore> zScores = getMeasurementRelationships(child.getId());
+		
+		if(zScores != null) {
+			for(MeasurementZscore msz : zScores) {
+				child.addZscore(msz);
+			}
+		}
+		
 		return child;
 	}
 
@@ -282,16 +290,6 @@ public class ChildDaoImpl implements ChildDao{
 				
 				while(rs.next()) {
 					child = instantiateChild(rs);
-					
-					if(child != null) {
-						List<MeasurementZscore> zScores = getMeasurementRelationships(child.getId());
-						
-						if(zScores != null) {
-							for(MeasurementZscore msz : zScores) {
-								child.addZscore(msz);
-							}
-						}
-					}
 				}
 			}
 		}
