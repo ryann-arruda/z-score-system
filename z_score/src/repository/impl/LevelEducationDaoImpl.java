@@ -22,6 +22,53 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 	public LevelEducationDaoImpl(Connection conn) {
 		this.conn = conn;
 	}
+	
+	private LevelEducation instantiateLevelEducation(ResultSet rs) throws SQLException {
+		LevelEducation levelEducation = new LevelEducation(rs.getString("level_education_name"));
+		
+		levelEducation.setId(rs.getLong("level_education_id"));
+		
+		List<Child> children = getChildrenLevelEducation(levelEducation.getId());
+		
+		for(Child child : children) {
+			levelEducation.addChild(child);
+		}
+		
+		return levelEducation;
+	}
+
+	private List<Child> getChildrenLevelEducation(Long id) {
+		ChildDao childDao = DaoFactory.createChildDao();
+		List<Child> children = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = conn.prepareStatement("SELECT child_id FROM LevelEducation_Child WHERE level_education_id = ?");
+			
+			ps.setLong(1, id);
+			
+			rs = ps.executeQuery();
+			
+			children = new ArrayList<>();
+			while(rs.next()) {
+				Child child = childDao.findById(rs.getLong("child_id"));
+				
+				if(child != null) {
+					children.add(child);
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("It's not possible to retrieve children from this Level of Education");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
+		
+		return children;
+	}
 
 	@Override
 	public Long insert(LevelEducation obj) {
@@ -44,10 +91,6 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 					Long id = childDao.insert(child);
 					child.setId(id);
 					childIds.add(id);
-					
-					if(i < 0) {
-						throw new DBException("test");
-					}
 				}
 				
 				rowsAffected = ps.executeUpdate();
@@ -131,8 +174,32 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 
 	@Override
 	public LevelEducation findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		LevelEducation levelEducation = null;
+		
+		try {
+			if(id != null) {
+				ps = conn.prepareStatement("SELECT * FROM LevelEducation WHERE level_education_id = ?");
+				
+				ps.setLong(1, id);
+				
+				rs = ps.executeQuery();
+				
+				while(rs.next()) {
+					levelEducation = instantiateLevelEducation(rs);
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to retrieve a LevelEducation object");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
+		
+		return levelEducation;
 	}
 
 	@Override
