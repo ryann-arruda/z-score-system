@@ -12,9 +12,11 @@ import db.DBException;
 import db.Database;
 import entities.Child;
 import entities.LevelEducation;
+import entities.MeasurementZscore;
 import repository.ChildDao;
 import repository.DaoFactory;
 import repository.LevelEducationDao;
+import repository.MeasurementZscoreDao;
 
 public class LevelEducationDaoImpl implements LevelEducationDao{
 	private Connection conn;
@@ -81,7 +83,6 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 		try {
 			if(obj.getId() == null) {
 				conn.setAutoCommit(false);
-				int i = -1;
 				
 				ps = conn.prepareStatement("INSERT INTO LevelEducation(level_education_name) VALUES(?)", Statement.RETURN_GENERATED_KEYS);
 				ps.setString(1, obj.getName());
@@ -162,8 +163,101 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 
 	@Override
 	public boolean update(LevelEducation obj) {
-		// TODO Auto-generated method stub
+		ChildDao childDao = DaoFactory.createChildDao();
+		PreparedStatement ps = null;
+		
+		try {
+			if(obj.getId() != null) {
+				
+				if(findById(obj.getId()) != null) {
+					conn.setAutoCommit(false);
+					
+					ps = conn.prepareStatement("UPDATE LevelEducation SET level_education_name = ? WHERE level_education_id = ?");
+					
+					ps.setString(1, obj.getName());
+					ps.setLong(2, obj.getId());
+					
+					if(ps.executeUpdate() > 0) {
+						List<Long> newRelationshipsIds = new ArrayList<>();
+						
+						for(Child child : obj.getAllChildren()) {
+							if(!childDao.update(child)) {
+								Long id = childDao.insert(child);
+								child.setId(id);
+								newRelationshipsIds.add(id);
+							}
+						}
+						
+						insertRelationships(newRelationshipsIds, obj.getId());
+						removeBrokenRelationships(obj);
+						
+						conn.commit();
+						
+						return true;
+					}
+				}
+			}
+		}
+		catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("You cannot update a LevelEducation object and undo what has already been updated");
+			}
+			
+			throw new DBException("Unable to update a LevelEducation object");
+		}
+		catch(NullPointerException e) {
+			throw new DBException("Cannot update a null object");
+		}
+		catch(DBException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("You cannot update a LevelEducation object and undo what has already been updated");
+			}	
+			
+			throw e;
+		}
+		finally {
+			Database.closeStatement(ps);
+		}
+		
 		return false;
+	}
+
+	private void removeBrokenRelationships(LevelEducation obj) {
+		ChildDao childDao = DaoFactory.createChildDao();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = conn.prepareStatement("SELECT child_id FROM LevelEducation_Child WHERE level_education_id = ?");
+			ps.setLong(1, obj.getId());
+			
+			rs = ps.executeQuery();
+			
+			List<Child> children = obj.getAllChildren();
+			while(rs.next()) {
+				ps = conn.prepareStatement("DELETE FROM LevelEducation_Child WHERE child_id = ?");
+				
+				Long id = rs.getLong(1);
+				
+				if(children.stream().noneMatch(x -> x.getId() == id)) {
+					ps.setLong(1, id);
+					ps.execute();
+					
+					childDao.deleteById(id);
+				}
+			}
+		}
+		catch(SQLException e) {			
+			throw new DBException("You cannot break relationships between a LevelEducation object and its Child object");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
 	}
 
 	@Override
@@ -204,8 +298,29 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 
 	@Override
 	public List<LevelEducation> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<LevelEducation> educationLevels = null;;
+		Statement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = conn.createStatement();
+			
+			rs = st.executeQuery("SELECT * FROM LevelEducation");
+			
+			educationLevels = new ArrayList<>();
+			while(rs.next()) {
+				educationLevels.add(instantiateLevelEducation(rs));
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to retrieve all LevelEducation objects");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(st);
+		}
+		
+		return educationLevels;
 	}
 
 }
