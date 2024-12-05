@@ -118,26 +118,22 @@ public class ChildDaoImpl implements ChildDao{
 	public boolean update(Child obj) {
 		MeasurementZscoreDao mszDao = DaoFactory.createMeasurementZscoreDao();
 		PreparedStatement ps = null;
-		int rowsAffected = -1;
 		
 		try {
 			if(obj.getId() != null) {
-				Child child = findById(obj.getId());
 				
-				if(child != null) {
+				if(findById(obj.getId()) != null) {
 					ps = conn.prepareStatement("UPDATE Child SET child_name = ?, date_birth = ? " + 
 											   "WHERE child_id = ?");
 					
-					child.setName(obj.getName());
-					child.setDate_birth(obj.getDate_birth());
+					obj.setName(obj.getName());
+					obj.setDate_birth(obj.getDate_birth());
 					
-					ps.setString(1, child.getName());
-					ps.setDate(2, new java.sql.Date(child.getDate_birth().getTime()));
-					ps.setLong(3, child.getId());
+					ps.setString(1, obj.getName());
+					ps.setDate(2, new java.sql.Date(obj.getDate_birth().getTime()));
+					ps.setLong(3, obj.getId());
 					
-					rowsAffected = ps.executeUpdate();
-					
-					if(rowsAffected > 0) {
+					if(ps.executeUpdate() > 0) {
 						List<Long> newRelationshipsIds = new ArrayList<>();
 						
 						for(MeasurementZscore msz : obj.getAllZscores()) {
@@ -148,7 +144,7 @@ public class ChildDaoImpl implements ChildDao{
 							}
 						}
 						
-						insertRelationships(newRelationshipsIds, child.getId());
+						insertRelationships(newRelationshipsIds, obj.getId());
 						removeBrokenRelationships(obj);
 						
 						return true;
@@ -349,20 +345,8 @@ public class ChildDaoImpl implements ChildDao{
 			rs = st.executeQuery("SELECT * FROM Child");
 			
 			children = new ArrayList<>();
-			while(rs.next()) {
-				Child child = instantiateChild(rs);
-				
-				if(child != null) {
-					List<MeasurementZscore> zScores = getMeasurementRelationships(child.getId());
-					
-					if(zScores != null) {
-						for(MeasurementZscore msz : zScores) {
-							child.addZscore(msz);
-						}
-					}
-				}
-				
-				children.add(child);
+			while(rs.next()) {				
+				children.add(instantiateChild(rs));
 			}
 		}
 		catch(SQLException e) {
