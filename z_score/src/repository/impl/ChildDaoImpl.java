@@ -202,20 +202,15 @@ public class ChildDaoImpl implements ChildDao{
 	@Override
 	public boolean deleteById(Long id) {
 		PreparedStatement ps = null;
-		int rowsAffected = -1;
 		
-		try {
-			Child child = findById(id);
-			
-			if(child != null) {				
+		try {			
+			if(findById(id) != null) {				
 				removeRelationships(id);
 				
 				ps = conn.prepareStatement("DELETE FROM Child WHERE child_id = ?");
 				ps.setLong(1, id);
 				
-				rowsAffected = ps.executeUpdate();
-				
-				if(rowsAffected > 0) {
+				if(ps.executeUpdate() > 0) {
 					return true;
 				}
 			}
