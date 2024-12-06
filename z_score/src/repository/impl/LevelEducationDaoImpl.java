@@ -12,11 +12,9 @@ import db.DBException;
 import db.Database;
 import entities.Child;
 import entities.LevelEducation;
-import entities.MeasurementZscore;
 import repository.ChildDao;
 import repository.DaoFactory;
 import repository.LevelEducationDao;
-import repository.MeasurementZscoreDao;
 
 public class LevelEducationDaoImpl implements LevelEducationDao{
 	private Connection conn;
@@ -262,8 +260,87 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 
 	@Override
 	public boolean deleteById(Long id) {
-		// TODO Auto-generated method stub
+		PreparedStatement ps = null;
+		
+		try {
+			if(findById(id) != null) {
+				conn.setAutoCommit(false);
+				
+				removeRelationships(id);
+				
+				ps = conn.prepareStatement("DELETE FROM LevelEducation WHERE level_education_id = ?");
+				ps.setLong(1, id);
+				
+				if(ps.executeUpdate() > 0) {
+					conn.commit();
+					
+					return true;
+				}
+			}
+		}
+		catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("Unable to delete LevelEducation object and revert what has already been deleted");
+			}
+			
+			throw new DBException("Cannot delete LevelEducation object");
+		}
+		catch(DBException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("Unable to delete LevelEducation object and revert what has already been deleted");
+			}
+			
+			throw e;
+		}
+		finally {
+			Database.closeStatement(ps);
+		}
+		
 		return false;
+	}
+
+	private void removeRelationships(Long id) {
+		ChildDao childDao = DaoFactory.createChildDao();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Long> childrenIds = null;
+		
+		try {			
+			ps = conn.prepareStatement("SELECT child_id FROM LevelEducation_Child WHERE level_education_id = ?");
+			
+			ps.setLong(1, id);
+			
+			rs = ps.executeQuery();
+			
+			childrenIds = new ArrayList<>();
+			while(rs.next()) {
+				childrenIds.add(rs.getLong(1));
+			}
+			
+			for(Long childId : childrenIds) {
+				ps = conn.prepareStatement("DELETE FROM LevelEducation_Child WHERE child_id = ?");
+				ps.setLong(1, childId);
+				
+				if(ps.executeUpdate() < 0) {
+					throw new DBException("Unable to delete relationships from LevelEducation object");
+				}
+				
+				if(!childDao.deleteById(childId)) {
+					throw new DBException("Unable to delete relationships from LevelEducation object");
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to delete relationships from LevelEducation object");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
 	}
 
 	@Override
