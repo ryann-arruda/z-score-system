@@ -5,9 +5,9 @@ import java.util.Set;
 import entities.School;
 
 public interface SchoolDao {
-	boolean insert(School obj);
+	Long insert(School obj);
 	boolean update(School obj);
-	boolean deleteById(Integer id);
-	School findById(Integer id);
+	boolean deleteById(Long id);
+	School findById(Long id);
 	Set<School> findAll();
 }
