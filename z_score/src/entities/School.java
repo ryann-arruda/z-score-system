@@ -5,15 +5,25 @@ import java.util.List;
 import java.util.Objects;
 
 public class School {
+	private Long id;
 	private String name;
 	private String nationalRegistryLegalEntities;
 	private List<LevelEducation> educationLevels;
 	
 	public School(String name, String nationalRegistryLegalEntities) {
+		this.id = null;
 		this.name = name;
 		this.nationalRegistryLegalEntities = nationalRegistryLegalEntities;
 		
 		this.educationLevels = new ArrayList<>();
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
