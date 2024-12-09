@@ -10,6 +10,7 @@ public class LevelEducation {
 	private List<Child> children;
 	
 	public LevelEducation(String name) {
+		this.id = null;
 		this.name = name;
 		children = new ArrayList<>();
 	}
