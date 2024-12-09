@@ -75,7 +75,6 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 		ChildDao childDao = DaoFactory.createChildDao();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		int rowsAffected = -1;
 		Long levelEducationId = null;
 		
 		try {
@@ -92,9 +91,7 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 					childIds.add(id);
 				}
 				
-				rowsAffected = ps.executeUpdate();
-				
-				if(rowsAffected > 0) {
+				if(ps.executeUpdate() > 0) {
 					rs = ps.getGeneratedKeys();
 					
 					if(rs.next()) {
@@ -271,7 +268,7 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 				ps = conn.prepareStatement("DELETE FROM LevelEducation WHERE level_education_id = ?");
 				ps.setLong(1, id);
 				
-				if(ps.executeUpdate() > 0) {
+				if(ps.executeUpdate() > 0) {					
 					conn.commit();
 					
 					return true;
