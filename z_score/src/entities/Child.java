@@ -11,7 +11,7 @@ public class Child extends Person{
 	public Child(String name, Date date_birth) {
 		super(name, date_birth);
 		
-		id = null;
+		this.id = null;
 		zScores = new ArrayList<>();
 	}
 	
