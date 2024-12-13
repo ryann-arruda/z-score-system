@@ -4,6 +4,7 @@ import db.Database;
 import repository.impl.ChildDaoImpl;
 import repository.impl.LevelEducationDaoImpl;
 import repository.impl.MeasurementZscoreDaoImpl;
+import repository.impl.SchoolDaoImpl;
 
 public class DaoFactory {	
 	
@@ -21,5 +22,9 @@ public class DaoFactory {
 	
 	public static LevelEducationDao createLevelEducationDao() {
 		return new LevelEducationDaoImpl(Database.getConnection());
+	}
+	
+	public static SchoolDao createSchoolDao() {
+		return new SchoolDaoImpl(Database.getConnection());
 	}
 }
