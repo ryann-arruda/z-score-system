@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import db.DBException;
+import db.Database;
 import entities.LevelEducation;
 import entities.School;
 import repository.DaoFactory;
@@ -29,6 +30,7 @@ public class SchoolDaoImpl implements SchoolDao{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Long schoolId = null;
+		int i = -1;
 		
 		try {
 			if(obj.getId() == null) {
@@ -47,12 +49,16 @@ public class SchoolDaoImpl implements SchoolDao{
 				}
 				
 				if(ps.executeUpdate() > 0) {
-					rs = ps.getGeneratedKeys();
+					rs = ps.getGeneratedKeys();				
 					
 					if(rs.next()) {
 						schoolId = rs.getLong(1);
 						
 						insertRelationships(levelEducationIds, schoolId);
+						
+						if(i < 0) {
+							throw new SQLException();
+						}	
 						
 						conn.commit();
 					}
@@ -63,10 +69,10 @@ public class SchoolDaoImpl implements SchoolDao{
 			try {
 				conn.rollback();
 			} catch (SQLException e2) {
-				throw new DBException("");
+				throw new DBException("Unable to insert a new School object and undo the one already inserted");
 			}
 			
-			throw new DBException("");
+			throw new DBException("Unable to insert a new School object into the database");
 		}
 		catch(NullPointerException e) {
 			throw new DBException("Cannot insert a null object");
@@ -75,21 +81,39 @@ public class SchoolDaoImpl implements SchoolDao{
 			try {
 				conn.rollback();
 			} catch (SQLException e2) {
-				throw new DBException("");
+				throw new DBException("It's not possible to insert a new School object and undo the one already inserted");
 			}
 			
-			throw new DBException("");
+			throw e;
 		}
 		finally{
-			
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
 		}
 		
 		return schoolId;
 	}
 
 	private void insertRelationships(List<Long> levelEducationIds, Long schoolId) {
-		// TODO Auto-generated method stub
+		PreparedStatement ps = null;
 		
+		try {
+			for(Long levelEducationId : levelEducationIds) {				
+				ps = conn.prepareStatement("INSERT INTO School_LevelEducation(school_id, level_education_id) VALUES(?,?)");
+				ps.setLong(1, schoolId);
+				ps.setLong(2, levelEducationId);
+				
+				if(ps.executeUpdate() < 0) {
+					throw new DBException("Unable to insert relationship between School object and LevelEducation object");
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to insert relationship between School object and LevelEducation object");
+		}
+		finally {
+			Database.closeStatement(ps);
+		}
 	}
 
 	@Override
