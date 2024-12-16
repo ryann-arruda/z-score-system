@@ -23,6 +23,53 @@ public class SchoolDaoImpl implements SchoolDao{
 	public SchoolDaoImpl(Connection conn) {
 		this.conn = conn;
 	}
+	
+	private School instantiateScool(ResultSet rs) throws SQLException {
+		School school = new School(rs.getString("school_name"), rs.getString("national_registry_legal_entities"));
+		
+		school.setId(rs.getLong("school_id"));
+		
+		List<LevelEducation> educationLevels = getEducationLevels(school.getId());
+		
+		for(LevelEducation le : educationLevels) {
+			school.addEducationLevel(le);
+		}
+		
+		return school;
+	}
+
+	private List<LevelEducation> getEducationLevels(Long id) {
+		LevelEducationDao levelEducDao = DaoFactory.createLevelEducationDao();
+		List<LevelEducation> educationLevels = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = conn.prepareStatement("SELECT level_education_id FROM School_LevelEducation WHERE school_id = ?");
+			
+			ps.setLong(1, id);
+			
+			rs = ps.executeQuery();
+			
+			educationLevels = new ArrayList<>();
+			while(rs.next()) {
+				LevelEducation levelEducation  = levelEducDao.findById(rs.getLong("level_education_id"));
+				
+				if(levelEducation != null) {
+					educationLevels.add(levelEducation);
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to recover education levels for this school");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
+		
+		return educationLevels;
+	}
 
 	@Override
 	public Long insert(School obj) {
@@ -30,7 +77,6 @@ public class SchoolDaoImpl implements SchoolDao{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Long schoolId = null;
-		int i = -1;
 		
 		try {
 			if(obj.getId() == null) {
@@ -55,10 +101,6 @@ public class SchoolDaoImpl implements SchoolDao{
 						schoolId = rs.getLong(1);
 						
 						insertRelationships(levelEducationIds, schoolId);
-						
-						if(i < 0) {
-							throw new SQLException();
-						}	
 						
 						conn.commit();
 					}
@@ -130,8 +172,32 @@ public class SchoolDaoImpl implements SchoolDao{
 
 	@Override
 	public School findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		School school = null;
+		
+		try {
+			if(id != null) {
+				ps = conn.prepareStatement("SELECT * FROM School WHERE school_id = ?");
+				
+				ps.setLong(1, id);
+				
+				rs = ps.executeQuery();
+				
+				if(rs.next()) {
+					school = instantiateScool(rs);
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to retrieve a School object");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
+		
+		return school;
 	}
 
 	@Override
