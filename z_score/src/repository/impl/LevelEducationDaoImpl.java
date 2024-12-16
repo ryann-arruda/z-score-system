@@ -335,7 +335,7 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 				
 				rs = ps.executeQuery();
 				
-				while(rs.next()) {
+				if(rs.next()) {
 					levelEducation = instantiateLevelEducation(rs);
 				}
 			}
