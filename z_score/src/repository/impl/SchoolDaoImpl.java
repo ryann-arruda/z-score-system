@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public class SchoolDaoImpl implements SchoolDao{
 		this.conn = conn;
 	}
 	
-	private School instantiateScool(ResultSet rs) throws SQLException {
+	private School instantiateSchool(ResultSet rs) throws SQLException {
 		School school = new School(rs.getString("school_name"), rs.getString("national_registry_legal_entities"));
 		
 		school.setId(rs.getLong("school_id"));
@@ -185,7 +186,7 @@ public class SchoolDaoImpl implements SchoolDao{
 				rs = ps.executeQuery();
 				
 				if(rs.next()) {
-					school = instantiateScool(rs);
+					school = instantiateSchool(rs);
 				}
 			}
 		}
@@ -202,7 +203,28 @@ public class SchoolDaoImpl implements SchoolDao{
 
 	@Override
 	public Set<School> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		Set<School> schools = null;
+		Statement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = conn.createStatement();
+			
+			rs = st.executeQuery("SELECT * FROM School");
+			
+			schools = new HashSet<>();
+			while(rs.next()) {
+				schools.add(instantiateSchool(rs));
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to retrieve all School objects");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(st);			
+		}
+		
+		return schools;
 	}
 }
