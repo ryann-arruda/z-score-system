@@ -161,8 +161,102 @@ public class SchoolDaoImpl implements SchoolDao{
 
 	@Override
 	public boolean update(School obj) {
-		// TODO Auto-generated method stub
+		LevelEducationDao levelEducDao = DaoFactory.createLevelEducationDao();
+		PreparedStatement ps = null;
+		
+		try {
+			if(obj.getId() != null) {
+				
+				if(findById(obj.getId()) != null) {
+					conn.setAutoCommit(false);
+					
+					ps = conn.prepareStatement("UPDATE School SET school_name = ?, national_registry_legal_entities = ? WHERE school_id = ?");
+					
+					ps.setString(1, obj.getName());
+					ps.setString(2, obj.getNationalRegistryLegalEntities());
+					ps.setLong(3, obj.getId());
+					
+					if(ps.executeUpdate() > 0) {
+						List<Long> newRelationshipsIds = new ArrayList<>();
+						
+						for(LevelEducation le : obj.getAllEducationLevels()) {
+							if(!levelEducDao.update(le)) {
+								Long id = levelEducDao.insert(le);
+								le.setId(id);
+								newRelationshipsIds.add(id);
+							}
+						}
+						
+						insertRelationships(newRelationshipsIds, obj.getId());
+						removeBrokenRelationships(obj);
+						
+						conn.commit();
+						
+						return true;
+					}
+				}
+			}
+		}
+		catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("It's not possible to update a School object and undo what has already been updated");
+			}
+			
+			throw new DBException("Unable to update a School object");
+		}
+		catch(NullPointerException e) {
+			throw new DBException("Cannot update a null object");
+		}
+		catch(DBException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("It's not possible to update a School object and undo what has already been updated");
+			}	
+			
+			throw e;
+		}
+		finally {
+			Database.closeStatement(ps);
+		}
+		
 		return false;
+	}
+
+	private void removeBrokenRelationships(School obj) {
+		LevelEducationDao levelEducDao = DaoFactory.createLevelEducationDao();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = conn.prepareStatement("SELECT level_education_id FROM School_LevelEducation WHERE school_id = ?");
+			ps.setLong(1, obj.getId());
+			
+			rs = ps.executeQuery();
+			
+			List<LevelEducation> educationLevels = obj.getAllEducationLevels();
+			while(rs.next()) {
+				ps = conn.prepareStatement("DELETE FROM School_LevelEducation WHERE level_education_id = ?");
+				
+				Long id = rs.getLong(1);
+				
+				if(educationLevels.stream().noneMatch(x -> x.getId() == id)) {
+					ps.setLong(1, id);
+					ps.execute();
+					
+					levelEducDao.deleteById(id);
+				}
+			}
+		}
+		catch(SQLException e) {			
+			throw new DBException("You cannot break relationships between a School object and its LevelEducation object");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
 	}
 
 	@Override
