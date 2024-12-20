@@ -145,9 +145,7 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 		try {
 			if(obj.getId() != null) {
 				
-				if(findById(obj.getId()) != null) {
-					conn.setAutoCommit(false);
-					
+				if(findById(obj.getId()) != null) {					
 					ps = conn.prepareStatement("UPDATE LevelEducation SET level_education_name = ? WHERE level_education_id = ?");
 					
 					ps.setString(1, obj.getName());
@@ -167,33 +165,16 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 						insertRelationships(newRelationshipsIds, obj.getId());
 						removeBrokenRelationships(obj);
 						
-						conn.commit();
-						
 						return true;
 					}
 				}
 			}
 		}
-		catch(SQLException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e2) {
-				throw new DBException("You cannot update a LevelEducation object and undo what has already been updated");
-			}
-			
+		catch(SQLException e) {			
 			throw new DBException("Unable to update a LevelEducation object");
 		}
 		catch(NullPointerException e) {
 			throw new DBException("Cannot update a null object");
-		}
-		catch(DBException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e2) {
-				throw new DBException("You cannot update a LevelEducation object and undo what has already been updated");
-			}	
-			
-			throw e;
 		}
 		finally {
 			Database.closeStatement(ps);
