@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Nutritionist extends Person{
+	private Long id;
 	private String regionalCouncilNutritionists;
 	private Set <School> schools;
 
@@ -15,6 +16,14 @@ public class Nutritionist extends Person{
 		this.regionalCouncilNutritionists = regionalCouncilNutritionists;
 		
 		schools = new HashSet<>();
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getRegionalCouncilNutritionists() {
