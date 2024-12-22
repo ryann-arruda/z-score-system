@@ -261,8 +261,87 @@ public class SchoolDaoImpl implements SchoolDao{
 
 	@Override
 	public boolean deleteById(Long id) {
-		// TODO Auto-generated method stub
+		PreparedStatement ps = null;
+		
+		try {
+			if(findById(id) != null) {
+				conn.setAutoCommit(false);
+				
+				removeRelationships(id);
+				
+				ps = conn.prepareStatement("DELETE FROM School WHERE school_id = ?");
+				ps.setLong(1, id);
+				
+				if(ps.executeUpdate() > 0) {					
+					conn.commit();
+					
+					return true;
+				}
+			}
+		}
+		catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("It's not possible to delete the School object and revert what has already been deleted");
+			}
+			
+			throw new DBException("Cannot delete School object");
+		}
+		catch(DBException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("It's not possible to delete the School object and revert what has already been deleted");
+			}
+			
+			throw e;
+		}
+		finally {
+			Database.closeStatement(ps);
+		}
+		
 		return false;
+	}
+
+	private void removeRelationships(Long id) {
+		LevelEducationDao levelEducDao = DaoFactory.createLevelEducationDao();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Long> educationLevelsIds = null;
+		
+		try {			
+			ps = conn.prepareStatement("SELECT level_education_id FROM School_LevelEducation WHERE school_id = ?");
+			
+			ps.setLong(1, id);
+			
+			rs = ps.executeQuery();
+			
+			educationLevelsIds = new ArrayList<>();
+			while(rs.next()) {
+				educationLevelsIds.add(rs.getLong(1));
+			}
+			
+			for(Long levelEducationId : educationLevelsIds) {
+				ps = conn.prepareStatement("DELETE FROM School_LevelEducation WHERE level_education_id = ?");
+				ps.setLong(1, levelEducationId);
+				
+				if(ps.executeUpdate() < 0) {
+					throw new DBException("Unable to delete relationships from School object");
+				}
+				
+				if(!levelEducDao.deleteById(levelEducationId)) {
+					throw new DBException("Unable to delete relationships from School object");
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to delete relationships from School object");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
 	}
 
 	@Override
