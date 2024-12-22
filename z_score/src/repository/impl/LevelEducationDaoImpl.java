@@ -222,38 +222,19 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 		PreparedStatement ps = null;
 		
 		try {
-			if(findById(id) != null) {
-				conn.setAutoCommit(false);
-				
+			if(findById(id) != null) {				
 				removeRelationships(id);
 				
 				ps = conn.prepareStatement("DELETE FROM LevelEducation WHERE level_education_id = ?");
 				ps.setLong(1, id);
 				
-				if(ps.executeUpdate() > 0) {					
-					conn.commit();
-					
+				if(ps.executeUpdate() > 0) {									
 					return true;
 				}
 			}
 		}
-		catch(SQLException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e2) {
-				throw new DBException("Unable to delete LevelEducation object and revert what has already been deleted");
-			}
-			
+		catch(SQLException e) {			
 			throw new DBException("Cannot delete LevelEducation object");
-		}
-		catch(DBException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e2) {
-				throw new DBException("Unable to delete LevelEducation object and revert what has already been deleted");
-			}
-			
-			throw e;
 		}
 		finally {
 			Database.closeStatement(ps);
