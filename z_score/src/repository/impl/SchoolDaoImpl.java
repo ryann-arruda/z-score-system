@@ -81,8 +81,6 @@ public class SchoolDaoImpl implements SchoolDao{
 		
 		try {
 			if(obj.getId() == null) {
-				conn.setAutoCommit(false);
-				
 				ps = conn.prepareStatement("INSERT INTO School(school_name, national_registry_legal_entities) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
 				
 				ps.setString(1, obj.getName());
@@ -102,32 +100,15 @@ public class SchoolDaoImpl implements SchoolDao{
 						schoolId = rs.getLong(1);
 						
 						insertRelationships(levelEducationIds, schoolId);
-						
-						conn.commit();
 					}
 				}
 			}
 		}
-		catch(SQLException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e2) {
-				throw new DBException("Unable to insert a new School object and undo the one already inserted");
-			}
-			
+		catch(SQLException e) {			
 			throw new DBException("Unable to insert a new School object into the database");
 		}
 		catch(NullPointerException e) {
 			throw new DBException("Cannot insert a null object");
-		}
-		catch(DBException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e2) {
-				throw new DBException("It's not possible to insert a new School object and undo the one already inserted");
-			}
-			
-			throw e;
 		}
 		finally{
 			Database.closeResultSet(rs);
