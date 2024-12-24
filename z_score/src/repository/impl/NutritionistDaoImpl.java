@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import db.DBException;
 import db.Database;
@@ -21,6 +24,55 @@ public class NutritionistDaoImpl implements NutritionistDao{
 	
 	public NutritionistDaoImpl(Connection conn) {
 		this.conn = conn;
+	}
+	
+	private Nutritionist instantiateNutritionist(ResultSet rs) throws SQLException{
+		Nutritionist nutritionist = new Nutritionist(rs.getString("nutritionist_name"),
+													 new Date(rs.getDate("date_birth").getTime()), 
+													 rs.getString("regional_council_nutritionists"));
+		
+		nutritionist.setId(rs.getLong("nutritionist_id"));
+		
+		Set<School> schools = getSchools(nutritionist.getId());
+		
+		for(School school : schools) {
+			nutritionist.addSchool(school);
+		}
+		
+		return nutritionist;
+	}
+
+	private Set<School> getSchools(Long id) {
+		SchoolDao schoolDao = DaoFactory.createSchoolDao();
+		Set<School> schools = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = conn.prepareStatement("SELECT school_id FROM Nutritionist_School WHERE nutritionist_id = ?");
+			
+			ps.setLong(1, id);
+			
+			rs = ps.executeQuery();
+			
+			schools = new HashSet<>();
+			while(rs.next()) {
+				School school  = schoolDao.findById(rs.getLong("school_id"));
+				
+				if(school != null) {
+					schools.add(school);
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to recover schools for this nutritionist");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
+		
+		return schools;
 	}
 
 	@Override
@@ -126,7 +178,30 @@ public class NutritionistDaoImpl implements NutritionistDao{
 
 	@Override
 	public Nutritionist findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Nutritionist nutritionist = null;
+		
+		try {
+			if(id != null) {
+				ps = conn.prepareStatement("SELECT * FROM Nutritionist WHERE nutritionist_id = ?");
+				ps.setLong(1, id);
+				
+				rs = ps.executeQuery();
+				
+				if(rs.next()) {
+					nutritionist = instantiateNutritionist(rs);
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to retrieve a Nutritionist object");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
+		
+		return nutritionist;
 	}
 }
