@@ -166,8 +166,104 @@ public class NutritionistDaoImpl implements NutritionistDao{
 
 	@Override
 	public boolean update(Nutritionist obj) {
-		// TODO Auto-generated method stub
+		SchoolDao schoolDao = DaoFactory.createSchoolDao();
+		PreparedStatement ps = null;
+		
+		try {
+			if(obj.getId() != null) {
+				
+				if(findById(obj.getId()) != null) {
+					conn.setAutoCommit(false);
+					
+					ps = conn.prepareStatement("UPDATE Nutritionist SET nutritionist_name = ?, date_birth = ?, " + 
+											   "regional_council_nutritionists = ? WHERE nutritionist_id = ?");
+					
+					ps.setString(1, obj.getName());
+					ps.setDate(2, new java.sql.Date(obj.getDate_birth().getTime()));
+					ps.setString(3, obj.getRegionalCouncilNutritionists());
+					ps.setLong(4, obj.getId());
+					
+					if(ps.executeUpdate() > 0) {
+						List<Long> newRelationshipsIds = new ArrayList<>();
+						
+						for(School school : obj.getAllSchools()) {
+							if(!schoolDao.update(school)) {
+								Long id = schoolDao.insert(school);
+								school.setId(id);
+								newRelationshipsIds.add(id);
+							}
+						}
+						
+						insertRelationships(newRelationshipsIds, obj.getId());
+						removeBrokenRelationships(obj);
+						
+						conn.commit();
+						
+						return true;
+					}
+				}
+			}
+		}
+		catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("It's not possible to update a Nutritionist object and undo what has already been updated");
+			}
+			
+			throw new DBException("Unable to update a Nutritionist object");
+		}
+		catch(NullPointerException e) {
+			throw new DBException("Cannot update a null object");
+		}
+		catch(DBException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("It's not possible to update a Nutritionist object and undo what has already been updated");
+			}	
+			
+			throw e;
+		}
+		finally {
+			Database.closeStatement(ps);
+		}
+		
 		return false;
+	}
+
+	private void removeBrokenRelationships(Nutritionist obj) {
+		SchoolDao schoolDao = DaoFactory.createSchoolDao();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			ps = conn.prepareStatement("SELECT school_id FROM Nutritionist_School WHERE nutritionist_id = ?");
+			ps.setLong(1, obj.getId());
+			
+			rs = ps.executeQuery();
+			
+			Set<School> schools = obj.getAllSchools();
+			while(rs.next()) {
+				ps = conn.prepareStatement("DELETE FROM Nutritionist_School WHERE school_id = ?");
+				
+				Long id = rs.getLong(1);
+				
+				if(schools.stream().noneMatch(x -> x.getId() == id)) {
+					ps.setLong(1, id);
+					ps.execute();
+					
+					schoolDao.deleteById(id);
+				}
+			}
+		}
+		catch(SQLException e) {			
+			throw new DBException("You cannot break relationships between a Nutritionist object and its School object");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
 	}
 
 	@Override
