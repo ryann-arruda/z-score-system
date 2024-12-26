@@ -148,9 +148,7 @@ public class SchoolDaoImpl implements SchoolDao{
 		try {
 			if(obj.getId() != null) {
 				
-				if(findById(obj.getId()) != null) {
-					conn.setAutoCommit(false);
-					
+				if(findById(obj.getId()) != null) {					
 					ps = conn.prepareStatement("UPDATE School SET school_name = ?, national_registry_legal_entities = ? WHERE school_id = ?");
 					
 					ps.setString(1, obj.getName());
@@ -171,33 +169,16 @@ public class SchoolDaoImpl implements SchoolDao{
 						insertRelationships(newRelationshipsIds, obj.getId());
 						removeBrokenRelationships(obj);
 						
-						conn.commit();
-						
 						return true;
 					}
 				}
 			}
 		}
 		catch(SQLException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e2) {
-				throw new DBException("It's not possible to update a School object and undo what has already been updated");
-			}
-			
 			throw new DBException("Unable to update a School object");
 		}
 		catch(NullPointerException e) {
 			throw new DBException("Cannot update a null object");
-		}
-		catch(DBException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e2) {
-				throw new DBException("It's not possible to update a School object and undo what has already been updated");
-			}	
-			
-			throw e;
 		}
 		finally {
 			Database.closeStatement(ps);
