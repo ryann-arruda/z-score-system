@@ -226,38 +226,19 @@ public class SchoolDaoImpl implements SchoolDao{
 		PreparedStatement ps = null;
 		
 		try {
-			if(findById(id) != null) {
-				conn.setAutoCommit(false);
-				
+			if(findById(id) != null) {				
 				removeRelationships(id);
 				
 				ps = conn.prepareStatement("DELETE FROM School WHERE school_id = ?");
 				ps.setLong(1, id);
 				
-				if(ps.executeUpdate() > 0) {					
-					conn.commit();
-					
+				if(ps.executeUpdate() > 0) {						
 					return true;
 				}
 			}
 		}
-		catch(SQLException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e2) {
-				throw new DBException("It's not possible to delete the School object and revert what has already been deleted");
-			}
-			
+		catch(SQLException e) {			
 			throw new DBException("Cannot delete School object");
-		}
-		catch(DBException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e2) {
-				throw new DBException("It's not possible to delete the School object and revert what has already been deleted");
-			}
-			
-			throw e;
 		}
 		finally {
 			Database.closeStatement(ps);
