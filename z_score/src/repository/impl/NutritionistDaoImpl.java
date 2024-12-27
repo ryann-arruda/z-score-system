@@ -268,8 +268,87 @@ public class NutritionistDaoImpl implements NutritionistDao{
 
 	@Override
 	public boolean deleteById(Long id) {
-		// TODO Auto-generated method stub
+		PreparedStatement ps = null;
+		
+		try {
+			if(findById(id) != null) {
+				conn.setAutoCommit(false);
+				
+				removeRelationships(id);
+				
+				ps = conn.prepareStatement("DELETE FROM Nutritionist WHERE nutritionist_id = ?");
+				ps.setLong(1, id);
+				
+				if(ps.executeUpdate() > 0) {					
+					conn.commit();
+					
+					return true;
+				}
+			}
+		}
+		catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("It's not possible to delete the Nutritionist object and revert what has already been deleted");
+			}
+			
+			throw new DBException("Unable to delete Nutritionist object");
+		}
+		catch(DBException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e2) {
+				throw new DBException("It's not possible to delete the Nutritionist object and revert what has already been deleted");
+			}
+			
+			throw e;
+		}
+		finally {
+			Database.closeStatement(ps);
+		}
+		
 		return false;
+	}
+
+	private void removeRelationships(Long id) {
+		SchoolDao schoolDao = DaoFactory.createSchoolDao();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Long> schoolsId = null;
+		
+		try {			
+			ps = conn.prepareStatement("SELECT school_id FROM Nutritionist_School WHERE nutritionist_id = ?");
+			
+			ps.setLong(1, id);
+			
+			rs = ps.executeQuery();
+			
+			schoolsId = new ArrayList<>();
+			while(rs.next()) {
+				schoolsId.add(rs.getLong(1));
+			}
+			
+			for(Long schoolId : schoolsId) {
+				ps = conn.prepareStatement("DELETE FROM Nutritionist_School WHERE school_id = ?");
+				ps.setLong(1, schoolId);
+				
+				if(ps.executeUpdate() < 0) {
+					throw new DBException("Unable to delete relationships from Nutritionist object");
+				}
+				
+				if(!schoolDao.deleteById(schoolId)) {
+					throw new DBException("Unable to delete relationships from Nutritionist object");
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to delete relationships from Nutritionist object");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
 	}
 
 	@Override
