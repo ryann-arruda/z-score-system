@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,7 +21,7 @@ public class AuthenticationController implements Initializable{
 	private TextField username;
 	
 	@FXML
-	private TextField password;
+	private PasswordField password;
 	
 	@FXML
 	private Button login;
@@ -29,18 +30,12 @@ public class AuthenticationController implements Initializable{
 	private Hyperlink register;
 	
 	@FXML
-	public void onPasswordEntered(KeyEvent event){
-		String key = event.getText();
-		System.out.println(key);
-	}
-	
-	@FXML
 	public void onLogin() {
 		System.out.println("Ok");
 	}
 
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initialize(URL url, ResourceBundle rb) {
 		Image logoImage = new Image(getClass().getResource("../../resources/logo.png").toString());
 		
 		logo.setImage(logoImage);
