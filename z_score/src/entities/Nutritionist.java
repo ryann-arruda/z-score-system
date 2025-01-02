@@ -9,6 +9,10 @@ public class Nutritionist extends Person{
 	private Long id;
 	private String regionalCouncilNutritionists;
 	private Set <School> schools;
+	
+	public Nutritionist() {
+		super();
+	}
 
 	public Nutritionist(String name, Date date_birth, String regionalCouncilNutritionists) {
 		super(name, date_birth);
