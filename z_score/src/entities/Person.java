@@ -7,6 +7,10 @@ public abstract class Person {
 	private String name;
 	private Date date_birth;
 	
+	public Person() {
+		
+	}
+	
 	public Person(String name, Date date_birth) {
 		if(name != null && date_birth != null) {
 			this.name = name;
@@ -15,10 +19,6 @@ public abstract class Person {
 		else {
 			throw new IllegalStateException("Parameters cannot be null");
 		}
-	}
-	
-	public Person() {
-		
 	}
 
 	public String getName() {
