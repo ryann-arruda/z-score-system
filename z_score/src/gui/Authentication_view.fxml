@@ -30,6 +30,6 @@
          </font>
       </Button>
       <Label layoutX="154.0" layoutY="336.0" text="Não tem conta? " />
-      <Hyperlink fx:id="register" layoutX="242.0" layoutY="333.0" text="Cadastre-se" />
+      <Hyperlink fx:id="register" layoutX="242.0" layoutY="333.0" onAction="#onRegister" text="Cadastre-se" />
    </children>
 </AnchorPane>
