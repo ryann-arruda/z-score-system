@@ -9,15 +9,19 @@ public class Nutritionist extends Person{
 	private Long id;
 	private String regionalCouncilNutritionists;
 	private Set <School> schools;
+	private String username;
+	private String password;
 	
 	public Nutritionist() {
 		super();
 	}
 
-	public Nutritionist(String name, Date date_birth, String regionalCouncilNutritionists) {
+	public Nutritionist(String name, Date date_birth, String regionalCouncilNutritionists, String username, String password) {
 		super(name, date_birth);
 		
 		this.regionalCouncilNutritionists = regionalCouncilNutritionists;
+		this.username = username;
+		this.password = password;
 		
 		schools = new HashSet<>();
 	}
@@ -36,6 +40,22 @@ public class Nutritionist extends Person{
 
 	public void setRegionalCouncilNutritionists(String regionalCouncilNutritionists) {
 		this.regionalCouncilNutritionists = regionalCouncilNutritionists;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	public boolean addSchool(School s) {
