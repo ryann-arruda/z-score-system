@@ -29,7 +29,9 @@ public class NutritionistDaoImpl implements NutritionistDao{
 	private Nutritionist instantiateNutritionist(ResultSet rs) throws SQLException{
 		Nutritionist nutritionist = new Nutritionist(rs.getString("nutritionist_name"),
 													 new Date(rs.getDate("date_birth").getTime()), 
-													 rs.getString("regional_council_nutritionists"));
+													 rs.getString("regional_council_nutritionists"),
+													 rs.getString("nutritionist_username"),
+													 rs.getString("nutritionist_password"));
 		
 		nutritionist.setId(rs.getLong("nutritionist_id"));
 		
@@ -86,12 +88,15 @@ public class NutritionistDaoImpl implements NutritionistDao{
 			if(obj.getId() == null) {
 				conn.setAutoCommit(false);
 				
-				ps = conn.prepareStatement("INSERT INTO Nutritionist(nutritionist_name, date_birth, regional_council_nutritionists)" +
-										   " VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS);
+				ps = conn.prepareStatement("INSERT INTO Nutritionist(nutritionist_name, date_birth, regional_council_nutritionists, " + 
+										   "nutritionist_username, nutritionist_password)" +
+										   " VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 				
 				ps.setString(1, obj.getName());
 				ps.setDate(2, new java.sql.Date(obj.getDate_birth().getTime()));
 				ps.setString(3, obj.getRegionalCouncilNutritionists());
+				ps.setString(4, obj.getUsername());
+				ps.setString(5, obj.getPassword());
 				
 				List<Long> schoolsId = new ArrayList<>();
 				for(School school: obj.getAllSchools()) {
@@ -176,12 +181,15 @@ public class NutritionistDaoImpl implements NutritionistDao{
 					conn.setAutoCommit(false);
 					
 					ps = conn.prepareStatement("UPDATE Nutritionist SET nutritionist_name = ?, date_birth = ?, " + 
-											   "regional_council_nutritionists = ? WHERE nutritionist_id = ?");
+											   "regional_council_nutritionists = ?, nutritionist_username = ?, " +
+									           "nutritionist_password = ? WHERE nutritionist_id = ?");
 					
 					ps.setString(1, obj.getName());
 					ps.setDate(2, new java.sql.Date(obj.getDate_birth().getTime()));
 					ps.setString(3, obj.getRegionalCouncilNutritionists());
-					ps.setLong(4, obj.getId());
+					ps.setString(4, obj.getUsername());
+					ps.setString(5, obj.getPassword());
+					ps.setLong(6, obj.getId());
 					
 					if(ps.executeUpdate() > 0) {
 						List<Long> newRelationshipsIds = new ArrayList<>();
