@@ -47,7 +47,7 @@
                   <Font name="Trebuchet MS Bold" size="14.0" />
                </font>
             </Label>
-            <DatePicker fx:id="dateBirth" prefHeight="25.0" prefWidth="190.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <DatePicker fx:id="dateBirth" prefHeight="25.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="CRN:" GridPane.rowIndex="2">
                <font>
                   <Font name="Trebuchet MS Bold" size="14.0" />
@@ -59,20 +59,20 @@
                   <Font name="Trebuchet MS Bold" size="14.0" />
                </font>
             </Label>
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="username" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label text="Senha:" GridPane.rowIndex="4">
                <font>
                   <Font name="Trebuchet MS Bold" size="14.0" />
                </font>
             </Label>
-            <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <PasswordField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label text="Confirme sua Senha:" GridPane.rowIndex="5">
                <font>
                   <Font name="Trebuchet MS Bold" size="14.0" />
                </font>
             </Label>
-            <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Label prefHeight="17.0" prefWidth="213.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <PasswordField fx:id="passwordConfirmation" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label fx:id="errorDisplay" prefHeight="17.0" prefWidth="213.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <font>
                   <Font name="Trebuchet MS Bold" size="13.0" />
                </font>
