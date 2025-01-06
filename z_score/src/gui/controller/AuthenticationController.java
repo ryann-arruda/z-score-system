@@ -45,12 +45,11 @@ public class AuthenticationController implements Initializable{
 	@FXML
 	public void onRegister(ActionEvent event) {
 		Stage parentStage = Utils.getCurrentStage(event);
-		Nutritionist nutritionist = new Nutritionist();
 		
-		createDialogForm(nutritionist, "../../gui/Register_view.fxml", parentStage);
+		createDialogForm("../../gui/Register_view.fxml", parentStage);
 	}
 
-	private void createDialogForm(Nutritionist nutritionist, String absoluteName, Stage parentStage) {
+	private void createDialogForm(String absoluteName, Stage parentStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			
