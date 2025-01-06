@@ -1,11 +1,11 @@
-package repository;
+package entities.repository;
 
 import db.Database;
-import repository.impl.ChildDaoImpl;
-import repository.impl.LevelEducationDaoImpl;
-import repository.impl.MeasurementZscoreDaoImpl;
-import repository.impl.NutritionistDaoImpl;
-import repository.impl.SchoolDaoImpl;
+import entities.repository.impl.ChildDaoImpl;
+import entities.repository.impl.LevelEducationDaoImpl;
+import entities.repository.impl.MeasurementZscoreDaoImpl;
+import entities.repository.impl.NutritionistDaoImpl;
+import entities.repository.impl.SchoolDaoImpl;
 
 public class DaoFactory {	
 	

@@ -1,4 +1,4 @@
-package repository.impl;
+package entities.repository.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,9 +13,9 @@ import db.DBException;
 import db.Database;
 import entities.Child;
 import entities.MeasurementZscore;
-import repository.ChildDao;
-import repository.DaoFactory;
-import repository.MeasurementZscoreDao;
+import entities.repository.ChildDao;
+import entities.repository.DaoFactory;
+import entities.repository.MeasurementZscoreDao;
 
 public class ChildDaoImpl implements ChildDao{
 	private Connection conn;

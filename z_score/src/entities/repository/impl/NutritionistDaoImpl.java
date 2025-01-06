@@ -1,4 +1,4 @@
-package repository.impl;
+package entities.repository.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,9 +15,9 @@ import db.DBException;
 import db.Database;
 import entities.Nutritionist;
 import entities.School;
-import repository.DaoFactory;
-import repository.NutritionistDao;
-import repository.SchoolDao;
+import entities.repository.DaoFactory;
+import entities.repository.NutritionistDao;
+import entities.repository.SchoolDao;
 
 public class NutritionistDaoImpl implements NutritionistDao{
 	private Connection conn;

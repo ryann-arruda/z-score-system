@@ -1,4 +1,4 @@
-package repository.impl;
+package entities.repository.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,9 +14,9 @@ import db.DBException;
 import db.Database;
 import entities.LevelEducation;
 import entities.School;
-import repository.DaoFactory;
-import repository.LevelEducationDao;
-import repository.SchoolDao;
+import entities.repository.DaoFactory;
+import entities.repository.LevelEducationDao;
+import entities.repository.SchoolDao;
 
 public class SchoolDaoImpl implements SchoolDao{
 	private Connection conn;

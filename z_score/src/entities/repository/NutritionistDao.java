@@ -1,4 +1,4 @@
-package repository;
+package entities.repository;
 
 import entities.Nutritionist;
 

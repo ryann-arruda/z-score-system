@@ -1,4 +1,4 @@
-package repository.impl;
+package entities.repository.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ import java.util.List;
 import db.DBException;
 import db.Database;
 import entities.MeasurementZscore;
-import repository.MeasurementZscoreDao;
+import entities.repository.MeasurementZscoreDao;
 
 public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
 	private Connection conn;
