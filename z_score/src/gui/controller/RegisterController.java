@@ -6,6 +6,7 @@ import java.util.Date;
 
 import entities.Nutritionist;
 import entities.service.NutritionistService;
+import exceptions.ValidateException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -36,7 +37,19 @@ public class RegisterController {
 	private PasswordField passwordConfirmation;
 	
 	@FXML
-	private Label errorDisplay;
+	private Label nameError;
+	
+	@FXML
+	private Label dateBirthError;
+	
+	@FXML
+	private Label regionalCouncilNutritionistsError;
+	
+	@FXML
+	private Label usernameError;
+	
+	@FXML
+	private Label passwordError;
 	
 	@FXML
 	private Button register;
@@ -55,28 +68,30 @@ public class RegisterController {
 	}
 	
 	private void validateData() {
-		
+		ValidateException exception = new ValidateException("Erros when filling in fields");
 		
 		if(name.getText() == null || name.getText().trim().equals("")) {
-			// TODO Exception to validate
+			exception.addError("nameError", "Insira um nome válido!");
 		}
 		
 		if(dateBirth.getValue() == null) {
-			// TODO Exception to validate
+			exception.addError("dateBirthError", "Insira uma data de nascimento válida!");
 		}
 		
 		if(regionalCouncilNutritionists.getText() == null ||
 		   regionalCouncilNutritionists.getText().trim().equals("")) {
-			// TODO Exception to validate
+			exception.addError("regionalCouncilNutritionistsError", "Insira um número de CRN válido!");
 		}
 		
 		if(username.getText() == null || username.getText().trim().equals("")) {
-			// TODO Exception to validate
+			exception.addError("usernameError", "Insira um nome de usuário válido!");
 		}
 		
 		if(!comparePasswords()) {
-			// TODO Exception to validate
+			exception.addError("passwordError", "Insira uma senha válida!");
 		}
+		
+		// TODO Finalize the implementation of the method
 	}
 	
 	private Date getDateBirth() {
