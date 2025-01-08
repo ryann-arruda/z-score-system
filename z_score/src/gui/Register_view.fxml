@@ -79,7 +79,7 @@
                   <Font name="Trebuchet MS Bold" size="13.0" />
                </font>
             </Label>
-            <Label fx:id="dateBirthError" prefWidth="222.0" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Label fx:id="dateBirthError" prefHeight="31.0" prefWidth="245.0" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <font>
                   <Font name="Trebuchet MS Bold" size="13.0" />
                </font>
@@ -115,7 +115,7 @@
       </GridPane>
       <HBox alignment="CENTER" layoutX="1.0" layoutY="330.0" prefHeight="55.0" prefWidth="673.0">
          <children>
-            <Button fx:id="register" mnemonicParsing="false" prefHeight="25.0" prefWidth="95.0" text="Cadastrar">
+            <Button fx:id="register" mnemonicParsing="false" onAction="#onRegister" prefHeight="25.0" prefWidth="95.0" text="Cadastrar">
                <HBox.margin>
                   <Insets right="50.0" />
                </HBox.margin>
