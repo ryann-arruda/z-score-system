@@ -1,23 +1,25 @@
 package gui.controller;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import entities.Nutritionist;
 import entities.service.NutritionistService;
 import exceptions.FormValidationException;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-public class RegisterController {
+public class RegisterController implements Initializable{
 	
 	private NutritionistService service;
 	
@@ -160,5 +162,10 @@ public class RegisterController {
 		else {
 			passwordError.setText("");
 		}
+	}
+
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		dateBirth.getEditor().setDisable(true);
 	}
 }
