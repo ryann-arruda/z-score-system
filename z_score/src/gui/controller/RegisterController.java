@@ -101,7 +101,7 @@ public class RegisterController implements Initializable{
 			exception.addError("passwordError", "Insira uma senha válida!");
 		}
 		
-		if(exception.getErros().size() > 0) {
+		if(exception.getErrors().size() > 0) {
 			throw exception;
 		}
 	}
@@ -113,16 +113,24 @@ public class RegisterController implements Initializable{
 	}
 	
 	public Nutritionist getFormData() {
-		Nutritionist nutritionist = new Nutritionist();
+		Nutritionist nutritionist = null;
 		
 		try {
 			validateData();
+			
+			nutritionist = new Nutritionist();
+			
+			nutritionist.setName(name.getText());
+			nutritionist.setDate_birth(getDateBirth());
+			nutritionist.setRegionalCouncilNutritionists(regionalCouncilNutritionists.getText());
+			nutritionist.setUsername(username.getText());
+			nutritionist.setPassword(password.getText());
 		}
 		catch(FormValidationException e) {
-			setErrorMessages(e.getErros());
+			setErrorMessages(e.getErrors());
 		}
 		
-		return null;
+		return nutritionist;
 	}
 	
 	private void setErrorMessages(Map<String, String> errors) {
