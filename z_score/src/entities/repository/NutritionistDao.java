@@ -7,4 +7,5 @@ public interface NutritionistDao {
 	boolean update(Nutritionist obj);
 	boolean deleteById(Long id);
 	Nutritionist findById(Long id);
+	Nutritionist findByAuthenticationInformation(String username, String password);
 }
