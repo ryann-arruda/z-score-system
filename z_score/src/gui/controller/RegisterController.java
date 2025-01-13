@@ -8,9 +8,11 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import db.DBException;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
 import exceptions.FormValidationException;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -18,10 +20,15 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import util.Alerts;
+import util.Utils;
 
 public class RegisterController implements Initializable{
 	
 	private NutritionistService service;
+	
+	private Nutritionist nutritionist;
 	
 	@FXML
 	private TextField name;
@@ -66,9 +73,36 @@ public class RegisterController implements Initializable{
 		this.service = service;
 	}
 	
+	public void setNutritionist(Nutritionist nutritionist) {
+		this.nutritionist = nutritionist;
+	}
+	
 	@FXML
-	public void onRegister() {
-		getFormData();
+	public void onRegister(ActionEvent event) {		
+		if(nutritionist == null) {
+			throw new IllegalStateException("Entity was null");
+		}
+		
+		if(service == null) {
+			throw new IllegalStateException("Service was null");
+		}
+		
+		try {
+			getFormData();
+			service.save(nutritionist);
+			Utils.getCurrentStage(event).close();
+		}
+		catch(FormValidationException e) {
+			setErrorMessages(e.getErrors());
+		}
+		catch(DBException e) {
+			Alerts.showAlert("Erro", null, "Não é possível cadastrar um novo usuário.", AlertType.ERROR);
+		}
+	}
+	
+	@FXML
+	public void onCancel(ActionEvent event) {
+		Utils.getCurrentStage(event).close();
 	}
 	
 	private boolean comparePasswords() {
@@ -112,25 +146,14 @@ public class RegisterController implements Initializable{
 		return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
 	
-	public Nutritionist getFormData() {
-		Nutritionist nutritionist = null;
+	public void getFormData() {		
+		validateData();
 		
-		try {
-			validateData();
-			
-			nutritionist = new Nutritionist();
-			
-			nutritionist.setName(name.getText());
-			nutritionist.setDate_birth(getDateBirth());
-			nutritionist.setRegionalCouncilNutritionists(regionalCouncilNutritionists.getText());
-			nutritionist.setUsername(username.getText());
-			nutritionist.setPassword(password.getText());
-		}
-		catch(FormValidationException e) {
-			setErrorMessages(e.getErrors());
-		}
-		
-		return nutritionist;
+		nutritionist.setName(name.getText());
+		nutritionist.setDate_birth(getDateBirth());
+		nutritionist.setRegionalCouncilNutritionists(regionalCouncilNutritionists.getText());
+		nutritionist.setUsername(username.getText());
+		nutritionist.setPassword(password.getText());
 	}
 	
 	private void setErrorMessages(Map<String, String> errors) {
