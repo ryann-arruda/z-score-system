@@ -12,15 +12,16 @@ import db.DBException;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
 import exceptions.FormValidationException;
+import exceptions.UserRegistrationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import util.Alerts;
 import util.Utils;
 
@@ -89,7 +90,12 @@ public class RegisterController implements Initializable{
 		
 		try {
 			getFormData();
-			service.save(nutritionist);
+			
+			if(service.save(nutritionist) == null) {
+				throw new UserRegistrationException("Nome de usuário já existe!");
+			}
+			
+			Alerts.showAlert(null, null, "Cadastro realizado com sucesso!", AlertType.CONFIRMATION);
 			Utils.getCurrentStage(event).close();
 		}
 		catch(FormValidationException e) {
@@ -97,6 +103,9 @@ public class RegisterController implements Initializable{
 		}
 		catch(DBException e) {
 			Alerts.showAlert("Erro", null, "Não é possível cadastrar um novo usuário.", AlertType.ERROR);
+		}
+		catch(UserRegistrationException e) {
+			Alerts.showAlert("Erro", null, e.getMessage(), AlertType.ERROR);
 		}
 	}
 	
