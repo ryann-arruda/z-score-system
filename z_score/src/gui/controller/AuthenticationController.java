@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import entities.Nutritionist;
+import entities.service.NutritionistService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -55,6 +57,8 @@ public class AuthenticationController implements Initializable{
 			AnchorPane anchorPane = loader.load();
 			
 			RegisterController registerController = loader.getController();
+			registerController.setNutritionist(new Nutritionist());
+			registerController.setNutritionistService(new NutritionistService());
 			
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Cadastro de Nutricionista");
