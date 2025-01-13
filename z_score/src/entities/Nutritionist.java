@@ -14,6 +14,8 @@ public class Nutritionist extends Person{
 	
 	public Nutritionist() {
 		super();
+		
+		schools = new HashSet<>();
 	}
 
 	public Nutritionist(String name, Date date_birth, String regionalCouncilNutritionists, String username, String password) {
