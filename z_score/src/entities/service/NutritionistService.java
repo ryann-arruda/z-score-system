@@ -8,7 +8,7 @@ public class NutritionistService {
 	
 	private NutritionistDao nutritionistDaoImpl = DaoFactory.createNutritionistDao();
 	
-	public void save(Nutritionist nutritionist) {
-		nutritionistDaoImpl.insert(nutritionist);
+	public Long save(Nutritionist nutritionist) {
+		return nutritionistDaoImpl.insert(nutritionist);
 	}
 }
