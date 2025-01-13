@@ -86,34 +86,36 @@ public class NutritionistDaoImpl implements NutritionistDao{
 		
 		try {
 			if(obj.getId() == null) {
-				conn.setAutoCommit(false);
-				
-				ps = conn.prepareStatement("INSERT INTO Nutritionist(nutritionist_name, date_birth, regional_council_nutritionists, " + 
-										   "nutritionist_username, nutritionist_password)" +
-										   " VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-				
-				ps.setString(1, obj.getName());
-				ps.setDate(2, new java.sql.Date(obj.getDate_birth().getTime()));
-				ps.setString(3, obj.getRegionalCouncilNutritionists());
-				ps.setString(4, obj.getUsername());
-				ps.setString(5, obj.getPassword());
-				
-				List<Long> schoolsId = new ArrayList<>();
-				for(School school: obj.getAllSchools()) {
-					Long id = schoolDaoImpl.insert(school);
-					school.setId(id);
-					schoolsId.add(id);
-				}
-				
-				if(ps.executeUpdate() > 0) {
-					rs = ps.getGeneratedKeys();				
+				if(findByAuthenticationInformation(obj.getUsername(), obj.getPassword()) == null) {
+					conn.setAutoCommit(false);
 					
-					if(rs.next()) {
-						nutritionistId = rs.getLong(1);
+					ps = conn.prepareStatement("INSERT INTO Nutritionist(nutritionist_name, date_birth, regional_council_nutritionists, " + 
+											   "nutritionist_username, nutritionist_password)" +
+											   " VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+					
+					ps.setString(1, obj.getName());
+					ps.setDate(2, new java.sql.Date(obj.getDate_birth().getTime()));
+					ps.setString(3, obj.getRegionalCouncilNutritionists());
+					ps.setString(4, obj.getUsername());
+					ps.setString(5, obj.getPassword());
+					
+					List<Long> schoolsId = new ArrayList<>();
+					for(School school: obj.getAllSchools()) {
+						Long id = schoolDaoImpl.insert(school);
+						school.setId(id);
+						schoolsId.add(id);
+					}
+					
+					if(ps.executeUpdate() > 0) {
+						rs = ps.getGeneratedKeys();				
 						
-						insertRelationships(schoolsId, nutritionistId);
-						
-						conn.commit();
+						if(rs.next()) {
+							nutritionistId = rs.getLong(1);
+							
+							insertRelationships(schoolsId, nutritionistId);
+							
+							conn.commit();
+						}
 					}
 				}
 			}
@@ -369,6 +371,36 @@ public class NutritionistDaoImpl implements NutritionistDao{
 			if(id != null) {
 				ps = conn.prepareStatement("SELECT * FROM Nutritionist WHERE nutritionist_id = ?");
 				ps.setLong(1, id);
+				
+				rs = ps.executeQuery();
+				
+				if(rs.next()) {
+					nutritionist = instantiateNutritionist(rs);
+				}
+			}
+		}
+		catch(SQLException e) {
+			throw new DBException("Unable to retrieve a Nutritionist object");
+		}
+		finally {
+			Database.closeResultSet(rs);
+			Database.closeStatement(ps);
+		}
+		
+		return nutritionist;
+	}
+
+	@Override
+	public Nutritionist findByAuthenticationInformation(String username, String password) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Nutritionist nutritionist = null;
+		
+		try {
+			if(username != null && password != null) {
+				ps = conn.prepareStatement("SELECT * FROM Nutritionist WHERE nutritionist_username = ? AND nutritionist_password = ?");
+				ps.setString(1, username);
+				ps.setString(2, password);
 				
 				rs = ps.executeQuery();
 				
