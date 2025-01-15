@@ -120,7 +120,7 @@ public class RegisterController implements Initializable{
 				(password.getText().equals(passwordConfirmation.getText()));
 	}
 	
-	private void validateData() {
+	private void validateFormData() {
 		FormValidationException exception = new FormValidationException("Erros when filling in fields");
 		
 		if(name.getText() == null || name.getText().trim().equals("")) {
@@ -155,8 +155,8 @@ public class RegisterController implements Initializable{
 		return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
 	
-	public void getFormData() {		
-		validateData();
+	private void getFormData() {		
+		validateFormData();
 		
 		nutritionist.setName(name.getText());
 		nutritionist.setDate_birth(getDateBirth());
