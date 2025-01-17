@@ -23,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import util.Alerts;
+import util.Constraints;
 import util.Utils;
 
 public class RegisterController implements Initializable{
@@ -207,5 +208,7 @@ public class RegisterController implements Initializable{
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		dateBirth.getEditor().setDisable(true);
+		Constraints.setTextFieldMaxLength(username, 30);
+		Constraints.setPasswordFielddMaxLength(password, 30);
 	}
 }
