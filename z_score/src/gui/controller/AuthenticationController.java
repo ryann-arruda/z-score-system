@@ -2,18 +2,23 @@ package gui.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import application.Main;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
+import exceptions.FieldValidationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -21,9 +26,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import util.Alerts;
 import util.Utils;
 
 public class AuthenticationController implements Initializable{
+	
+	private NutritionistService service = new NutritionistService();
+	
 	@FXML
 	private ImageView logo = new ImageView();
 	
@@ -34,6 +43,9 @@ public class AuthenticationController implements Initializable{
 	private PasswordField password;
 	
 	@FXML
+	private Label loginError;
+	
+	@FXML
 	private Button login;
 	
 	@FXML
@@ -41,18 +53,17 @@ public class AuthenticationController implements Initializable{
 	
 	@FXML
 	public void onLogin() {
-		
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/Main_view.fxml"));
-			AnchorPane achorPane = loader.load();
+			validateLoginFields();
 			
-			Stage currentStage = (Stage) Main.getScene().getWindow();
-			currentStage.setScene(new Scene(achorPane));
+			Nutritionist user = service.login(username.getText(), password.getText());
 			
-			currentStage.setTitle("Painel Principal");
-			currentStage.setResizable(false);
-		} catch (IOException e) {
-			e.printStackTrace();
+			if(user != null){
+				loadMainView(user);
+			}
+		}
+		catch(FieldValidationException e) {
+			setErrorMessages(e.getErrors());
 		}
 	}
 	
@@ -83,6 +94,47 @@ public class AuthenticationController implements Initializable{
 		}
 		catch(IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private void loadMainView(Nutritionist nutritionist) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/Main_view.fxml"));
+			AnchorPane achorPane = loader.load();
+			
+			Stage currentStage = (Stage) Main.getScene().getWindow();
+			currentStage.setScene(new Scene(achorPane));
+			
+			currentStage.setTitle("Painel Principal");
+			currentStage.setResizable(false);
+		} catch (IOException e) {
+			Alerts.showAlert("Erro", null, "Não foi possível carregar o painel principal. Tente novamente mais tarde.", AlertType.ERROR);
+		}
+	}
+	
+	private void validateLoginFields() {
+		FieldValidationException exception = new FieldValidationException("Erros when filling in fields");
+		
+		if(username.getText() == null || username.getText().trim().equals("")) {
+			exception.addError("loginError", "As informações fornecidas não são válidas!");
+		}
+		
+		if(exception.getErrors().size() > 0) {
+			throw exception;
+		}
+		
+		if(password.getText() == null || password.getText().trim().equals("")) {
+			exception.addError("loginError", "As informações fornecidas não são válidas!");
+		}
+		
+		if(exception.getErrors().size() > 0) {
+			throw exception;
+		}
+	}
+	
+	private void setErrorMessages(Map<String, String> errors) {		
+		if(errors.containsKey("loginError")) {
+			loginError.setText(errors.get("loginError"));
 		}
 	}
 
