@@ -58,13 +58,13 @@
                   <Font name="Trebuchet MS Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="username" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="username" promptText="Máximo 30 caracteres" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label text="Senha:" GridPane.rowIndex="4">
                <font>
                   <Font name="Trebuchet MS Bold" size="14.0" />
                </font>
             </Label>
-            <PasswordField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <PasswordField fx:id="password" promptText="Máximo 30 caracteres" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label text="Confirme sua Senha:" GridPane.rowIndex="5">
                <font>
                   <Font name="Trebuchet MS Bold" size="14.0" />
