@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="660.0" maxWidth="510.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="379.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.AuthenticationController">
+<AnchorPane maxHeight="660.0" maxWidth="510.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="425.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.AuthenticationController">
    <children>
       <ImageView fx:id="logo" fitHeight="150.0" fitWidth="200.0" layoutX="130.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="23.0" />
       <Label layoutX="42.0" layoutY="196.0" text="Username:">
@@ -24,12 +24,17 @@
       </Label>
       <TextField fx:id="username" layoutX="130.0" layoutY="192.0" prefHeight="25.0" prefWidth="200.0" />
       <PasswordField fx:id="password" layoutX="129.0" layoutY="235.0" prefHeight="25.0" prefWidth="200.0" />
-      <Button fx:id="login" layoutX="130.0" layoutY="282.0" mnemonicParsing="false" onAction="#onLogin" prefWidth="200.0" text="Login" textAlignment="CENTER">
+      <Label fx:id="loginError" layoutX="130.0" layoutY="261.0" prefHeight="34.0" prefWidth="200.0" textFill="RED" wrapText="true">
+         <font>
+            <Font name="Trebuchet MS Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="login" layoutX="130.0" layoutY="307.0" mnemonicParsing="false" onAction="#onLogin" prefWidth="200.0" text="Login" textAlignment="CENTER">
          <font>
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
       </Button>
-      <Label layoutX="154.0" layoutY="336.0" text="Não tem conta? " />
-      <Hyperlink fx:id="register" layoutX="242.0" layoutY="333.0" onAction="#onRegister" text="Cadastre-se" />
+      <Label layoutX="154.0" layoutY="361.0" text="Não tem conta? " />
+      <Hyperlink fx:id="register" layoutX="242.0" layoutY="358.0" onAction="#onRegister" text="Cadastre-se" />
    </children>
 </AnchorPane>
