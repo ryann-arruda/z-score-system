@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.Main;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
 import javafx.event.ActionEvent;
@@ -40,7 +41,19 @@ public class AuthenticationController implements Initializable{
 	
 	@FXML
 	public void onLogin() {
-		System.out.println("Ok");
+		
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/Main_view.fxml"));
+			AnchorPane achorPane = loader.load();
+			
+			Stage currentStage = (Stage) Main.getScene().getWindow();
+			currentStage.setScene(new Scene(achorPane));
+			
+			currentStage.setTitle("Painel Principal");
+			currentStage.setResizable(false);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
