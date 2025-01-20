@@ -11,4 +11,8 @@ public class NutritionistService {
 	public Long save(Nutritionist nutritionist) {
 		return nutritionistDaoImpl.insert(nutritionist);
 	}
+	
+	public Nutritionist login(String username, String password) {
+		return nutritionistDaoImpl.findByAuthenticationInformation(username, password);
+	}
 }
