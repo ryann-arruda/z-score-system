@@ -9,12 +9,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application{
+	
+	private static Scene scene;
 	@Override
 	public void start(Stage stage) throws Exception {
 		try {
 			Parent parent = FXMLLoader.load(getClass().getResource("../gui/Authentication_view.fxml"));
 			
-			Scene scene = new Scene(parent);
+			scene = new Scene(parent);
 			
 			stage.setTitle("NutriData");
 			stage.setScene(scene);
@@ -24,6 +26,10 @@ public class Main extends Application{
 		catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static Scene getScene() {
+		return scene;
 	}
 	
 	public static void main(String[] args) {
