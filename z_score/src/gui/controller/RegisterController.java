@@ -11,7 +11,7 @@ import java.util.Set;
 import db.DBException;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
-import exceptions.FormValidationException;
+import exceptions.FieldValidationException;
 import exceptions.UserRegistrationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -99,7 +99,7 @@ public class RegisterController implements Initializable{
 			Alerts.showAlert(null, null, "Cadastro realizado com sucesso!", AlertType.CONFIRMATION);
 			Utils.getCurrentStage(event).close();
 		}
-		catch(FormValidationException e) {
+		catch(FieldValidationException e) {
 			setErrorMessages(e.getErrors());
 		}
 		catch(DBException e) {
@@ -122,7 +122,7 @@ public class RegisterController implements Initializable{
 	}
 	
 	private void validateFormData() {
-		FormValidationException exception = new FormValidationException("Erros when filling in fields");
+		FieldValidationException exception = new FieldValidationException("Erros when filling in fields");
 		
 		if(name.getText() == null || name.getText().trim().equals("")) {
 			exception.addError("nameError", "Insira um nome válido!");
