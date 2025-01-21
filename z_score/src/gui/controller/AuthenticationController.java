@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import application.Main;
 import entities.Nutritionist;
@@ -101,6 +100,10 @@ public class AuthenticationController implements Initializable{
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/Main_view.fxml"));
 			AnchorPane achorPane = loader.load();
+			
+			MainController mainController = loader.getController();
+			mainController.setNutritionist(nutritionist);
+			mainController.setNutritionistService(new NutritionistService());
 			
 			Stage currentStage = (Stage) Main.getScene().getWindow();
 			currentStage.setScene(new Scene(achorPane));
