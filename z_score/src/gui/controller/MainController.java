@@ -6,8 +6,10 @@ import java.util.ResourceBundle;
 import entities.Nutritionist;
 import entities.School;
 import entities.service.NutritionistService;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -45,6 +47,12 @@ public class MainController implements Initializable{
 	@FXML
 	private Label nutritionistIdentifier;
 	
+	@FXML
+	private Button logout;
+	
+	@FXML
+	private Button addNewSchool;
+	
 	public void setNutritionist(Nutritionist nutritionist) {
 		this.nutritionist = nutritionist;
 		this.nutritionistName.setText(nutritionist.getName());
@@ -59,5 +67,7 @@ public class MainController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
 		tableColumnSchoolIdentifier.setCellValueFactory(new PropertyValueFactory<>("nationalRegistryLegalEntities"));
+		tableColumnNumberStudents.setCellValueFactory(cellData -> 
+		new SimpleIntegerProperty(cellData.getValue().getNumberStudents()).asObject());
 	}
 }
