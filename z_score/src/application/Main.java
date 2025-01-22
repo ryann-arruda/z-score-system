@@ -2,21 +2,22 @@ package application;
 
 import java.io.IOException;
 
+import gui.controller.AuthenticationController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application{
 	
-	private static Scene scene;
 	@Override
 	public void start(Stage stage) throws Exception {
 		try {
-			Parent parent = FXMLLoader.load(getClass().getResource("../gui/Authentication_view.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../gui/Authentication_view.fxml"));
+			Scene scene = new Scene(loader.load());
 			
-			scene = new Scene(parent);
+			AuthenticationController authenticationController = loader.getController();
+			authenticationController.setCurrentStage(stage);
 			
 			stage.setTitle("NutriData");
 			stage.setScene(scene);
@@ -26,10 +27,6 @@ public class Main extends Application{
 		catch(IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public static Scene getScene() {
-		return scene;
 	}
 	
 	public static void main(String[] args) {
