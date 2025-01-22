@@ -1,8 +1,10 @@
 package gui.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.Main;
 import entities.Nutritionist;
 import entities.School;
 import entities.service.NutritionistService;
@@ -10,17 +12,25 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import util.Alerts;
 
 public class MainController implements Initializable{
 	private Nutritionist nutritionist;
 	
 	private NutritionistService service;
+	
+	private Stage currentStage;
 	
 	@FXML
 	private TableView<School> tableViewSchool;
@@ -63,6 +73,37 @@ public class MainController implements Initializable{
 	
 	public void setNutritionistService(NutritionistService service) {
 		this.service = service;
+	}
+	
+	public void setCurrentStage(Stage stage) {
+		this.currentStage = stage;
+	}
+	
+	@FXML
+	public void onLogout() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/Authentication_view.fxml"));
+			AnchorPane achorPane = loader.load();
+			
+			if(this.currentStage == null) {
+				throw new IllegalStateException("Stage was null");
+			}
+			
+			AuthenticationController authenticationController = loader.getController();
+			authenticationController.setCurrentStage(currentStage);
+			
+			currentStage.setScene(new Scene(achorPane));
+			
+			currentStage.setTitle("NutriData");
+			currentStage.setResizable(false);
+		} catch (IOException e) {
+			Alerts.showAlert("Erro", null, "Não foi possível fazer log out.", AlertType.ERROR);
+		}
+	}
+	
+	@FXML
+	public void onAddNewSchool() {
+
 	}
 	
 	public void updateTableViewSchool() {
