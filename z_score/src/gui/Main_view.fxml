@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="468.0" prefWidth="835.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
    <children>
       <Label layoutX="14.0" layoutY="6.0" text="Nutricionista:" underline="true" AnchorPane.topAnchor="10.0">
          <font>
@@ -28,20 +29,21 @@
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="51.0" text="Escolas">
-         <font>
-            <Font name="Trebuchet MS Bold" size="14.0" />
-         </font>
-      </Label>
-      <TableView fx:id="tableViewSchool" layoutX="12.0" layoutY="73.0" prefHeight="308.0" prefWidth="795.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+      <Button fx:id="logout" layoutX="777.0" layoutY="6.0" mnemonicParsing="false" style="-fx-background-color: #fa4a4a;" text="Logout" textFill="WHITE" />
+      <TableView fx:id="tableViewSchool" layoutY="68.0" prefHeight="327.0" prefWidth="835.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <columns>
-          <TableColumn fx:id="tableColumnName" prefWidth="213.0" text="Nome da Escola" />
-          <TableColumn fx:id="tableColumnSchoolIdentifier" minWidth="0.0" prefWidth="139.0" text="CNPJ" />
-            <TableColumn fx:id="tableColumnNumberStudents" prefWidth="217.0" text="Quantidade de Alunos Cadastrados" />
-            <TableColumn fx:id="tableColumnSEE" prefWidth="75.0" />
-            <TableColumn fx:id="tableColumnEDIT" prefWidth="75.0" />
-            <TableColumn fx:id="tableColumnREMOVE" prefWidth="75.0" />
+          <TableColumn fx:id="tableColumnName" prefWidth="220.0" text="Nome da Escola" />
+          <TableColumn fx:id="tableColumnSchoolIdentifier" minWidth="0.0" prefWidth="145.0" text="CNPJ" />
+            <TableColumn fx:id="tableColumnNumberStudents" prefWidth="230.0" text="Quantidade de Alunos Cadastrados" />
+            <TableColumn fx:id="tableColumnSEE" />
+            <TableColumn fx:id="tableColumnEDIT" />
+            <TableColumn fx:id="tableColumnREMOVE" />
         </columns>
       </TableView>
+      <Button fx:id="addNewSchool" layoutX="348.0" layoutY="416.0" mnemonicParsing="false" style="-fx-background-color: green;" text="Adicionar Nova Escola" textFill="WHITE">
+         <font>
+            <Font name="Trebuchet MS Bold" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
