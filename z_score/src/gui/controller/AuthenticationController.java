@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import application.Main;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
 import exceptions.FieldValidationException;
@@ -32,6 +31,8 @@ public class AuthenticationController implements Initializable{
 	
 	private NutritionistService service = new NutritionistService();
 	
+	private Stage currentStage;
+	
 	@FXML
 	private ImageView logo = new ImageView();
 	
@@ -49,6 +50,10 @@ public class AuthenticationController implements Initializable{
 	
 	@FXML
 	private Hyperlink register;
+	
+	public void setCurrentStage(Stage stage) {
+		this.currentStage = stage;
+	}
 	
 	@FXML
 	public void onLogin() {
@@ -104,9 +109,9 @@ public class AuthenticationController implements Initializable{
 			MainController mainController = loader.getController();
 			mainController.setNutritionist(nutritionist);
 			mainController.setNutritionistService(new NutritionistService());
-			
-			Stage currentStage = (Stage) Main.getScene().getWindow();
+		
 			currentStage.setScene(new Scene(achorPane));
+			mainController.setCurrentStage(currentStage);
 			
 			currentStage.setTitle("Painel Principal");
 			currentStage.setResizable(false);
