@@ -63,6 +63,16 @@ public class School {
 	public List<LevelEducation> getAllEducationLevels() {
 		return new ArrayList<>(educationLevels);
 	}
+	
+	public int getNumberStudents() {
+		int numberStudents = 0;
+		
+		for(LevelEducation le : educationLevels) {
+			numberStudents += le.getAllChildren().size();
+		}
+		
+		return numberStudents;
+	}
 
 	@Override
 	public int hashCode() {
