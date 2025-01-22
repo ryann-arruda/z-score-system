@@ -29,7 +29,7 @@
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="logout" layoutX="777.0" layoutY="6.0" mnemonicParsing="false" style="-fx-background-color: #fa4a4a;" text="Log out" textFill="WHITE" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <Button fx:id="logout" layoutX="777.0" layoutY="6.0" mnemonicParsing="false" onAction="#onLogout" style="-fx-background-color: #fa4a4a;" text="Log out" textFill="WHITE" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
       <TableView fx:id="tableViewSchool" layoutY="68.0" prefHeight="327.0" prefWidth="835.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <columns>
           <TableColumn fx:id="tableColumnName" prefWidth="220.0" text="Nome da Escola" />
@@ -40,7 +40,7 @@
             <TableColumn fx:id="tableColumnREMOVE" />
         </columns>
       </TableView>
-      <Button fx:id="addNewSchool" layoutX="348.0" layoutY="416.0" mnemonicParsing="false" style="-fx-background-color: green;" text="Adicionar Nova Escola" textFill="WHITE">
+      <Button fx:id="addNewSchool" layoutX="348.0" layoutY="416.0" mnemonicParsing="false" onAction="#onAddNewSchool" style="-fx-background-color: green;" text="Adicionar Nova Escola" textFill="WHITE">
          <font>
             <Font name="Trebuchet MS Bold" size="12.0" />
          </font>
