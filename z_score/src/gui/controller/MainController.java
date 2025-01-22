@@ -7,6 +7,8 @@ import entities.Nutritionist;
 import entities.School;
 import entities.service.NutritionistService;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -61,6 +63,15 @@ public class MainController implements Initializable{
 	
 	public void setNutritionistService(NutritionistService service) {
 		this.service = service;
+	}
+	
+	public void updateTableViewSchool() {
+		if(nutritionist == null) {
+			throw new IllegalStateException("Nutritionist was null");
+		}
+		
+		ObservableList<School> obsList = FXCollections.observableArrayList(nutritionist.getAllSchools());
+		tableViewSchool.setItems(obsList);
 	}
 
 	@Override
