@@ -31,8 +31,6 @@ public class AuthenticationController implements Initializable{
 	
 	private NutritionistService service = new NutritionistService();
 	
-	private Stage currentStage;
-	
 	@FXML
 	private ImageView logo = new ImageView();
 	
@@ -51,19 +49,15 @@ public class AuthenticationController implements Initializable{
 	@FXML
 	private Hyperlink register;
 	
-	public void setCurrentStage(Stage stage) {
-		this.currentStage = stage;
-	}
-	
 	@FXML
-	public void onLogin() {
+	public void onLogin(ActionEvent event) {
 		try {
 			validateLoginFields();
 			
 			Nutritionist user = service.login(username.getText(), password.getText());
 			
 			if(user != null){
-				loadMainView(user);
+				loadMainView(user, event);
 			}
 		}
 		catch(FieldValidationException e) {
@@ -101,17 +95,16 @@ public class AuthenticationController implements Initializable{
 		}
 	}
 	
-	private void loadMainView(Nutritionist nutritionist) {
+	private void loadMainView(Nutritionist nutritionist, ActionEvent event) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/Main_view.fxml"));
 			AnchorPane achorPane = loader.load();
 			
 			MainController mainController = loader.getController();
 			mainController.setNutritionist(nutritionist);
-			mainController.setNutritionistService(new NutritionistService());
-		
+			
+			Stage currentStage = Utils.getCurrentStage(event);
 			currentStage.setScene(new Scene(achorPane));
-			mainController.setCurrentStage(currentStage);
 			
 			currentStage.setTitle("Painel Principal");
 			currentStage.setResizable(false);
