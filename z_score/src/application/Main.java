@@ -2,7 +2,6 @@ package application;
 
 import java.io.IOException;
 
-import gui.controller.AuthenticationController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,9 +14,6 @@ public class Main extends Application{
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("../gui/Authentication_view.fxml"));
 			Scene scene = new Scene(loader.load());
-			
-			AuthenticationController authenticationController = loader.getController();
-			authenticationController.setCurrentStage(stage);
 			
 			stage.setTitle("NutriData");
 			stage.setScene(scene);
