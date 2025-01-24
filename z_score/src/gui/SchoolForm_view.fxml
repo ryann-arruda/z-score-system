@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="153.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.SchoolFormController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="153.0" prefWidth="589.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.SchoolFormController">
    <children>
       <Label layoutX="21.0" layoutY="19.0" text="Nome da Escola:" AnchorPane.leftAnchor="21.0">
          <font>
@@ -26,10 +25,20 @@
          </font>
       </TextField>
       <TextField fx:id="nationalRegistryLegalEntities" layoutX="134.0" layoutY="59.0" prefHeight="25.0" prefWidth="185.0" AnchorPane.leftAnchor="134.0" AnchorPane.topAnchor="59.0" />
-      <HBox alignment="TOP_CENTER" layoutY="105.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="450.0" spacing="20.0">
+      <Label fx:id="nameError" layoutX="432.0" layoutY="18.0" textFill="RED" AnchorPane.leftAnchor="430.0">
+         <font>
+            <Font name="Trebuchet MS Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="nationalRegistryLegalEntitiesError" layoutX="327.0" layoutY="63.0" textFill="RED" AnchorPane.leftAnchor="324.0">
+         <font>
+            <Font name="Trebuchet MS Bold" size="13.0" />
+         </font>
+      </Label>
+      <HBox alignment="TOP_CENTER" layoutY="105.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="589.0" spacing="20.0">
          <children>
-            <Button fx:id="save" mnemonicParsing="false" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: green;" text="Salvar" textFill="WHITE" />
-            <Button fx:id="cancel" mnemonicParsing="false" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: #fa4a4a;" text="Cancelar" textFill="WHITE" />
+            <Button fx:id="save" mnemonicParsing="false" onAction="#onSave" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: green;" text="Salvar" textFill="WHITE" />
+            <Button fx:id="cancel" mnemonicParsing="false" onAction="#onCancel" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: #fa4a4a;" text="Cancelar" textFill="WHITE" />
          </children>
       </HBox>
    </children>
