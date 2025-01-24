@@ -97,8 +97,12 @@ public class MainController implements Initializable{
 			
 			AnchorPane anchorPane = loader.load();
 			
+			if(nutritionist == null) {
+				throw new IllegalStateException("Nutritionist was null");
+			}
+			
 			SchoolFormController schoolFormController = loader.getController();
-			schoolFormController.setNutritionist(new Nutritionist());
+			schoolFormController.setNutritionist(nutritionist);
 			schoolFormController.setNutritionistService(new NutritionistService());
 			
 			Stage dialogStage = new Stage();
@@ -110,7 +114,7 @@ public class MainController implements Initializable{
 			dialogStage.show();
 		}
 		catch(IOException e) {
-			e.printStackTrace();
+			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela de cadastro. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
 	
