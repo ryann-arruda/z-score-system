@@ -12,6 +12,10 @@ public class NutritionistService {
 		return nutritionistDaoImpl.insert(nutritionist);
 	}
 	
+	public boolean update(Nutritionist nutritionist) {
+		return nutritionistDaoImpl.update(nutritionist);
+	}
+	
 	public Nutritionist login(String username, String password) {
 		return nutritionistDaoImpl.findByAuthenticationInformation(username, password);
 	}
