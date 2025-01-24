@@ -91,7 +91,7 @@ public class AuthenticationController implements Initializable{
 			dialogStage.show();
 		}
 		catch(IOException e) {
-			e.printStackTrace();
+			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela de cadastro. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
 	
