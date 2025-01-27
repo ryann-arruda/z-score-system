@@ -53,6 +53,10 @@ public class SchoolFormController {
 		this.service = service;
 	}
 	
+	public void subscribeDataChangeListener(DataChangeListener listener) {
+		dataChangeListeners.add(listener);
+	}
+	
 	private void validateFields() {
 		FieldValidationException exception = new FieldValidationException("Erros when filling in fields");
 		
@@ -84,6 +88,7 @@ public class SchoolFormController {
 			
 			School school = new School(name.getText(), nationalRegistryLegalEntities.getText());
 			nutritionist.addSchool(school);
+			notifyDataChangeListeners();
 			
 			if(service.update(nutritionist)) {
 				Alerts.showAlert("Sucesso", null, "Cadastro de escola realizado com sucesso!", AlertType.CONFIRMATION);
@@ -92,6 +97,12 @@ public class SchoolFormController {
 		}
 		catch(FieldValidationException e) {
 			setErrorMessages(e.getErrors());
+		}
+	}
+	
+	private void notifyDataChangeListeners() {
+		for(DataChangeListener listener: dataChangeListeners) {
+			listener.onDataChanged();
 		}
 	}
 	
