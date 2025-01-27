@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 import entities.Nutritionist;
 import entities.School;
 import entities.service.NutritionistService;
+import gui.listeners.DataChangeListener;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,20 +16,23 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import util.Alerts;
 import util.Utils;
 
-public class MainController implements Initializable{
+public class MainController implements Initializable, DataChangeListener{	
 	private Nutritionist nutritionist;
 	
 	@FXML
@@ -104,6 +109,7 @@ public class MainController implements Initializable{
 			SchoolFormController schoolFormController = loader.getController();
 			schoolFormController.setNutritionist(nutritionist);
 			schoolFormController.setNutritionistService(new NutritionistService());
+			schoolFormController.subscribeDataChangeListener(this);
 			
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Cadastro de Escola");
@@ -125,6 +131,9 @@ public class MainController implements Initializable{
 		
 		ObservableList<School> obsList = FXCollections.observableArrayList(nutritionist.getAllSchools());
 		tableViewSchool.setItems(obsList);
+		initSeeButtons();
+		initEditButtons();
+		initRemoveButtons();
 	}
 
 	@Override
@@ -133,5 +142,76 @@ public class MainController implements Initializable{
 		tableColumnSchoolIdentifier.setCellValueFactory(new PropertyValueFactory<>("nationalRegistryLegalEntities"));
 		tableColumnNumberStudents.setCellValueFactory(cellData -> 
 		new SimpleIntegerProperty(cellData.getValue().getNumberStudents()).asObject());
+	}
+
+	@Override
+	public void onDataChanged() {
+		updateTableViewSchool();
+	}
+	
+	private void initSeeButtons() {
+		tableColumnSEE.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
+		tableColumnSEE.setCellFactory(cell -> new TableCell<School, School>(){
+			private final Button button = new Button("Ver");
+			private final StackPane stackPane = new StackPane(button);
+			
+			@Override
+			protected void updateItem(School school, boolean empty) {
+				super.updateItem(school, empty);
+				
+				if(school == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				button.setPrefWidth(65.0);
+				button.setOnAction(null); // Implementing opening a new view
+				setGraphic(stackPane);
+			}
+		});
+	}
+	
+	private void initEditButtons() {
+		tableColumnEDIT.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
+		tableColumnEDIT.setCellFactory(cell -> new TableCell<School, School>() {
+			private final Button button = new Button("Editar");
+			private final StackPane stackPane = new StackPane(button);
+			
+			@Override
+			protected void updateItem(School school, boolean empty) {
+				super.updateItem(school, empty);
+				
+				if(school == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				button.setPrefWidth(65.0);
+				button.setOnAction(null); // Implementing opening a new view
+				setGraphic(stackPane);
+			}
+		});
+	}
+	
+	private void initRemoveButtons() {
+		tableColumnREMOVE.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
+		tableColumnREMOVE.setCellFactory(cell -> new TableCell<School, School>() {
+			private final Button button = new Button("Excluir");
+			private final StackPane stackPane = new StackPane(button);
+			
+			@Override
+			protected void updateItem(School school, boolean empty) {
+				super.updateItem(school, empty);
+				
+				if(school == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				button.setPrefWidth(65.0);
+				button.setOnAction(null); // Implementing opening a new view
+				setGraphic(stackPane);
+			}
+		});
 	}
 }
