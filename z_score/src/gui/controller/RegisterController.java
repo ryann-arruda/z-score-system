@@ -209,6 +209,6 @@ public class RegisterController implements Initializable{
 	public void initialize(URL url, ResourceBundle rb) {
 		dateBirth.getEditor().setDisable(true);
 		Constraints.setTextFieldMaxLength(username, 30);
-		Constraints.setPasswordFielddMaxLength(password, 30);
+		Constraints.setPasswordFieldMaxLength(password, 30);
 	}
 }
