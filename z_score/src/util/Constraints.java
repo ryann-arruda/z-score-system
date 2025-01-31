@@ -17,7 +17,7 @@ public class Constraints {
 		});
 	}
 	
-	public static void setPasswordFielddMaxLength(PasswordField pf, int max) {
+	public static void setPasswordFieldMaxLength(PasswordField pf, int max) {
 		pf.textProperty().addListener((observable, oldValue, newValue) -> {
 			if(newValue.length() > max) {
 				pf.setText(oldValue);
