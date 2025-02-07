@@ -30,41 +30,46 @@
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="logout" layoutX="777.0" layoutY="6.0" mnemonicParsing="false" onAction="#onLogout" style="-fx-background-color: #fa4a4a;" text="Log out" textFill="WHITE" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <Separator layoutY="50.0" prefWidth="835.0" AnchorPane.topAnchor="50.0" />
       <Label layoutX="14.0" layoutY="67.0" text="Escola:" textFill="#5b59ff" underline="true">
          <font>
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="66.0" layoutY="67.0" text="Label" textFill="#5b59ff" AnchorPane.leftAnchor="65.0">
+      <Label fx:id="schoolName" layoutX="66.0" layoutY="67.0" textFill="#5b59ff" AnchorPane.leftAnchor="65.0">
          <font>
             <Font name="Trebuchet MS" size="13.0" />
          </font>
       </Label>
-      <TableView fx:id="tableViewSchool" layoutY="100.0" prefHeight="327.0" prefWidth="835.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-        <columns>
-          <TableColumn fx:id="tableColumnName" prefWidth="250.0" text="Nome do Aluno(a)" />
-          <TableColumn fx:id="tableColumnSchoolIdentifier" minWidth="0.0" prefWidth="200.0" text="Data de Nascimento" />
-            <TableColumn fx:id="tableColumnSEE" prefWidth="128.0" />
-            <TableColumn fx:id="tableColumnEDIT" prefWidth="128.0" />
-            <TableColumn fx:id="tableColumnREMOVE" prefWidth="129.0" />
-        </columns>
-      </TableView>
-      <Button fx:id="addNewSchool" layoutX="342.0" layoutY="451.0" mnemonicParsing="false" onAction="#onAddNewSchool" style="-fx-background-color: green;" text="Adicionar Novo Aluno(a)" textFill="WHITE">
-         <font>
-            <Font name="Trebuchet MS Bold" size="12.0" />
-         </font>
-      </Button>
       <Label layoutX="473.0" layoutY="67.0" text="CNPJ:" textFill="#5b59ff" underline="true">
          <font>
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="518.0" layoutY="67.0" text="Label" textFill="#5b59ff" AnchorPane.leftAnchor="518.0">
+      <Label fx:id="schoolIdentifier" layoutX="518.0" layoutY="67.0" textFill="#5b59ff" AnchorPane.leftAnchor="518.0">
          <font>
             <Font name="Trebuchet MS" size="13.0" />
          </font>
       </Label>
-      <Separator layoutY="50.0" prefWidth="835.0" AnchorPane.topAnchor="50.0" />
+      <Button fx:id="logout" layoutX="777.0" layoutY="6.0" mnemonicParsing="false" onAction="#onLogout" style="-fx-background-color: #fa4a4a;" text="Log out" textFill="WHITE" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <TableView fx:id="tableViewChild" layoutY="100.0" prefHeight="327.0" prefWidth="835.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <columns>
+          <TableColumn fx:id="tableColumnName" prefWidth="250.0" text="Nome do Aluno(a)" />
+          <TableColumn fx:id="tableColumnBirthDate" minWidth="0.0" prefWidth="200.0" text="Data de Nascimento" />
+            <TableColumn fx:id="tableColumnSEE" prefWidth="128.0" />
+            <TableColumn fx:id="tableColumnEDIT" prefWidth="128.0" />
+            <TableColumn fx:id="tableColumnREMOVE" prefWidth="129.0" />
+        </columns>
+      </TableView>
+      <Button fx:id="addNewChild" layoutX="342.0" layoutY="451.0" mnemonicParsing="false" onAction="#onAddNewChild" style="-fx-background-color: green;" text="Adicionar Novo Aluno(a)" textFill="WHITE">
+         <font>
+            <Font name="Trebuchet MS Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="goBack" layoutX="14.0" layoutY="450.0" mnemonicParsing="false" text="Voltar">
+         <font>
+            <Font name="Trebuchet MS Bold" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
