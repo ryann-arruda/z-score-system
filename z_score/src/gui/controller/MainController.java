@@ -148,6 +148,25 @@ public class MainController implements Initializable, DataChangeListener{
 		updateTableViewSchool();
 	}
 	
+	private void loadSchoolView(ActionEvent event) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/School_view.fxml"));
+			AnchorPane achorPane = loader.load();
+			
+			SchoolController schoolController = loader.getController();
+			schoolController.setNutritionist(nutritionist);
+			//schoolController.updateTableViewSchool();
+			
+			Stage currentStage = Utils.getCurrentStage(event);
+			currentStage.setScene(new Scene(achorPane));
+			
+			currentStage.setTitle("Visualização da Escola");
+			currentStage.setResizable(false);
+		} catch (IOException e) {
+			Alerts.showAlert("Erro", null, "Não foi possível carregar a visualização da escola. Tente novamente mais tarde.", AlertType.ERROR);
+		}
+	}
+	
 	private void initSeeButtons() {
 		tableColumnSEE.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
 		tableColumnSEE.setCellFactory(cell -> new TableCell<School, School>(){
@@ -164,7 +183,7 @@ public class MainController implements Initializable, DataChangeListener{
 				}
 				
 				button.setPrefWidth(65.0);
-				button.setOnAction(null); // Implementing opening a new view
+				button.setOnAction(event -> loadSchoolView(event)); // Implementing opening a new view
 				setGraphic(stackPane);
 			}
 		});
