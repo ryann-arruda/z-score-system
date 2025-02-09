@@ -2,13 +2,15 @@ package gui.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
 import java.util.ResourceBundle;
 
-import entities.Child;
+import entities.LevelEducation;
 import entities.Nutritionist;
 import entities.School;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,22 +47,22 @@ public class SchoolController implements Initializable{
 	private Label schoolIdentifier;
 	
 	@FXML
-	private TableView<Child> tableViewChild;
+	private TableView<LevelEducation> tableViewLevelEducation;
 	
 	@FXML
-	private TableColumn<Child, String> tableColumnName;
+	private TableColumn<LevelEducation, String> tableColumnName;
 	
 	@FXML
-	private TableColumn<Child, Date> tableColumnBirthDate;
+	private TableColumn<LevelEducation, Integer> tableColumnNumberStudents;
 	
 	@FXML
-	private TableColumn<Child, Child> tableColumnSEE;
+	private TableColumn<LevelEducation, LevelEducation> tableColumnSEE;
 	
 	@FXML
-	private TableColumn<Child, Child> tableColumnEDIT;
+	private TableColumn<LevelEducation, LevelEducation> tableColumnEDIT;
 	
 	@FXML
-	private TableColumn<Child, Child> tableColumnREMOVE;
+	private TableColumn<LevelEducation, LevelEducation> tableColumnREMOVE;
 	
 	@FXML
 	private Button logout;
@@ -69,7 +71,7 @@ public class SchoolController implements Initializable{
 	private Button goBack;
 	
 	@FXML
-	private Button addNewChild;
+	private Button addNewEducationLevel;
 	
 	public void setNutritionist(Nutritionist nutritionist) {
 		this.nutritionist = nutritionist;
@@ -101,27 +103,57 @@ public class SchoolController implements Initializable{
 	}
 	
 	@FXML
-	public void onAddNewChild(ActionEvent event) {
+	public void onGoBack(ActionEvent event) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/Main_view.fxml"));
+			AnchorPane achorPane = loader.load();
+			
+			MainController mainController = loader.getController();
+			mainController.setNutritionist(nutritionist);
+			mainController.updateTableViewSchool();
+			
+			Stage currentStage = Utils.getCurrentStage(event);
+			currentStage.setScene(new Scene(achorPane));
+			
+			currentStage.setTitle("Painel Principal");
+			currentStage.setResizable(false);
+		} catch (IOException e) {
+			Alerts.showAlert("Erro", null, "Não foi possível carregar o painel principal. Tente novamente mais tarde.", AlertType.ERROR);
+		}	
+	}
+	
+	@FXML
+	public void onAddNewEducationLevel(ActionEvent event) {
 		
+	}
+	
+	public void updateTableViewLevelEducation() {
+		if(school == null) {
+			throw new IllegalStateException("Nutritionist was null");
+		}
+		
+		ObservableList<LevelEducation> obsList = FXCollections.observableArrayList(school.getAllEducationLevels());
+		tableViewLevelEducation.setItems(obsList);
 	}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
-		tableColumnBirthDate.setCellValueFactory(new PropertyValueFactory<>("date_birth"));
+		tableColumnNumberStudents.setCellValueFactory(cellData -> 
+		new SimpleIntegerProperty(cellData.getValue().getNumberStudents()).asObject());
 	}
 	
 	private void initSeeButtons() {
 		tableColumnSEE.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
-		tableColumnSEE.setCellFactory(cell -> new TableCell<Child, Child>(){
+		tableColumnSEE.setCellFactory(cell -> new TableCell<LevelEducation, LevelEducation>(){
 			private final Button button = new Button("Ver");
 			private final StackPane stackPane = new StackPane(button);
 			
 			@Override
-			protected void updateItem(Child child, boolean empty) {
-				super.updateItem(child, empty);
+			protected void updateItem(LevelEducation levelEducation, boolean empty) {
+				super.updateItem(levelEducation, empty);
 				
-				if(child == null) {
+				if(levelEducation == null) {
 					setGraphic(null);
 					return;
 				}
@@ -135,15 +167,15 @@ public class SchoolController implements Initializable{
 	
 	private void initEditButtons() {
 		tableColumnEDIT.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
-		tableColumnEDIT.setCellFactory(cell -> new TableCell<Child, Child>() {
+		tableColumnEDIT.setCellFactory(cell -> new TableCell<LevelEducation, LevelEducation>() {
 			private final Button button = new Button("Editar");
 			private final StackPane stackPane = new StackPane(button);
 			
 			@Override
-			protected void updateItem(Child child, boolean empty) {
-				super.updateItem(child, empty);
+			protected void updateItem(LevelEducation levelEducation, boolean empty) {
+				super.updateItem(levelEducation, empty);
 				
-				if(child == null) {
+				if(levelEducation == null) {
 					setGraphic(null);
 					return;
 				}
@@ -157,15 +189,15 @@ public class SchoolController implements Initializable{
 	
 	private void initRemoveButtons() {
 		tableColumnREMOVE.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
-		tableColumnREMOVE.setCellFactory(cell -> new TableCell<Child, Child>() {
+		tableColumnREMOVE.setCellFactory(cell -> new TableCell<LevelEducation, LevelEducation>() {
 			private final Button button = new Button("Excluir");
 			private final StackPane stackPane = new StackPane(button);
 			
 			@Override
-			protected void updateItem(Child child, boolean empty) {
-				super.updateItem(child, empty);
+			protected void updateItem(LevelEducation levelEducation, boolean empty) {
+				super.updateItem(levelEducation, empty);
 				
-				if(child == null) {
+				if(levelEducation == null) {
 					setGraphic(null);
 					return;
 				}
