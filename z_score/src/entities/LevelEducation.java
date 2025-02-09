@@ -57,6 +57,10 @@ public class LevelEducation {
 	public int hashCode() {
 		return Objects.hash(children, name);
 	}
+	
+	public int getNumberStudents() {
+		return children.size();
+	}
 
 	@Override
 	public boolean equals(Object obj) {
