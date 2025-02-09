@@ -148,14 +148,15 @@ public class MainController implements Initializable, DataChangeListener{
 		updateTableViewSchool();
 	}
 	
-	private void loadSchoolView(ActionEvent event) {
+	private void loadSchoolView(ActionEvent event, School school) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/School_view.fxml"));
 			AnchorPane achorPane = loader.load();
 			
 			SchoolController schoolController = loader.getController();
 			schoolController.setNutritionist(nutritionist);
-			//schoolController.updateTableViewSchool();
+			schoolController.setSchool(school);
+			schoolController.updateTableViewLevelEducation();
 			
 			Stage currentStage = Utils.getCurrentStage(event);
 			currentStage.setScene(new Scene(achorPane));
@@ -183,7 +184,7 @@ public class MainController implements Initializable, DataChangeListener{
 				}
 				
 				button.setPrefWidth(65.0);
-				button.setOnAction(event -> loadSchoolView(event)); // Implementing opening a new view
+				button.setOnAction(event -> loadSchoolView(event, school));
 				setGraphic(stackPane);
 			}
 		});
