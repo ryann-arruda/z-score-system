@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="101.0" prefWidth="669.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.LevelEducationFormController">
+   <children>
+      <Label layoutX="21.0" layoutY="19.0" text="Nome do Nível Educacional:" AnchorPane.leftAnchor="21.0">
+         <font>
+            <Font name="Trebuchet MS Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="name" layoutX="134.0" layoutY="14.0" prefHeight="25.0" prefWidth="290.0" AnchorPane.leftAnchor="210.0">
+         <font>
+            <Font name="Trebuchet MS" size="12.0" />
+         </font>
+      </TextField>
+      <Label fx:id="nameError" layoutX="432.0" layoutY="18.0" textFill="RED" AnchorPane.leftAnchor="510.0">
+         <font>
+            <Font name="Trebuchet MS Bold" size="13.0" />
+         </font>
+      </Label>
+      <HBox alignment="TOP_CENTER" layoutY="60.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="669.0" spacing="20.0">
+         <children>
+            <Button fx:id="save" mnemonicParsing="false" onAction="#onSave" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: green;" text="Salvar" textFill="WHITE" />
+            <Button fx:id="cancel" mnemonicParsing="false" onAction="#onCancel" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: #fa4a4a;" text="Cancelar" textFill="WHITE" />
+         </children>
+      </HBox>
+      <Label fx:id="levelEducationNameError" layoutX="510.0" layoutY="18.0" textFill="RED">
+         <font>
+            <Font name="Trebuchet MS Bold" size="13.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
