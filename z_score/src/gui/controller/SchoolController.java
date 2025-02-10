@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import entities.LevelEducation;
 import entities.Nutritionist;
 import entities.School;
+import entities.service.NutritionistService;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -25,6 +26,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import util.Alerts;
 import util.Utils;
@@ -120,6 +122,37 @@ public class SchoolController implements Initializable{
 		} catch (IOException e) {
 			Alerts.showAlert("Erro", null, "Não foi possível carregar o painel principal. Tente novamente mais tarde.", AlertType.ERROR);
 		}	
+	}
+	
+	private void createDialogForm(String absoluteName, Stage parentStage) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+			
+			AnchorPane anchorPane = loader.load();
+			
+			if(nutritionist == null) {
+				throw new IllegalStateException("Nutritionist was null");
+			}
+			
+			if(school == null) {
+				throw new IllegalStateException("School was null");
+			}
+			
+			LevelEducationFormController levelEducationFormController = loader.getController();
+			levelEducationFormController.setNutritionist(nutritionist);
+			levelEducationFormController.setNutritionistService(new NutritionistService());
+			
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Cadastro de Nível Educacional");
+			dialogStage.setScene(new Scene(anchorPane));
+			dialogStage.setResizable(false);
+			dialogStage.initOwner(parentStage);
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.show();
+		}
+		catch(IOException e) {
+			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela de cadastro. Tente novamente mais tarde.", AlertType.ERROR);
+		}
 	}
 	
 	@FXML
