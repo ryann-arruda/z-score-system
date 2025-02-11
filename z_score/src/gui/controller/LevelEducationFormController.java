@@ -1,15 +1,24 @@
 package gui.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import entities.LevelEducation;
 import entities.Nutritionist;
 import entities.School;
 import entities.service.NutritionistService;
 import exceptions.FieldValidationException;
+import gui.listeners.DataChangeListener;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import util.Alerts;
+import util.Utils;
 
 public class LevelEducationFormController {
 	private Nutritionist nutritionist;
@@ -18,11 +27,13 @@ public class LevelEducationFormController {
 	
 	private NutritionistService service;
 	
+	private List<DataChangeListener> listeners = new ArrayList<>();
+	
 	@FXML
 	private TextField levelEducationName;
 	
 	@FXML
-	private TextField levelEducationNameError;
+	private Label levelEducationNameError;
 	
 	@FXML
 	private Button save;
@@ -42,6 +53,10 @@ public class LevelEducationFormController {
 		this.school = school;
 	}
 	
+	public void subscribeDataChangeListener(DataChangeListener listener) {
+		listeners.add(listener);
+	}
+	
 	private void validateFields() {
 		FieldValidationException exception = new FieldValidationException("Erros when filling in fields");
 		
@@ -52,6 +67,45 @@ public class LevelEducationFormController {
 		if(exception.getErrors().size() > 0) {
 			throw exception;
 		}
+	}
+	
+	@FXML
+	public void onSave(ActionEvent event) {
+		if(nutritionist == null) {
+			throw new IllegalStateException("Nutritionist was null");
+		}
+		
+		if(school == null) {
+			throw new IllegalStateException("School was null");
+		}
+		
+		try {
+			validateFields();
+			
+			LevelEducation levelEducation = new LevelEducation(levelEducationName.getText());
+			school.addEducationLevel(levelEducation);
+			nutritionist.updateSchool(school);
+			notifyDataChangeListeners();
+			
+			if(service.update(nutritionist)) {
+				Alerts.showAlert("Sucesso", null, "Cadastro de nível educacional realizado com sucesso!", AlertType.CONFIRMATION);
+				Utils.getCurrentStage(event).close();
+			}
+		}
+		catch(FieldValidationException e) {
+			setErrorMessages(e.getErrors());
+		}
+	}
+	
+	private void notifyDataChangeListeners() {
+		for(DataChangeListener listener : listeners) {
+			listener.onDataChanged();
+		}
+	}
+	
+	@FXML
+	public void onCancel(ActionEvent event) {
+		Utils.getCurrentStage(event).close();
 	}
 	
 	private void setErrorMessages(Map<String, String> errors) {
