@@ -14,12 +14,12 @@
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="name" layoutX="134.0" layoutY="14.0" prefHeight="25.0" prefWidth="290.0" AnchorPane.leftAnchor="210.0">
+      <TextField fx:id="levelEducationName" layoutX="134.0" layoutY="14.0" prefHeight="25.0" prefWidth="290.0" AnchorPane.leftAnchor="210.0">
          <font>
             <Font name="Trebuchet MS" size="12.0" />
          </font>
       </TextField>
-      <Label fx:id="nameError" layoutX="432.0" layoutY="18.0" textFill="RED" AnchorPane.leftAnchor="510.0">
+      <Label fx:id="levelEducationNameError" layoutX="432.0" layoutY="18.0" textFill="RED" AnchorPane.leftAnchor="510.0">
          <font>
             <Font name="Trebuchet MS Bold" size="13.0" />
          </font>
@@ -30,10 +30,5 @@
             <Button fx:id="cancel" mnemonicParsing="false" onAction="#onCancel" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: #fa4a4a;" text="Cancelar" textFill="WHITE" />
          </children>
       </HBox>
-      <Label fx:id="levelEducationNameError" layoutX="510.0" layoutY="18.0" textFill="RED">
-         <font>
-            <Font name="Trebuchet MS Bold" size="13.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>
