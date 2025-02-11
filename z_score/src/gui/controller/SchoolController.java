@@ -8,6 +8,7 @@ import entities.LevelEducation;
 import entities.Nutritionist;
 import entities.School;
 import entities.service.NutritionistService;
+import gui.listeners.DataChangeListener;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -31,7 +32,7 @@ import javafx.stage.Stage;
 import util.Alerts;
 import util.Utils;
 
-public class SchoolController implements Initializable{
+public class SchoolController implements Initializable, DataChangeListener{
 	private Nutritionist nutritionist;
 	
 	private School school;
@@ -125,6 +126,7 @@ public class SchoolController implements Initializable{
 	}
 	
 	private void createDialogForm(String absoluteName, Stage parentStage) {
+		System.out.println("ok");
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			
@@ -141,6 +143,8 @@ public class SchoolController implements Initializable{
 			LevelEducationFormController levelEducationFormController = loader.getController();
 			levelEducationFormController.setNutritionist(nutritionist);
 			levelEducationFormController.setNutritionistService(new NutritionistService());
+			levelEducationFormController.setSchool(school);
+			levelEducationFormController.subscribeDataChangeListener(this);
 			
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Cadastro de Nível Educacional");
@@ -157,7 +161,7 @@ public class SchoolController implements Initializable{
 	
 	@FXML
 	public void onAddNewEducationLevel(ActionEvent event) {
-		
+		createDialogForm("../../gui/LevelEducationForm_view.fxml", Utils.getCurrentStage(event));
 	}
 	
 	public void updateTableViewLevelEducation() {
@@ -167,6 +171,9 @@ public class SchoolController implements Initializable{
 		
 		ObservableList<LevelEducation> obsList = FXCollections.observableArrayList(school.getAllEducationLevels());
 		tableViewLevelEducation.setItems(obsList);
+		initSeeButtons();
+		initEditButtons();
+		initRemoveButtons();
 	}
 	
 	@Override
@@ -174,6 +181,11 @@ public class SchoolController implements Initializable{
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
 		tableColumnNumberStudents.setCellValueFactory(cellData -> 
 		new SimpleIntegerProperty(cellData.getValue().getNumberStudents()).asObject());
+	}
+	
+	@Override
+	public void onDataChanged() {
+		updateTableViewLevelEducation();
 	}
 	
 	private void initSeeButtons() {
