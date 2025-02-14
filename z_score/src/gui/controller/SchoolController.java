@@ -126,7 +126,6 @@ public class SchoolController implements Initializable, DataChangeListener{
 	}
 	
 	private void createDialogForm(String absoluteName, Stage parentStage) {
-		System.out.println("ok");
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			
@@ -188,6 +187,24 @@ public class SchoolController implements Initializable, DataChangeListener{
 		updateTableViewLevelEducation();
 	}
 	
+	private void loadChildrenView(ActionEvent event, LevelEducation levelEducation) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/Children_view.fxml"));
+			System.out.println("ok");
+			AnchorPane achorPane = loader.load();
+			
+			ChildrenController childrenController = loader.getController();
+			
+			Stage currentStage = Utils.getCurrentStage(event);
+			currentStage.setScene(new Scene(achorPane));
+			
+			currentStage.setTitle("Visualização do Nível Educacional");
+			currentStage.setResizable(false);
+		} catch (IOException e) {
+			Alerts.showAlert("Erro", null, "Não foi possível carregar a visualização do nível educacional. Tente novamente mais tarde.", AlertType.ERROR);
+		}
+	}
+	
 	private void initSeeButtons() {
 		tableColumnSEE.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
 		tableColumnSEE.setCellFactory(cell -> new TableCell<LevelEducation, LevelEducation>(){
@@ -204,7 +221,7 @@ public class SchoolController implements Initializable, DataChangeListener{
 				}
 				
 				button.setPrefWidth(65.0);
-				button.setOnAction(null); // Implementing opening a new view
+				button.setOnAction(event -> loadChildrenView(event, levelEducation));
 				setGraphic(stackPane);
 			}
 		});
