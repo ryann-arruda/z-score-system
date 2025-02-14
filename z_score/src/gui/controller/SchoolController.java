@@ -189,11 +189,14 @@ public class SchoolController implements Initializable, DataChangeListener{
 	
 	private void loadChildrenView(ActionEvent event, LevelEducation levelEducation) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/Children_view.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/LevelEducation_view.fxml"));
 			System.out.println("ok");
 			AnchorPane achorPane = loader.load();
 			
-			ChildrenController childrenController = loader.getController();
+			LevelEducationController levelEducationController = loader.getController();
+			levelEducationController.setNutritionist(nutritionist);
+			levelEducationController.setSchool(school);
+			levelEducationController.setLevelEducation(levelEducation);
 			
 			Stage currentStage = Utils.getCurrentStage(event);
 			currentStage.setScene(new Scene(achorPane));
