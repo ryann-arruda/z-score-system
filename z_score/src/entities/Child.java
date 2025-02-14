@@ -66,4 +66,14 @@ public class Child extends Person{
 	public List<MeasurementZscore> getAllZscores(){
 		return new ArrayList<>(zScores);
 	}
+	
+	public double getLatestZscoreMeasurement() {
+		int index = zScores.size() - 1;
+		
+		if(index < 0) {
+			return 0.0;
+		}
+		
+		return zScores.get(index).getzScore();
+	}
 }
