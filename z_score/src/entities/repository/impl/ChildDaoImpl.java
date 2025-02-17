@@ -29,7 +29,7 @@ public class ChildDaoImpl implements ChildDao{
 		
 		child.setId(rs.getLong("child_id"));
 		child.setName(rs.getString("child_name"));
-		child.setDate_birth(new Date(rs.getDate("date_birth").getTime()));
+		child.setDateBirth(new Date(rs.getDate("date_birth").getTime()));
 		
 		List<MeasurementZscore> zScores = getMeasurementRelationships(child.getId());
 		
@@ -127,7 +127,7 @@ public class ChildDaoImpl implements ChildDao{
 											   "WHERE child_id = ?");
 					
 					obj.setName(obj.getName());
-					obj.setDate_birth(obj.getDate_birth());
+					obj.setDateBirth(obj.getDate_birth());
 					
 					ps.setString(1, obj.getName());
 					ps.setDate(2, new java.sql.Date(obj.getDate_birth().getTime()));
