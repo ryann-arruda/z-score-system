@@ -83,7 +83,7 @@
             <TableColumn fx:id="tableColumnREMOVE" prefWidth="145.0" />
         </columns>
       </TableView>
-      <Button fx:id="addNewChild" layoutX="427.0" layoutY="491.0" mnemonicParsing="false" style="-fx-background-color: green;" text="Adicionar Novo Aluno(a)" textFill="WHITE">
+      <Button fx:id="addNewChild" layoutX="427.0" layoutY="491.0" mnemonicParsing="false" onAction="#onAddNewChild" style="-fx-background-color: green;" text="Adicionar Novo Aluno(a)" textFill="WHITE">
          <font>
             <Font name="Trebuchet MS Bold" size="12.0" />
          </font>
