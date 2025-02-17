@@ -9,6 +9,7 @@ import entities.Child;
 import entities.LevelEducation;
 import entities.Nutritionist;
 import entities.School;
+import entities.service.NutritionistService;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
@@ -25,6 +26,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import util.Alerts;
 import util.Utils;
@@ -144,14 +146,98 @@ public class LevelEducationController implements Initializable{
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
-		tableColumnBirthDate.setCellValueFactory(new PropertyValueFactory<>("date_birth"));
+		tableColumnBirthDate.setCellValueFactory(new PropertyValueFactory<>("dateBirth"));
 		tableColumnLastZscoreMeasurement.setCellValueFactory(param -> new SimpleDoubleProperty(param.getValue().getLatestZscoreMeasurement()).asObject());
+	}
+	
+	private void createDialogForm(String absoluteName, Stage parentStage) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+			
+			AnchorPane anchorPane = loader.load();
+			
+			if(nutritionist == null) {
+				throw new IllegalStateException("Nutritionist was null");
+			}
+			
+			if(school == null) {
+				throw new IllegalStateException("School was null");
+			}
+			
+			if(levelEducation == null) {
+				throw new IllegalStateException("LevelEducation was null");
+			}
+			
+			ChildFormController childFormController = loader.getController();
+			childFormController.setNutritionist(nutritionist);
+			childFormController.setNutritionistService(new NutritionistService());
+			
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Cadastro de Aluno(a)");
+			dialogStage.setScene(new Scene(anchorPane));
+			dialogStage.setResizable(false);
+			dialogStage.initOwner(parentStage);
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.show();
+		}
+		catch(IOException e) {
+			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela de cadastro. Tente novamente mais tarde.", AlertType.ERROR);
+		}
+	}
+	
+	@FXML
+	public void onAddNewChild(ActionEvent event) {
+		createDialogForm("../../gui/ChildForm_view.fxml", Utils.getCurrentStage(event));
 	}
 	
 	private void initSeeButtons() {
 		tableColumnSEE.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
 		tableColumnSEE.setCellFactory(cell -> new TableCell<Child, Child>(){
 			private final Button button = new Button("Ver");
+			private final StackPane stackPane = new StackPane(button);
+			
+			@Override
+			protected void updateItem(Child child, boolean empty) {
+				super.updateItem(child, empty);
+				
+				if(child == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				button.prefWidth(65.0);
+				button.setOnAction(null);
+				setGraphic(stackPane);
+			}
+		});
+	}
+	
+	private void initEditButtons() {
+		tableColumnEDIT.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
+		tableColumnEDIT.setCellFactory(cell -> new TableCell<Child, Child>(){
+			private final Button button = new Button("Editar");
+			private final StackPane stackPane = new StackPane(button);
+			
+			@Override
+			protected void updateItem(Child child, boolean empty) {
+				super.updateItem(child, empty);
+				
+				if(child == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				button.prefWidth(65.0);
+				button.setOnAction(null);
+				setGraphic(stackPane);
+			}
+		});
+	}
+	
+	private void initRemoveButtons() {
+		tableColumnREMOVE.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
+		tableColumnREMOVE.setCellFactory(cell -> new TableCell<Child, Child>(){
+			private final Button button = new Button("Excluir");
 			private final StackPane stackPane = new StackPane(button);
 			
 			@Override
