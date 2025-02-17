@@ -187,10 +187,9 @@ public class SchoolController implements Initializable, DataChangeListener{
 		updateTableViewLevelEducation();
 	}
 	
-	private void loadChildrenView(ActionEvent event, LevelEducation levelEducation) {
+	private void loadLevelEducationView(ActionEvent event, LevelEducation levelEducation) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/LevelEducation_view.fxml"));
-			System.out.println("ok");
 			AnchorPane achorPane = loader.load();
 			
 			LevelEducationController levelEducationController = loader.getController();
@@ -224,7 +223,7 @@ public class SchoolController implements Initializable, DataChangeListener{
 				}
 				
 				button.setPrefWidth(65.0);
-				button.setOnAction(event -> loadChildrenView(event, levelEducation));
+				button.setOnAction(event -> loadLevelEducationView(event, levelEducation));
 				setGraphic(stackPane);
 			}
 		});
