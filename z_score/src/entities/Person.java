@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public abstract class Person {
 	private String name;
-	private Date date_birth;
+	private Date dateBirth;
 	
 	public Person() {
 		
@@ -14,7 +14,7 @@ public abstract class Person {
 	public Person(String name, Date date_birth) {
 		if(name != null && date_birth != null) {
 			this.name = name;
-			this.date_birth = date_birth;
+			this.dateBirth = date_birth;
 		}
 		else {
 			throw new IllegalStateException("Parameters cannot be null");
@@ -30,16 +30,16 @@ public abstract class Person {
 	}
 
 	public Date getDate_birth() {
-		return date_birth;
+		return dateBirth;
 	}
 
-	public void setDate_birth(Date date_birth) {
-		this.date_birth = date_birth;
+	public void setDateBirth(Date date_birth) {
+		this.dateBirth = date_birth;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(date_birth, name);
+		return Objects.hash(dateBirth, name);
 	}
 
 	@Override
@@ -51,11 +51,11 @@ public abstract class Person {
 		if (getClass() != obj.getClass())
 			return false;
 		Person other = (Person) obj;
-		return Objects.equals(date_birth, other.date_birth) && Objects.equals(name, other.name);
+		return Objects.equals(dateBirth, other.dateBirth) && Objects.equals(name, other.name);
 	}	
 	
 	@Override
 	public String toString() {
-		return name + "(" + date_birth.toString() + ")";
+		return name + "(" + dateBirth.toString() + ")";
 	}
 }
