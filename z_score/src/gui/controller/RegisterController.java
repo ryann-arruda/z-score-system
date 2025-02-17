@@ -160,7 +160,7 @@ public class RegisterController implements Initializable{
 		validateFormData();
 		
 		nutritionist.setName(name.getText());
-		nutritionist.setDate_birth(getDateBirth());
+		nutritionist.setDateBirth(getDateBirth());
 		nutritionist.setRegionalCouncilNutritionists(regionalCouncilNutritionists.getText());
 		nutritionist.setUsername(username.getText());
 		nutritionist.setPassword(password.getText());
