@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="151.0" prefWidth="704.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.ChildFormController">
+   <children>
+      <Label layoutX="21.0" layoutY="19.0" text="Nome do Aluno(a):" AnchorPane.leftAnchor="21.0">
+         <font>
+            <Font name="Trebuchet MS Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="childName" layoutX="163.0" layoutY="15.0" prefHeight="25.0" prefWidth="290.0" AnchorPane.leftAnchor="163.0">
+         <font>
+            <Font name="Trebuchet MS" size="12.0" />
+         </font>
+      </TextField>
+      <Label fx:id="childNameError" layoutX="463.0" layoutY="19.0" textFill="RED" AnchorPane.leftAnchor="463.0">
+         <font>
+            <Font name="Trebuchet MS Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="21.0" layoutY="56.0" text="Data de Nascimento:">
+         <font>
+            <Font name="Trebuchet MS Bold" size="14.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="childDatebirth" layoutX="165.0" layoutY="52.0" prefHeight="25.0" prefWidth="290.0" />
+      <Label fx:id="childDateBirthError" layoutX="463.0" layoutY="57.0" textFill="RED">
+         <font>
+            <Font name="Trebuchet MS Bold" size="13.0" />
+         </font>
+      </Label>
+      <HBox alignment="TOP_CENTER" layoutY="102.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="704.0" spacing="20.0">
+         <children>
+            <Button fx:id="save" mnemonicParsing="false" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: green;" text="Salvar" textFill="WHITE" />
+            <Button fx:id="cancel" mnemonicParsing="false" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: #fa4a4a;" text="Cancelar" textFill="WHITE" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
