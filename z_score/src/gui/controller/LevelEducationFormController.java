@@ -84,7 +84,6 @@ public class LevelEducationFormController {
 			
 			LevelEducation levelEducation = new LevelEducation(levelEducationName.getText());
 			school.addEducationLevel(levelEducation);
-			nutritionist.updateSchool(school);
 			notifyDataChangeListeners();
 			
 			if(service.update(nutritionist)) {
