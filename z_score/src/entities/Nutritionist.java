@@ -81,20 +81,6 @@ public class Nutritionist extends Person{
 		
 		return false;
 	}
-	
-	public boolean updateSchool(School s) {
-		if(s != null) {
-			for(School school : schools) {
-				if(school.equals(s)) {
-					schools.remove(school);
-					schools.add(s);
-					return true;
-				}
-			}
-		}
-		
-		return false;
-	}
 
 	@Override
 	public int hashCode() {
