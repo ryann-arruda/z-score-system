@@ -5,12 +5,14 @@ import java.util.ResourceBundle;
 
 import entities.Nutritionist;
 import entities.service.NutritionistService;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import util.Utils;
 
 public class ChildFormController implements Initializable{
 	
@@ -22,7 +24,7 @@ public class ChildFormController implements Initializable{
 	private TextField childName;
 	
 	@FXML
-	private DatePicker childDatebirth;
+	private DatePicker childDateBirth;
 	
 	@FXML
 	private Label childNameError;
@@ -43,9 +45,14 @@ public class ChildFormController implements Initializable{
 	public void setNutritionistService(NutritionistService service) {
 		this.service = service;
 	}
+	
+	@FXML
+	public void onCancel(ActionEvent event) {
+		Utils.getCurrentStage(event).close();
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		childDatebirth.getEditor().setDisable(true);
+		childDateBirth.getEditor().setDisable(true);
 	}
 }
