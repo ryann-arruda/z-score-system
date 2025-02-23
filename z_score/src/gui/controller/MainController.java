@@ -102,7 +102,7 @@ public class MainController implements Initializable, DataChangeListener{
 			AnchorPane anchorPane = loader.load();
 			
 			if(nutritionist == null) {
-				throw new IllegalStateException("Nutritionist was null");
+				throw new IllegalStateException("Nutritionist entity was null");
 			}
 			
 			SchoolFormController schoolFormController = loader.getController();
@@ -125,7 +125,7 @@ public class MainController implements Initializable, DataChangeListener{
 	
 	public void updateTableViewSchool() {
 		if(nutritionist == null) {
-			throw new IllegalStateException("Nutritionist was null");
+			throw new IllegalStateException("Nutritionist entity was null");
 		}
 		
 		ObservableList<School> obsList = FXCollections.observableArrayList(nutritionist.getAllSchools());
