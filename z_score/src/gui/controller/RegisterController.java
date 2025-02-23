@@ -82,7 +82,7 @@ public class RegisterController implements Initializable{
 	@FXML
 	public void onRegister(ActionEvent event) {		
 		if(nutritionist == null) {
-			throw new IllegalStateException("Entity was null");
+			throw new IllegalStateException("Nutritionist entity was null");
 		}
 		
 		if(service == null) {
