@@ -157,19 +157,20 @@ public class LevelEducationController implements Initializable{
 			AnchorPane anchorPane = loader.load();
 			
 			if(nutritionist == null) {
-				throw new IllegalStateException("Nutritionist was null");
+				throw new IllegalStateException("Nutritionist entity was null");
 			}
 			
 			if(school == null) {
-				throw new IllegalStateException("School was null");
+				throw new IllegalStateException("School entity was null");
 			}
 			
 			if(levelEducation == null) {
-				throw new IllegalStateException("LevelEducation was null");
+				throw new IllegalStateException("LevelEducation entity was null");
 			}
 			
 			ChildFormController childFormController = loader.getController();
 			childFormController.setNutritionist(nutritionist);
+			childFormController.setLevelEducation(levelEducation);
 			childFormController.setNutritionistService(new NutritionistService());
 			
 			Stage dialogStage = new Stage();
