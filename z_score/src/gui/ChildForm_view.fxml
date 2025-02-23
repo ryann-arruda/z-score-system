@@ -38,7 +38,7 @@
       </Label>
       <HBox alignment="TOP_CENTER" layoutY="102.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="704.0" spacing="20.0">
          <children>
-            <Button fx:id="save" mnemonicParsing="false" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: green;" text="Salvar" textFill="WHITE" />
+            <Button fx:id="save" mnemonicParsing="false" onAction="#onSave" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: green;" text="Salvar" textFill="WHITE" />
             <Button fx:id="cancel" mnemonicParsing="false" onAction="#onCancel" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: #fa4a4a;" text="Cancelar" textFill="WHITE" />
          </children>
       </HBox>
