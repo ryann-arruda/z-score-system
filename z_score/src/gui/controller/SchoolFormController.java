@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import db.DBException;
 import entities.Nutritionist;
 import entities.School;
 import entities.service.NutritionistService;
@@ -76,7 +77,7 @@ public class SchoolFormController {
 	@FXML
 	public void onSave(ActionEvent event) {
 		if(nutritionist == null) {
-			throw new IllegalStateException("Entity was null");
+			throw new IllegalStateException("Nutritionist entity was null");
 		}
 		
 		if(service == null) {
@@ -97,6 +98,9 @@ public class SchoolFormController {
 		}
 		catch(FieldValidationException e) {
 			setErrorMessages(e.getErrors());
+		}
+		catch(DBException e) {
+			Alerts.showAlert("Erro", null, "Não foi possível cadastrar uma nova escola. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
 	
