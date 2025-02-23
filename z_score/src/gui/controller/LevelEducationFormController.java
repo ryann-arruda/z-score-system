@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import db.DBException;
 import entities.LevelEducation;
 import entities.Nutritionist;
 import entities.School;
@@ -72,11 +73,11 @@ public class LevelEducationFormController {
 	@FXML
 	public void onSave(ActionEvent event) {
 		if(nutritionist == null) {
-			throw new IllegalStateException("Nutritionist was null");
+			throw new IllegalStateException("Nutritionist entity was null");
 		}
 		
 		if(school == null) {
-			throw new IllegalStateException("School was null");
+			throw new IllegalStateException("School entity was null");
 		}
 		
 		try {
@@ -93,6 +94,9 @@ public class LevelEducationFormController {
 		}
 		catch(FieldValidationException e) {
 			setErrorMessages(e.getErrors());
+		}
+		catch(DBException e) {
+			Alerts.showAlert("Erro", null, "Não foi possível cadastrar um novo nível educacional. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
 	
