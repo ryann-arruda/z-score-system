@@ -55,7 +55,7 @@ public class ChildDaoImpl implements ChildDao{
 				ps = conn.prepareStatement("INSERT INTO Child(child_name, date_birth) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
 				
 				ps.setString(1, obj.getName());
-				ps.setDate(2, new java.sql.Date(obj.getDate_birth().getTime()));
+				ps.setDate(2, new java.sql.Date(obj.getDateBirth().getTime()));
 				
 				List<Long> measurementZscoreIds = new ArrayList<>();
 				for(MeasurementZscore msz : obj.getAllZscores()) {
@@ -127,10 +127,10 @@ public class ChildDaoImpl implements ChildDao{
 											   "WHERE child_id = ?");
 					
 					obj.setName(obj.getName());
-					obj.setDateBirth(obj.getDate_birth());
+					obj.setDateBirth(obj.getDateBirth());
 					
 					ps.setString(1, obj.getName());
-					ps.setDate(2, new java.sql.Date(obj.getDate_birth().getTime()));
+					ps.setDate(2, new java.sql.Date(obj.getDateBirth().getTime()));
 					ps.setLong(3, obj.getId());
 					
 					if(ps.executeUpdate() > 0) {

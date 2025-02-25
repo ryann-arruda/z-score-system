@@ -94,7 +94,7 @@ public class NutritionistDaoImpl implements NutritionistDao{
 											   " VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 					
 					ps.setString(1, obj.getName());
-					ps.setDate(2, new java.sql.Date(obj.getDate_birth().getTime()));
+					ps.setDate(2, new java.sql.Date(obj.getDateBirth().getTime()));
 					ps.setString(3, obj.getRegionalCouncilNutritionists());
 					ps.setString(4, obj.getUsername());
 					ps.setString(5, obj.getPassword());
@@ -187,7 +187,7 @@ public class NutritionistDaoImpl implements NutritionistDao{
 									           "nutritionist_password = ? WHERE nutritionist_id = ?");
 					
 					ps.setString(1, obj.getName());
-					ps.setDate(2, new java.sql.Date(obj.getDate_birth().getTime()));
+					ps.setDate(2, new java.sql.Date(obj.getDateBirth().getTime()));
 					ps.setString(3, obj.getRegionalCouncilNutritionists());
 					ps.setString(4, obj.getUsername());
 					ps.setString(5, obj.getPassword());
