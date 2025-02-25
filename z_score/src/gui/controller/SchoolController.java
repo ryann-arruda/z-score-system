@@ -165,7 +165,7 @@ public class SchoolController implements Initializable, DataChangeListener{
 	
 	public void updateTableViewLevelEducation() {
 		if(school == null) {
-			throw new IllegalStateException("Nutritionist entity was null");
+			throw new IllegalStateException("School entity was null");
 		}
 		
 		ObservableList<LevelEducation> obsList = FXCollections.observableArrayList(school.getAllEducationLevels());
@@ -196,6 +196,7 @@ public class SchoolController implements Initializable, DataChangeListener{
 			levelEducationController.setNutritionist(nutritionist);
 			levelEducationController.setSchool(school);
 			levelEducationController.setLevelEducation(levelEducation);
+			levelEducationController.updateTableViewChild();
 			
 			Stage currentStage = Utils.getCurrentStage(event);
 			currentStage.setScene(new Scene(achorPane));
