@@ -2,7 +2,9 @@ package gui.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 import entities.Child;
@@ -12,6 +14,9 @@ import entities.School;
 import entities.service.NutritionistService;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,7 +69,7 @@ public class LevelEducationController implements Initializable{
 	private TableColumn<Child, String> tableColumnName;
 	
 	@FXML
-	private TableColumn<Child, Date> tableColumnBirthDate;
+	private TableColumn<Child, LocalDate> tableColumnBirthDate;
 	
 	@FXML
 	private TableColumn<Child, Double> tableColumnLastZscoreMeasurement;
@@ -146,8 +151,24 @@ public class LevelEducationController implements Initializable{
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
-		tableColumnBirthDate.setCellValueFactory(new PropertyValueFactory<>("dateBirth"));
 		tableColumnLastZscoreMeasurement.setCellValueFactory(param -> new SimpleDoubleProperty(param.getValue().getLatestZscoreMeasurement()).asObject());
+		
+		tableColumnBirthDate.setCellValueFactory(param -> new SimpleObjectProperty<LocalDate>(param.getValue().getDateBirth()
+																									 .toInstant()
+																									 .atZone(ZoneId.systemDefault())
+																									 .toLocalDate()));
+		tableColumnBirthDate.setCellFactory(cell -> new TableCell<>() {
+			private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			
+			@Override
+			protected void updateItem(LocalDate localDate, boolean empty) {
+				super.updateItem(localDate, empty);
+				
+				if(!empty || localDate != null) {
+					setText(localDate.format(dtf));
+				}
+			}
+		});
 	}
 	
 	private void createDialogForm(String absoluteName, Stage parentStage) {
@@ -189,6 +210,15 @@ public class LevelEducationController implements Initializable{
 	@FXML
 	public void onAddNewChild(ActionEvent event) {
 		createDialogForm("../../gui/ChildForm_view.fxml", Utils.getCurrentStage(event));
+	}
+	
+	public void updateTableViewChild() {
+		if(levelEducation == null) {
+			throw new IllegalStateException("LevelEducation entity was null");
+		}
+		
+		ObservableList<Child> obsList = FXCollections.observableArrayList(levelEducation.getAllChildren());
+		tableViewChild.setItems(obsList);
 	}
 	
 	private void initSeeButtons() {
