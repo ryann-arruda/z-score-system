@@ -29,7 +29,7 @@ public abstract class Person {
 		this.name = name;
 	}
 
-	public Date getDate_birth() {
+	public Date getDateBirth() {
 		return dateBirth;
 	}
 
