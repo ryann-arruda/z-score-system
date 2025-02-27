@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -177,7 +178,40 @@ public class SchoolController implements Initializable, DataChangeListener{
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TableColumn Name
+		tableColumnName.setCellFactory(cell -> new TableCell<LevelEducation, String>(){
+			
+			@Override
+			protected void updateItem(String name, boolean empty) {
+				super.updateItem(name, empty);
+				
+				if(name == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				setText(name);
+				setAlignment(Pos.CENTER);
+			}
+		});
+		
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+		
+		// TableColumn Number of Students
+		tableColumnNumberStudents.setCellFactory(cell -> new TableCell<LevelEducation, Integer>(){
+			
+			@Override
+			protected void updateItem(Integer numberStudents, boolean empty) {
+				if(numberStudents == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				setText(numberStudents.toString());
+				setAlignment(Pos.CENTER);
+			}
+		});
+		
 		tableColumnNumberStudents.setCellValueFactory(cellData -> 
 		new SimpleIntegerProperty(cellData.getValue().getNumberStudents()).asObject());
 	}
