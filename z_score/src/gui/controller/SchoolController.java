@@ -202,6 +202,8 @@ public class SchoolController implements Initializable, DataChangeListener{
 			
 			@Override
 			protected void updateItem(Integer numberStudents, boolean empty) {
+				super.updateItem(numberStudents, empty);
+				
 				if(numberStudents == null) {
 					setGraphic(null);
 					return;
