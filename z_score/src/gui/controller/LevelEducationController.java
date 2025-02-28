@@ -260,6 +260,9 @@ public class LevelEducationController implements Initializable{
 		
 		ObservableList<Child> obsList = FXCollections.observableArrayList(levelEducation.getAllChildren());
 		tableViewChild.setItems(obsList);
+		initSeeButtons();
+		initEditButtons();
+		initRemoveButtons();
 	}
 	
 	private void initSeeButtons() {
@@ -277,7 +280,7 @@ public class LevelEducationController implements Initializable{
 					return;
 				}
 				
-				button.prefWidth(65.0);
+				button.setPrefWidth(65.0);
 				button.setOnAction(null);
 				setGraphic(stackPane);
 			}
@@ -299,7 +302,7 @@ public class LevelEducationController implements Initializable{
 					return;
 				}
 				
-				button.prefWidth(65.0);
+				button.setPrefWidth(65.0);
 				button.setOnAction(null);
 				setGraphic(stackPane);
 			}
@@ -321,7 +324,7 @@ public class LevelEducationController implements Initializable{
 					return;
 				}
 				
-				button.prefWidth(65.0);
+				button.setPrefWidth(65.0);
 				button.setOnAction(null);
 				setGraphic(stackPane);
 			}
