@@ -21,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -150,13 +151,44 @@ public class LevelEducationController implements Initializable{
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
+		// TableColumn Name
+		tableColumnName.setCellFactory(cell -> new TableCell<Child, String>(){
+			@Override
+			protected void updateItem(String name, boolean empty) {
+				super.updateItem(name, empty);
+				
+				if(name == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				setText(name);
+				setAlignment(Pos.CENTER);
+			}
+		});
+		
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+		
+		// TableColumn Zscore Measurement
+		tableColumnLastZscoreMeasurement.setCellFactory(cell -> new TableCell<Child, Double>(){
+			@Override
+			protected void updateItem(Double zscoreMeasurement, boolean empty) {
+				super.updateItem(zscoreMeasurement, empty);
+				
+				if(zscoreMeasurement == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				setText(zscoreMeasurement.toString());
+				setAlignment(Pos.CENTER);
+			}
+		});
+		
 		tableColumnLastZscoreMeasurement.setCellValueFactory(param -> new SimpleDoubleProperty(param.getValue().getLatestZscoreMeasurement()).asObject());
 		
-		tableColumnBirthDate.setCellValueFactory(param -> new SimpleObjectProperty<LocalDate>(param.getValue().getDateBirth()
-																									 .toInstant()
-																									 .atZone(ZoneId.systemDefault())
-																									 .toLocalDate()));
+		// TableColumn Date of Birth
+		
 		tableColumnBirthDate.setCellFactory(cell -> new TableCell<>() {
 			private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			
@@ -164,11 +196,20 @@ public class LevelEducationController implements Initializable{
 			protected void updateItem(LocalDate localDate, boolean empty) {
 				super.updateItem(localDate, empty);
 				
-				if(!empty || localDate != null) {
-					setText(localDate.format(dtf));
+				if(localDate == null) {
+					setGraphic(null);
+					return;
 				}
+				
+				setText(localDate.format(dtf));
+				setAlignment(Pos.CENTER);
 			}
-		});
+		});		
+		
+		tableColumnBirthDate.setCellValueFactory(param -> new SimpleObjectProperty<LocalDate>(param.getValue().getDateBirth()
+																									 .toInstant()
+																									 .atZone(ZoneId.systemDefault())
+																									 .toLocalDate()));
 	}
 	
 	private void createDialogForm(String absoluteName, Stage parentStage) {
