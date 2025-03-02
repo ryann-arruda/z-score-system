@@ -265,6 +265,42 @@ public class LevelEducationController implements Initializable{
 		initRemoveButtons();
 	}
 	
+	private void createDialogView(String absoluteName, Stage parentStage, Child child) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+			
+			AnchorPane anchorPane = loader.load();
+			
+			if(nutritionist == null) {
+				throw new IllegalStateException("Nutritionist entity was null");
+			}
+			
+			if(school == null) {
+				throw new IllegalStateException("School entity was null");
+			}
+			
+			if(levelEducation == null) {
+				throw new IllegalStateException("LevelEducation entity was null");
+			}
+			
+			ChildController childController = loader.getController();
+			childController.setNutritionist(nutritionist);
+			childController.setChild(child);
+			childController.setNutritionistService(new NutritionistService());
+			
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Visualização de Medições do Aluno(a)");
+			dialogStage.setScene(new Scene(anchorPane));
+			dialogStage.setResizable(false);
+			dialogStage.initOwner(parentStage);
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.show();
+		}
+		catch(IOException e) {
+			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela de visualização de medidas. Tente novamente mais tarde.", AlertType.ERROR);
+		}
+	}
+	
 	private void initSeeButtons() {
 		tableColumnSEE.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
 		tableColumnSEE.setCellFactory(cell -> new TableCell<Child, Child>(){
@@ -281,7 +317,7 @@ public class LevelEducationController implements Initializable{
 				}
 				
 				button.setPrefWidth(65.0);
-				button.setOnAction(null);
+				button.setOnAction(event -> createDialogView("../../gui/Child_view.fxml", Utils.getCurrentStage(event), child));
 				setGraphic(stackPane);
 			}
 		});
