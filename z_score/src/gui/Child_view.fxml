@@ -37,12 +37,12 @@
             <TableColumn fx:id="tableColumnREMOVE" prefWidth="175.0" />
         </columns>
       </TableView>
-      <Button fx:id="addNewChild" layoutX="303.0" layoutY="402.0" mnemonicParsing="false" style="-fx-background-color: green;" text="Adicionar Nova Medida" textFill="WHITE">
+      <Button fx:id="addNewChild" layoutX="303.0" layoutY="402.0" mnemonicParsing="false" onAction="#onAddNewMeasurement" style="-fx-background-color: green;" text="Adicionar Nova Medida" textFill="WHITE">
          <font>
             <Font name="Trebuchet MS Bold" size="12.0" />
          </font>
       </Button>
-      <Button fx:id="goBack" layoutX="14.0" layoutY="402.0" mnemonicParsing="false" text="Voltar">
+      <Button fx:id="goBack" layoutX="14.0" layoutY="402.0" mnemonicParsing="false" onAction="#onGoBack" text="Voltar">
          <font>
             <Font name="Trebuchet MS Bold" size="12.0" />
          </font>
