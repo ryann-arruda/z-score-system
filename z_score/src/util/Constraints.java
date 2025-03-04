@@ -24,4 +24,12 @@ public class Constraints {
 			}
 		});
 	}
+	
+	public static void setNumericTextField(TextField tf) {
+		tf.textProperty().addListener((observavle, oldValue, newValue) -> {
+			if(newValue != null && !newValue.matches("^\\d*(,|,\\d+)?$")) {
+				tf.setText(oldValue);
+			}
+		});
+	}
 }
