@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import entities.Child;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
+import exceptions.FieldValidationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import util.Constraints;
 import util.Utils;
 
 public class MeasurementFormController implements Initializable{
@@ -52,6 +54,23 @@ public class MeasurementFormController implements Initializable{
 		this.child = child;
 	}
 	
+	private void validateFields() {
+		FieldValidationException exception = new FieldValidationException("Erros when filling in fields");
+		
+		if(date.getValue() == null) {
+			exception.addError("dateError", "Insira uma data válida!");
+		}
+		
+		if(value.getText() == null || value.getText().trim().equals("")) {
+			exception.addError("valueError", "Insira um valor válido!");
+		}
+	}
+	
+	@FXML
+	public void onSave() {
+		
+	}
+	
 	@FXML
 	public void onCancel(ActionEvent event) {
 		Utils.getCurrentStage(event).close();
@@ -60,5 +79,6 @@ public class MeasurementFormController implements Initializable{
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		date.getEditor().setDisable(true);
+		Constraints.setNumericTextField(value);
 	}
 }
