@@ -6,12 +6,14 @@ import java.util.ResourceBundle;
 import entities.Child;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import util.Utils;
 
 public class MeasurementFormController implements Initializable{
 	private Nutritionist nutritionist;
@@ -48,6 +50,11 @@ public class MeasurementFormController implements Initializable{
 	
 	public void setChild(Child child) {
 		this.child = child;
+	}
+	
+	@FXML
+	public void onCancel(ActionEvent event) {
+		Utils.getCurrentStage(event).close();
 	}
 
 	@Override
