@@ -1,9 +1,16 @@
 package gui.controller;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
+import db.DBException;
 import entities.Child;
+import entities.MeasurementZscore;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
 import exceptions.FieldValidationException;
@@ -14,6 +21,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import util.Alerts;
 import util.Constraints;
 import util.Utils;
 
@@ -61,14 +70,47 @@ public class MeasurementFormController implements Initializable{
 			exception.addError("dateError", "Insira uma data válida!");
 		}
 		
-		if(value.getText() == null || value.getText().trim().equals("")) {
-			exception.addError("valueError", "Insira um valor válido!");
+		if(value.getText() == null || value.getText().trim().equals("") || Utils.tryParseToDouble(value.getText()) == null) {
+			exception.addError("valueError", "Insira um valor válido! Ex.: 3,7");
+		}
+		
+		if(exception.getErrors().size() > 0) {
+			throw exception;
 		}
 	}
 	
 	@FXML
-	public void onSave() {
+	public void onSave(ActionEvent event) {
+		try {
+			validateFields();
+			
+			MeasurementZscore measurementZscore = getFormData();
+			child.addZscore(measurementZscore);
+			
+			if(service.update(nutritionist)) {
+				Alerts.showAlert("Sucesso", null, "Medida z-score cadastrada com sucesso!", AlertType.CONFIRMATION);
+				Utils.getCurrentStage(event).close();
+			}
+		}
+		catch(FieldValidationException e) {
+			setErrorMessages(e.getErrors());
+		}
+		catch(DBException e) {
+			Alerts.showAlert("Erro", null, "Não foi possível cadastrar uma nova medida z-score. Tente novamente mais tarde.", AlertType.ERROR);
+		}
+	}
+	
+	private MeasurementZscore getFormData() {
+		Double zscoreValue = Utils.tryParseToDouble(value.getText());
+		Date measurementDate = getDate();
 		
+		return new MeasurementZscore(zscoreValue, measurementDate);
+	}
+
+	private Date getDate() {
+		LocalDate localDate = date.getValue();
+		
+		return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
 	
 	@FXML
@@ -81,4 +123,22 @@ public class MeasurementFormController implements Initializable{
 		date.getEditor().setDisable(true);
 		Constraints.setNumericTextField(value);
 	}
+	
+	private void setErrorMessages(Map<String, String> errors) {
+		Set<String> fields = errors.keySet();
+		
+		if(fields.contains("dateError")) {
+			dateError.setText(errors.get("dateError"));
+		}
+		else {
+			dateError.setText("");
+		}
+		
+		if(fields.contains("valueError")) {
+			valueError.setText(errors.get("valueError"));
+		}
+		else {
+			valueError.setText("");
+		}
+	}	
 }
