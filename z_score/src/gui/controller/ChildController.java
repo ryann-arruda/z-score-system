@@ -1,29 +1,40 @@
 package gui.controller;
 
 import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
 
 import entities.Child;
 import entities.MeasurementZscore;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import util.Alerts;
 import util.Utils;
 
-public class ChildController {
+public class ChildController implements Initializable{
 	
 	private Nutritionist nutritionist;
 	
@@ -112,8 +123,43 @@ public class ChildController {
 		}
 	}
 	
+	public void updateTableViewMeasures() {
+		if(child == null) {
+			throw new IllegalStateException("Child entity was null");
+		}
+		
+		ObservableList<MeasurementZscore> obsList = FXCollections.observableArrayList(child.getAllZscores());
+		tableViewMeasures.setItems(obsList);
+	}
+	
 	@FXML
 	public void onAddNewMeasurement(ActionEvent event) {
 		createDialogForm("../../gui/MeasurementForm_view.fxml", Utils.getCurrentStage(event));
+	}
+
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		// TableColumn Date of Measurement
+		dateMeasurement.setCellFactory(cell -> new TableCell<MeasurementZscore, LocalDate>(){
+			private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			
+			@Override
+			protected void updateItem(LocalDate localDate, boolean empty) {
+				super.updateItem(localDate, empty);
+				
+				if(localDate == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				setText(localDate.format(dtf));
+				setAlignment(Pos.CENTER);
+			}
+		});
+		
+		dateMeasurement.setCellValueFactory(param -> new SimpleObjectProperty<LocalDate>(param.getValue().getDate()
+																							  .toInstant()
+																							  .atZone(ZoneId.systemDefault())
+																							  .toLocalDate()));
 	}
 }
