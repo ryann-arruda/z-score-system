@@ -287,6 +287,7 @@ public class LevelEducationController implements Initializable{
 			childController.setNutritionist(nutritionist);
 			childController.setChild(child);
 			childController.setNutritionistService(new NutritionistService());
+			childController.updateTableViewMeasures();
 			
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Visualização de Medições do Aluno(a)");
