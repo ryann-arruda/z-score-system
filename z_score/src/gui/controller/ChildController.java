@@ -12,7 +12,7 @@ import entities.Child;
 import entities.MeasurementZscore;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +29,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import util.Alerts;
@@ -130,6 +131,8 @@ public class ChildController implements Initializable{
 		
 		ObservableList<MeasurementZscore> obsList = FXCollections.observableArrayList(child.getAllZscores());
 		tableViewMeasures.setItems(obsList);
+		initEditButtons();
+		initRemoveButtons();
 	}
 	
 	@FXML
@@ -179,5 +182,49 @@ public class ChildController implements Initializable{
 		});
 		
 		value.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getzScore()));
+	}
+	
+	private void initEditButtons() {
+		tableColumnEDIT.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
+		tableColumnEDIT.setCellFactory(cell -> new TableCell<MeasurementZscore, MeasurementZscore>(){
+			private final Button button = new Button("Editar");
+			private final StackPane stackPane = new StackPane(button);
+			
+			@Override
+			protected void updateItem(MeasurementZscore measurementZscore, boolean empty) {
+				super.updateItem(measurementZscore, empty);
+				
+				if(measurementZscore == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				button.setPrefWidth(65.0);
+				button.setOnAction(null);  // Implementing opening a new view
+				setGraphic(stackPane);
+			}
+		});
+	}
+	
+	private void initRemoveButtons() {
+		tableColumnREMOVE.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue()));
+		tableColumnREMOVE.setCellFactory(cell -> new TableCell<MeasurementZscore, MeasurementZscore>(){
+			private final Button button = new Button("Excluir");
+			private final StackPane stackPane = new StackPane(button);
+			
+			@Override
+			protected void updateItem(MeasurementZscore measurementZscore, boolean empty) {
+				super.updateItem(measurementZscore, empty);
+				
+				if(measurementZscore == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				button.setPrefWidth(65.0);
+				button.setOnAction(null); // Implementing opening a new view
+				setGraphic(stackPane);
+			}
+		});
 	}
 }
