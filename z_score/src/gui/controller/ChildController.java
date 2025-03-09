@@ -12,6 +12,7 @@ import entities.Child;
 import entities.MeasurementZscore;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,7 +28,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -161,5 +161,23 @@ public class ChildController implements Initializable{
 																							  .toInstant()
 																							  .atZone(ZoneId.systemDefault())
 																							  .toLocalDate()));
+		
+		// TableColumn Z-score value
+		value.setCellFactory(cell -> new TableCell<MeasurementZscore, Double>(){
+			@Override
+			protected void updateItem(Double value, boolean empty) {
+				super.updateItem(value, empty);
+				
+				if(value == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				setText(value.toString());
+				setAlignment(Pos.CENTER);
+			}
+		});
+		
+		value.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getzScore()));
 	}
 }
