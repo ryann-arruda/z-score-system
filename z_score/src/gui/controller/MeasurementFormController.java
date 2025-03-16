@@ -40,10 +40,16 @@ public class MeasurementFormController implements Initializable{
 	private Label dateError;
 	
 	@FXML
-	private TextField value;
+	private TextField weight;
 	
 	@FXML
-	private Label valueError;
+	private Label weightError;
+	
+	@FXML
+	private TextField height;
+	
+	@FXML
+	private Label heightError;
 	
 	@FXML
 	private Button save;
@@ -70,8 +76,12 @@ public class MeasurementFormController implements Initializable{
 			exception.addError("dateError", "Insira uma data válida!");
 		}
 		
-		if(value.getText() == null || value.getText().trim().equals("") || Utils.tryParseToDouble(value.getText()) == null) {
-			exception.addError("valueError", "Insira um valor válido! Ex.: 3,7");
+		if(weight.getText() == null || weight.getText().trim().equals("") || Utils.tryParseToDouble(weight.getText()) == null) {
+			exception.addError("weightError", "Insira um peso válido! Ex.: 57,5");
+		}
+		
+		if(height.getText() == null || height.getText().trim().equals("") || Utils.tryParseToDouble(height.getText()) == null) {
+			exception.addError("heightError", "Insira uma altura válida! Ex.: 57,5");
 		}
 		
 		if(exception.getErrors().size() > 0) {
@@ -101,9 +111,11 @@ public class MeasurementFormController implements Initializable{
 	}
 	
 	private MeasurementZscore getFormData() {
-		Double zscoreValue = Utils.tryParseToDouble(value.getText());
+		Double weightValue = Utils.tryParseToDouble(weight.getText());
+		Double heightValue = Utils.tryParseToDouble(height.getText());
 		Date measurementDate = getDate();
 		
+		// TODO Create a class to calculate Z-score value and rank
 		return new MeasurementZscore(zscoreValue, measurementDate);
 	}
 
@@ -121,7 +133,8 @@ public class MeasurementFormController implements Initializable{
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		date.getEditor().setDisable(true);
-		Constraints.setNumericTextField(value);
+		Constraints.setNumericTextField(weight);
+		Constraints.setNumericTextField(height);
 	}
 	
 	private void setErrorMessages(Map<String, String> errors) {
@@ -134,11 +147,18 @@ public class MeasurementFormController implements Initializable{
 			dateError.setText("");
 		}
 		
-		if(fields.contains("valueError")) {
-			valueError.setText(errors.get("valueError"));
+		if(fields.contains("weightError")) {
+			weightError.setText(errors.get("weightError"));
 		}
 		else {
-			valueError.setText("");
+			weightError.setText("");
+		}
+		
+		if(fields.contains("heightError")) {
+			heightError.setText(errors.get("heightError"));
+		}
+		else {
+			heightError.setText("");
 		}
 	}	
 }
