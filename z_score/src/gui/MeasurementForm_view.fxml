@@ -8,31 +8,42 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="151.0" prefWidth="508.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MeasurementFormController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="462.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MeasurementFormController">
    <children>
       <Label layoutX="21.0" layoutY="19.0" text="Data:" AnchorPane.leftAnchor="21.0">
          <font>
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
       </Label>
-      <DatePicker fx:id="date" layoutX="68.0" layoutY="15.0" prefHeight="25.0" prefWidth="182.0" AnchorPane.leftAnchor="68.0" />
-      <Label fx:id="dateError" layoutX="463.0" layoutY="19.0" textFill="RED" AnchorPane.leftAnchor="260.0">
+      <DatePicker fx:id="date" layoutX="107.0" layoutY="15.0" prefHeight="25.0" prefWidth="182.0" AnchorPane.leftAnchor="107.0" />
+      <Label fx:id="dateError" layoutX="463.0" layoutY="19.0" textFill="RED" AnchorPane.leftAnchor="300.0">
          <font>
             <Font name="Trebuchet MS Bold" size="13.0" />
          </font>
       </Label>
-      <Label layoutX="21.0" layoutY="56.0" text="Valor:">
+      <Label layoutX="21.0" layoutY="56.0" text="Peso (kg):">
          <font>
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="value" layoutX="68.0" layoutY="52.0" prefHeight="25.0" prefWidth="182.0" />
-      <Label fx:id="valueError" layoutX="463.0" layoutY="57.0" textFill="RED" AnchorPane.leftAnchor="260.0">
+      <TextField fx:id="weight" layoutX="107.0" layoutY="52.0" prefHeight="25.0" prefWidth="182.0" />
+      <Label fx:id="weightError" layoutX="463.0" layoutY="57.0" textFill="RED" AnchorPane.leftAnchor="300.0">
          <font>
             <Font name="Trebuchet MS Bold" size="13.0" />
          </font>
       </Label>
-      <HBox alignment="TOP_CENTER" layoutY="102.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="508.0" spacing="20.0">
+      <Label layoutX="21.0" layoutY="95.0" text="Altura (cm):">
+         <font>
+            <Font name="Trebuchet MS Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="height" layoutX="107.0" layoutY="91.0" prefHeight="25.0" prefWidth="182.0" />
+      <Label fx:id="heightError" layoutX="300.0" layoutY="95.0" textFill="RED">
+         <font>
+            <Font name="Trebuchet MS Bold" size="13.0" />
+         </font>
+      </Label>
+      <HBox alignment="TOP_CENTER" layoutY="142.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="462.0" spacing="20.0" AnchorPane.topAnchor="145.0">
          <children>
             <Button fx:id="save" mnemonicParsing="false" onAction="#onSave" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: green;" text="Salvar" textFill="WHITE" />
             <Button fx:id="cancel" mnemonicParsing="false" onAction="#onCancel" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: #fa4a4a;" text="Cancelar" textFill="WHITE" />
