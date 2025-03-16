@@ -12,6 +12,7 @@ import java.util.List;
 import db.DBException;
 import db.Database;
 import entities.MeasurementZscore;
+import entities.enums.ZscoreClassification;
 import entities.repository.MeasurementZscoreDao;
 
 public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
@@ -27,6 +28,9 @@ public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
 		msz.setId(rs.getLong("measurement_zscore_id"));
 		msz.setzScore(rs.getDouble("zscore"));
 		msz.setDate(new Date(rs.getDate("zscore_date").getTime()));
+		msz.setWeight(rs.getDouble("weight"));
+		msz.setHeight(rs.getDouble("height"));
+		msz.setClassification(ZscoreClassification.valueOf(rs.getString("classification")));
 		
 		return msz;
 	}
@@ -40,10 +44,14 @@ public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
 		
 		try {
 			if(obj.getId() == null) {
-				ps = conn.prepareStatement("INSERT INTO MeasurementZscore(zscore, zscore_date) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
+				ps = conn.prepareStatement("INSERT INTO MeasurementZscore(zscore, zscore_date, weight, height, classification) VALUES (?,?,?,?,?)", 
+								            Statement.RETURN_GENERATED_KEYS);
 				
 				ps.setDouble(1, obj.getzScore());
 				ps.setDate(2, new java.sql.Date(obj.getDate().getTime()));
+				ps.setDouble(3, obj.getWeight());
+				ps.setDouble(4, obj.getHeight());
+				ps.setString(5, obj.getClassification().name());
 				
 				rowsAffected = ps.executeUpdate();
 				
@@ -84,12 +92,15 @@ public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
 					msz.setDate(obj.getDate());
 					msz.setzScore(obj.getzScore());
 					
-					ps = conn.prepareStatement("UPDATE MeasurementZscore SET zscore = ?, zscore_date = ? "+
+					ps = conn.prepareStatement("UPDATE MeasurementZscore SET zscore = ?, zscore_date = ?, weight = ?, height = ?, classification = ? "+
 					                           "WHERE measurement_zscore_id = ?");
 					
 					ps.setDouble(1, msz.getzScore());
 					ps.setDate(2, new java.sql.Date(msz.getDate().getTime()));
-					ps.setLong(3, msz.getId());
+					ps.setDouble(3, msz.getWeight());
+					ps.setDouble(4, msz.getHeight());
+					ps.setString(5, msz.getClassification().name());
+					ps.setLong(6, msz.getId());
 					
 					rowsAffected = ps.executeUpdate();
 					
