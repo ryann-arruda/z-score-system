@@ -13,6 +13,9 @@ public class ZscoreTableRow {
 		this.stdDeviation = stdDeviation;
 	}
 	
+	public ZscoreTableRow() {
+	}
+	
 	public Long getId() {
 		return id;
 	}
