@@ -6,6 +6,7 @@ import entities.repository.impl.LevelEducationDaoImpl;
 import entities.repository.impl.MeasurementZscoreDaoImpl;
 import entities.repository.impl.NutritionistDaoImpl;
 import entities.repository.impl.SchoolDaoImpl;
+import entities.repository.impl.ZscoreTableDaoImpl;
 
 public class DaoFactory {	
 	
@@ -31,5 +32,9 @@ public class DaoFactory {
 	
 	public static NutritionistDao createNutritionistDao() {
 		return new NutritionistDaoImpl(Database.getConnection());
+	}
+	
+	public static ZscoreTableDao createZscoreTableDao() {
+		return new ZscoreTableDaoImpl(Database.getConnection());
 	}
 }

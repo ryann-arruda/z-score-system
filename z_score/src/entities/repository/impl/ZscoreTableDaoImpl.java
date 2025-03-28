@@ -4,8 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DBException;
 import db.Database;
@@ -37,8 +38,8 @@ public class ZscoreTableDaoImpl implements ZscoreTableDao{
 	}
 
 	@Override
-	public List<ZscoreTable> findAll() {
-		List<ZscoreTable> zscoreTables = null;
+	public Map<String, ZscoreTable> findAll() {
+		Map<String, ZscoreTable> zscoreTables = null;
 		Statement st = null;
 		ResultSet rs = null;
 		
@@ -47,14 +48,14 @@ public class ZscoreTableDaoImpl implements ZscoreTableDao{
 			
 			rs = st.executeQuery("SELECT * FROM ZscoreTableBoys");
 			
-			zscoreTables = new ArrayList<>();
+			zscoreTables = new HashMap<>();
 			if(rs.next()) {
-				zscoreTables.add(instantiateChild(rs));
+				zscoreTables.put("boys", instantiateChild(rs));
 			}
 			
 			rs = st.executeQuery("SELECT * FROM ZscoreTableGirls");
 			if(rs.next()) {
-				zscoreTables.add(instantiateChild(rs));
+				zscoreTables.put("girls", instantiateChild(rs));
 			}
 		}
 		catch(SQLException e) {
