@@ -1,9 +1,9 @@
 package entities.repository;
 
-import java.util.List;
+import java.util.Map;
 
 import entities.ZscoreTable;
 
 public interface ZscoreTableDao {
-	List<ZscoreTable> findAll();
+	Map<String, ZscoreTable> findAll();
 }
