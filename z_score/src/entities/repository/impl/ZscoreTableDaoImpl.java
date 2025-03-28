@@ -10,6 +10,7 @@ import java.util.List;
 import db.DBException;
 import db.Database;
 import entities.ZscoreTable;
+import entities.ZscoreTableRow;
 import entities.repository.ZscoreTableDao;
 
 public class ZscoreTableDaoImpl implements ZscoreTableDao{
@@ -17,6 +18,22 @@ public class ZscoreTableDaoImpl implements ZscoreTableDao{
 	
 	public ZscoreTableDaoImpl(Connection conn){
 		this.conn = conn;
+	}
+	
+	private ZscoreTable instantiateChild(ResultSet rs) throws SQLException {
+		ZscoreTable zscoreTable = new ZscoreTable();
+		
+		while(rs.next()) {
+			ZscoreTableRow zscoreTableRow = new ZscoreTableRow();
+			
+			zscoreTableRow.setId(rs.getLong("zscore_table_boys_id"));
+			zscoreTableRow.setMedian(rs.getDouble("median"));
+			zscoreTableRow.setStdDeviation(rs.getDouble("std_deviation"));
+			
+			zscoreTable.addRow(rs.getInt("months"), zscoreTableRow);
+		}
+		
+		return zscoreTable;
 	}
 
 	@Override
@@ -32,7 +49,12 @@ public class ZscoreTableDaoImpl implements ZscoreTableDao{
 			
 			zscoreTables = new ArrayList<>();
 			if(rs.next()) {
-				zscoreTables.add(instantiateChild());
+				zscoreTables.add(instantiateChild(rs));
+			}
+			
+			rs = st.executeQuery("SELECT * FROM ZscoreTableGirls");
+			if(rs.next()) {
+				zscoreTables.add(instantiateChild(rs));
 			}
 		}
 		catch(SQLException e) {
@@ -45,5 +67,4 @@ public class ZscoreTableDaoImpl implements ZscoreTableDao{
 		
 		return zscoreTables;
 	}
-
 }
