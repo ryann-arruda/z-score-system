@@ -1,5 +1,8 @@
 package entities;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Objects;
 
@@ -35,6 +38,15 @@ public abstract class Person {
 
 	public void setDateBirth(Date date_birth) {
 		this.dateBirth = date_birth;
+	}
+	
+	public long getMonthsLife() {
+		LocalDate currentDate = LocalDate.now();
+		LocalDate date = dateBirth.toInstant()
+				                  .atZone(ZoneId.systemDefault())
+				                  .toLocalDate();
+		
+		return ChronoUnit.MONTHS.between(currentDate, date);
 	}
 
 	@Override
