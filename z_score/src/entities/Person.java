@@ -6,9 +6,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Objects;
 
+import entities.enums.PersonSex;
+
 public abstract class Person {
 	private String name;
 	private Date dateBirth;
+	private PersonSex sex;
 	
 	public Person() {
 		
@@ -47,6 +50,14 @@ public abstract class Person {
 				                  .toLocalDate();
 		
 		return ChronoUnit.MONTHS.between(currentDate, date);
+	}
+	
+	public PersonSex getSex() {
+		return sex;
+	}
+	
+	public void setSex(PersonSex sex) {
+		this.sex = sex;
 	}
 
 	@Override
