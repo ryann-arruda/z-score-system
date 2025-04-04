@@ -14,7 +14,7 @@ public abstract class Person {
 	private PersonSex sex;
 	
 	public Person() {
-		
+
 	}
 	
 	public Person(String name, Date date_birth) {
