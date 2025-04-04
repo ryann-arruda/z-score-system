@@ -3,17 +3,17 @@ package entities;
 import java.util.HashMap;
 
 public class ZscoreTable {
-	private HashMap<Integer, ZscoreTableRow> rows;
+	private HashMap<Long, ZscoreTableRow> rows;
 	
 	public ZscoreTable() {
 		rows = new HashMap<>();
 	}
 	
-	public void addRow(Integer month, ZscoreTableRow zscoreTableRow) {
+	public void addRow(Long month, ZscoreTableRow zscoreTableRow) {
 		rows.put(month, zscoreTableRow);
 	}
 	
-	public ZscoreTableRow getRow(Integer month) {
+	public ZscoreTableRow getRow(Long month) {
 		return rows.get(month);
 	}
 	

@@ -30,7 +30,7 @@ public class ZscoreTableDaoImpl implements ZscoreTableDao{
 			zscoreTableRow.setMedian(rs.getDouble("median"));
 			zscoreTableRow.setStdDeviation(rs.getDouble("std_deviation"));
 			
-			zscoreTable.addRow(rs.getInt("months"), zscoreTableRow);
+			zscoreTable.addRow(rs.getLong("months"), zscoreTableRow);
 		}
 		
 		return zscoreTable;
