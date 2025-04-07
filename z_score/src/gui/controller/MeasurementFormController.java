@@ -12,16 +12,18 @@ import db.DBException;
 import entities.Child;
 import entities.MeasurementZscore;
 import entities.Nutritionist;
+import entities.ZscoreCalculator;
+import entities.enums.ZscoreClassification;
 import entities.service.NutritionistService;
 import exceptions.FieldValidationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import util.Alerts;
 import util.Constraints;
 import util.Utils;
@@ -32,6 +34,8 @@ public class MeasurementFormController implements Initializable{
 	private NutritionistService service;
 	
 	private Child child;
+	
+	private ZscoreCalculator calculator;
 	
 	@FXML
 	private DatePicker date;
@@ -63,6 +67,10 @@ public class MeasurementFormController implements Initializable{
 	
 	public void setNutritionistService(NutritionistService service) {
 		this.service = service;
+	}
+	
+	public void setZscoreCalculator(ZscoreCalculator calculator) {
+		this.calculator = calculator;
 	}
 	
 	public void setChild(Child child) {
@@ -115,8 +123,17 @@ public class MeasurementFormController implements Initializable{
 		Double heightValue = Utils.tryParseToDouble(height.getText());
 		Date measurementDate = getDate();
 		
-		// TODO Create a class to calculate Z-score value and rank
-		return new MeasurementZscore(zscoreValue, measurementDate);
+		Map<String, Object> result = calculator.calculateZscore(child, weightValue);
+		
+		Double zscoreValue = (Double)result.get("zscoreValue");
+		ZscoreClassification classification = (ZscoreClassification)result.get("zscoreClassification");
+		
+		
+		return new MeasurementZscore(zscoreValue, 
+						    		 measurementDate,
+						    		 weightValue,
+						    		 heightValue,
+						    		 classification);
 	}
 
 	private Date getDate() {
