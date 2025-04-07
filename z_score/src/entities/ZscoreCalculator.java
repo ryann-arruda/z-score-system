@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import entities.enums.PersonSex;
@@ -57,7 +58,7 @@ public class ZscoreCalculator {
 	}
 	
 	public Map<String, Object> calculateZscore(Child child, Double weightValue){
-		Map<String, Object> result;
+		Map<String, Object> result = new HashMap<>();
 		
 		ZscoreTableRow zscoreTableRow = getZscoreTableRow(child);
 		Double median = zscoreTableRow.getMedian();
@@ -65,5 +66,10 @@ public class ZscoreCalculator {
 		
 		Double zscoreValue = (weightValue - median)/(stdDeviation - median);
 		ZscoreClassification zscoreClassification = getClassification(zscoreValue);
+		
+		result.put("zscoreValue", zscoreValue);
+		result.put("zscoreClassification", zscoreClassification);
+		
+		return result;
 	}
 }
