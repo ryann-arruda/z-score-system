@@ -17,10 +17,11 @@ public abstract class Person {
 
 	}
 	
-	public Person(String name, Date date_birth) {
-		if(name != null && date_birth != null) {
+	public Person(String name, Date date_birth, PersonSex sex) {
+		if(name != null && date_birth != null && sex != null) {
 			this.name = name;
 			this.dateBirth = date_birth;
+			this.sex = sex;
 		}
 		else {
 			throw new IllegalStateException("Parameters cannot be null");
