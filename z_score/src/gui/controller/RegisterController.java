@@ -13,11 +13,13 @@ import entities.Nutritionist;
 import entities.service.NutritionistService;
 import exceptions.FieldValidationException;
 import exceptions.UserRegistrationException;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -39,6 +41,9 @@ public class RegisterController implements Initializable{
 	private DatePicker dateBirth;
 	
 	@FXML
+	private ComboBox<String> sex;
+	
+	@FXML
 	private TextField regionalCouncilNutritionists;
 	
 	@FXML
@@ -55,6 +60,9 @@ public class RegisterController implements Initializable{
 	
 	@FXML
 	private Label dateBirthError;
+	
+	@FXML
+	private Label sexError;
 	
 	@FXML
 	private Label regionalCouncilNutritionistsError;
@@ -103,6 +111,7 @@ public class RegisterController implements Initializable{
 			setErrorMessages(e.getErrors());
 		}
 		catch(DBException e) {
+			e.printStackTrace();
 			Alerts.showAlert("Erro", null, "Não é possível cadastrar um novo usuário.", AlertType.ERROR);
 		}
 		catch(UserRegistrationException e) {
@@ -130,6 +139,10 @@ public class RegisterController implements Initializable{
 		
 		if(dateBirth.getValue() == null) {
 			exception.addError("dateBirthError", "Insira uma data de nascimento válida!");
+		}
+
+		if(sex.getValue() == null) {
+			exception.addError("sexError", "Insira um sexo válido!");
 		}
 		
 		if(regionalCouncilNutritionists.getText() == null ||
@@ -183,6 +196,13 @@ public class RegisterController implements Initializable{
 			dateBirthError.setText("");
 		}
 		
+		if(fields.contains("sexError")) {
+			sexError.setText(errors.get("sexError"));
+		}
+		else {
+			sexError.setText("");
+		}
+		
 		if(fields.contains("regionalCouncilNutritionistsError")) {
 			regionalCouncilNutritionistsError.setText(errors.get("regionalCouncilNutritionistsError"));
 		}
@@ -210,5 +230,7 @@ public class RegisterController implements Initializable{
 		dateBirth.getEditor().setDisable(true);
 		Constraints.setTextFieldMaxLength(username, 30);
 		Constraints.setPasswordFieldMaxLength(password, 30);
+		
+		sex.getItems().addAll(FXCollections.observableArrayList("Masculino", "Feminino"));
 	}
 }
