@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import entities.enums.PersonSex;
+
 public class Nutritionist extends Person{
 	private Long id;
 	private String regionalCouncilNutritionists;
@@ -18,8 +20,8 @@ public class Nutritionist extends Person{
 		schools = new HashSet<>();
 	}
 
-	public Nutritionist(String name, Date date_birth, String regionalCouncilNutritionists, String username, String password) {
-		super(name, date_birth);
+	public Nutritionist(String name, Date date_birth, PersonSex sex, String regionalCouncilNutritionists, String username, String password) {
+		super(name, date_birth, sex);
 		
 		this.regionalCouncilNutritionists = regionalCouncilNutritionists;
 		this.username = username;
