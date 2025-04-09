@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -40,10 +41,16 @@ public class ChildFormController implements Initializable{
 	private DatePicker childDateBirth;
 	
 	@FXML
+	private ComboBox sex;
+	
+	@FXML
 	private Label childNameError;
 	
 	@FXML
 	private Label childDateBirthError;
+	
+	@FXML
+	private Label sexError;
 	
 	@FXML
 	private Button save;
@@ -72,6 +79,10 @@ public class ChildFormController implements Initializable{
 		
 		if(childDateBirth.getValue() == null) {
 			exception.addError("childDateBirthError", "Insira uma data de nascimento válida!");
+		}
+		
+		if(sex.getValue() == null) {
+			exception.addError("sexError", "Insira um sexo válido!");
 		}
 		
 		if(exception.getErrors().size() > 0) {
@@ -143,6 +154,13 @@ public class ChildFormController implements Initializable{
 		}
 		else {
 			childDateBirthError.setText("");
+		}
+		
+		if(fields.contains("sexError")) {
+			sexError.setText(errors.get("sexError"));
+		}
+		else {
+			sexError.setText("");
 		}
 	}
 }
