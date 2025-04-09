@@ -15,6 +15,7 @@ import db.DBException;
 import db.Database;
 import entities.Nutritionist;
 import entities.School;
+import entities.enums.PersonSex;
 import entities.repository.DaoFactory;
 import entities.repository.NutritionistDao;
 import entities.repository.SchoolDao;
@@ -28,7 +29,8 @@ public class NutritionistDaoImpl implements NutritionistDao{
 	
 	private Nutritionist instantiateNutritionist(ResultSet rs) throws SQLException{
 		Nutritionist nutritionist = new Nutritionist(rs.getString("nutritionist_name"),
-													 new Date(rs.getDate("date_birth").getTime()), 
+													 new Date(rs.getDate("date_birth").getTime()),
+													 getSex(rs.getString("sex")),
 													 rs.getString("regional_council_nutritionists"),
 													 rs.getString("nutritionist_username"),
 													 rs.getString("nutritionist_password"));
@@ -42,6 +44,17 @@ public class NutritionistDaoImpl implements NutritionistDao{
 		}
 		
 		return nutritionist;
+	}
+	
+	private PersonSex getSex(String sex) {
+		if(sex.equals("Masculino")) {
+			return PersonSex.MALE;
+		}
+		else if(sex.equals("Feminino")) {
+			return PersonSex.FEMALE;
+		}
+		
+		throw new IllegalArgumentException("The value cannot be identified");
 	}
 
 	private Set<School> getSchools(Long id) {
