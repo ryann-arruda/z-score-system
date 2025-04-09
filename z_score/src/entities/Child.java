@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import entities.enums.PersonSex;
+
 public class Child extends Person{
 	private Long id;
 	private List<MeasurementZscore> zScores;
 
-	public Child(String name, Date date_birth) {
-		super(name, date_birth);
+	public Child(String name, Date date_birth, PersonSex sex) {
+		super(name, date_birth, sex);
 		
 		this.id = null;
 		zScores = new ArrayList<>();
