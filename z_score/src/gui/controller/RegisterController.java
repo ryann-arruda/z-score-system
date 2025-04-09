@@ -10,6 +10,7 @@ import java.util.Set;
 
 import db.DBException;
 import entities.Nutritionist;
+import entities.enums.PersonSex;
 import entities.service.NutritionistService;
 import exceptions.FieldValidationException;
 import exceptions.UserRegistrationException;
@@ -169,11 +170,22 @@ public class RegisterController implements Initializable{
 		return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
 	
+	private PersonSex getSex() {
+		
+		if(sex.getValue().equals("Masculino")) {
+			return PersonSex.MALE;
+		}
+		else {
+			return PersonSex.FEMALE;
+		}
+	}
+	
 	private void getFormData() {		
 		validateFormData();
 		
 		nutritionist.setName(name.getText());
 		nutritionist.setDateBirth(getDateBirth());
+		nutritionist.setSex(getSex());
 		nutritionist.setRegionalCouncilNutritionists(regionalCouncilNutritionists.getText());
 		nutritionist.setUsername(username.getText());
 		nutritionist.setPassword(password.getText());
