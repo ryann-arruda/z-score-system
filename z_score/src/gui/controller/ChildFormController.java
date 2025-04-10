@@ -12,8 +12,10 @@ import db.DBException;
 import entities.Child;
 import entities.LevelEducation;
 import entities.Nutritionist;
+import entities.enums.PersonSex;
 import entities.service.NutritionistService;
 import exceptions.FieldValidationException;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,7 +43,7 @@ public class ChildFormController implements Initializable{
 	private DatePicker childDateBirth;
 	
 	@FXML
-	private ComboBox sex;
+	private ComboBox<String> sex;
 	
 	@FXML
 	private Label childNameError;
@@ -96,6 +98,16 @@ public class ChildFormController implements Initializable{
 		return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
 	
+	private PersonSex getSex() {
+		
+		if(sex.getValue().equals("Masculino")) {
+			return PersonSex.MALE;
+		}
+		else {
+			return PersonSex.FEMALE;
+		}
+	}
+	
 	@FXML
 	public void onSave(ActionEvent event) {
 		if(nutritionist == null) {
@@ -113,7 +125,7 @@ public class ChildFormController implements Initializable{
 		try {
 			validateFields();
 			
-			Child child = new Child(childName.getText(), getDateBirth());
+			Child child = new Child(childName.getText(), getDateBirth(), getSex());
 			levelEducation.addChild(child);
 			
 			if(service.update(nutritionist)) {
@@ -137,6 +149,8 @@ public class ChildFormController implements Initializable{
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		childDateBirth.getEditor().setDisable(true);
+		
+		sex.getItems().addAll(FXCollections.observableArrayList("Masculino", "Feminino"));
 	}
 	
 	private void setErrorMessages(Map<String, String> errors) {
