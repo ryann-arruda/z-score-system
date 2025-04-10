@@ -30,7 +30,7 @@ public class NutritionistDaoImpl implements NutritionistDao{
 	private Nutritionist instantiateNutritionist(ResultSet rs) throws SQLException{
 		Nutritionist nutritionist = new Nutritionist(rs.getString("nutritionist_name"),
 													 new Date(rs.getDate("date_birth").getTime()),
-													 getSex(rs.getString("sex")),
+													 PersonSex.valueOf(rs.getString("sex")),
 													 rs.getString("regional_council_nutritionists"),
 													 rs.getString("nutritionist_username"),
 													 rs.getString("nutritionist_password"));
@@ -44,17 +44,6 @@ public class NutritionistDaoImpl implements NutritionistDao{
 		}
 		
 		return nutritionist;
-	}
-	
-	private PersonSex getSex(String sex) {
-		if(sex.equals("Masculino")) {
-			return PersonSex.MALE;
-		}
-		else if(sex.equals("Feminino")) {
-			return PersonSex.FEMALE;
-		}
-		
-		throw new IllegalArgumentException("The value cannot be identified");
 	}
 
 	private Set<School> getSchools(Long id) {
@@ -102,15 +91,16 @@ public class NutritionistDaoImpl implements NutritionistDao{
 				if(findByAuthenticationInformation(obj.getUsername(), obj.getPassword()) == null) {
 					conn.setAutoCommit(false);
 					
-					ps = conn.prepareStatement("INSERT INTO Nutritionist(nutritionist_name, date_birth, regional_council_nutritionists, " + 
+					ps = conn.prepareStatement("INSERT INTO Nutritionist(nutritionist_name, date_birth, sex, regional_council_nutritionists, " + 
 											   "nutritionist_username, nutritionist_password)" +
-											   " VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+											   " VALUES (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 					
 					ps.setString(1, obj.getName());
 					ps.setDate(2, new java.sql.Date(obj.getDateBirth().getTime()));
-					ps.setString(3, obj.getRegionalCouncilNutritionists());
-					ps.setString(4, obj.getUsername());
-					ps.setString(5, obj.getPassword());
+					ps.setString(3, obj.getSex().name());
+					ps.setString(4, obj.getRegionalCouncilNutritionists());
+					ps.setString(5, obj.getUsername());
+					ps.setString(6, obj.getPassword());
 					
 					List<Long> schoolsId = new ArrayList<>();
 					for(School school: obj.getAllSchools()) {
@@ -195,16 +185,17 @@ public class NutritionistDaoImpl implements NutritionistDao{
 				if(findById(obj.getId()) != null) {
 					conn.setAutoCommit(false);
 					
-					ps = conn.prepareStatement("UPDATE Nutritionist SET nutritionist_name = ?, date_birth = ?, " + 
+					ps = conn.prepareStatement("UPDATE Nutritionist SET nutritionist_name = ?, date_birth = ?, sex = ?, " + 
 											   "regional_council_nutritionists = ?, nutritionist_username = ?, " +
 									           "nutritionist_password = ? WHERE nutritionist_id = ?");
 					
 					ps.setString(1, obj.getName());
 					ps.setDate(2, new java.sql.Date(obj.getDateBirth().getTime()));
-					ps.setString(3, obj.getRegionalCouncilNutritionists());
-					ps.setString(4, obj.getUsername());
-					ps.setString(5, obj.getPassword());
-					ps.setLong(6, obj.getId());
+					ps.setString(3, obj.getSex().name());
+					ps.setString(4, obj.getRegionalCouncilNutritionists());
+					ps.setString(5, obj.getUsername());
+					ps.setString(6, obj.getPassword());
+					ps.setLong(7, obj.getId());
 					
 					if(ps.executeUpdate() > 0) {
 						List<Long> newRelationshipsIds = new ArrayList<>();
