@@ -13,6 +13,7 @@ import db.DBException;
 import db.Database;
 import entities.Child;
 import entities.MeasurementZscore;
+import entities.enums.PersonSex;
 import entities.repository.ChildDao;
 import entities.repository.DaoFactory;
 import entities.repository.MeasurementZscoreDao;
@@ -30,6 +31,7 @@ public class ChildDaoImpl implements ChildDao{
 		child.setId(rs.getLong("child_id"));
 		child.setName(rs.getString("child_name"));
 		child.setDateBirth(new Date(rs.getDate("date_birth").getTime()));
+		child.setSex(PersonSex.valueOf(rs.getString("sex")));
 		
 		List<MeasurementZscore> zScores = getMeasurementRelationships(child.getId());
 		
@@ -52,10 +54,11 @@ public class ChildDaoImpl implements ChildDao{
 		
 		try {
 			if(obj.getId() == null) {
-				ps = conn.prepareStatement("INSERT INTO Child(child_name, date_birth) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
+				ps = conn.prepareStatement("INSERT INTO Child(child_name, date_birth, sex) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS);
 				
 				ps.setString(1, obj.getName());
 				ps.setDate(2, new java.sql.Date(obj.getDateBirth().getTime()));
+				ps.setString(3, obj.getSex().name());
 				
 				List<Long> measurementZscoreIds = new ArrayList<>();
 				for(MeasurementZscore msz : obj.getAllZscores()) {
@@ -123,15 +126,17 @@ public class ChildDaoImpl implements ChildDao{
 			if(obj.getId() != null) {
 				
 				if(findById(obj.getId()) != null) {
-					ps = conn.prepareStatement("UPDATE Child SET child_name = ?, date_birth = ? " + 
+					ps = conn.prepareStatement("UPDATE Child SET child_name = ?, date_birth = ?, sex = ? " + 
 											   "WHERE child_id = ?");
 					
 					obj.setName(obj.getName());
 					obj.setDateBirth(obj.getDateBirth());
+					obj.setSex(obj.getSex());
 					
 					ps.setString(1, obj.getName());
 					ps.setDate(2, new java.sql.Date(obj.getDateBirth().getTime()));
-					ps.setLong(3, obj.getId());
+					ps.setString(3, obj.getSex().name());
+					ps.setLong(4, obj.getId());
 					
 					if(ps.executeUpdate() > 0) {
 						List<Long> newRelationshipsIds = new ArrayList<>();
