@@ -77,7 +77,7 @@
         <columns>
           <TableColumn fx:id="tableColumnName" prefWidth="250.0" text="Nome da Criança" />
           <TableColumn fx:id="tableColumnBirthDate" minWidth="0.0" prefWidth="150.0" text="Data de Nascimento" />
-            <TableColumn prefWidth="150.0" text="Sexo" />
+            <TableColumn fx:id="tableColumnSex" prefWidth="150.0" text="Sexo" />
             <TableColumn fx:id="tableColumnLastZscoreMeasurement" prefWidth="160.0" text="Última Medida de Z-score" />
             <TableColumn fx:id="tableColumnSEE" prefWidth="145.0" />
             <TableColumn fx:id="tableColumnEDIT" prefWidth="145.0" />
