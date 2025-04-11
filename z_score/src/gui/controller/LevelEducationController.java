@@ -11,10 +11,12 @@ import entities.Child;
 import entities.LevelEducation;
 import entities.Nutritionist;
 import entities.School;
+import entities.enums.PersonSex;
 import entities.service.NutritionistService;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -71,6 +73,9 @@ public class LevelEducationController implements Initializable{
 	
 	@FXML
 	private TableColumn<Child, LocalDate> tableColumnBirthDate;
+	
+	@FXML
+	private TableColumn<Child, String> tableColumnSex;
 	
 	@FXML
 	private TableColumn<Child, Double> tableColumnLastZscoreMeasurement;
@@ -148,6 +153,15 @@ public class LevelEducationController implements Initializable{
 			Alerts.showAlert("Erro", null, "Não foi possível carregar a visualização da escola. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
+	
+	private String formatSex(PersonSex sex) {
+		
+		if(sex == PersonSex.MALE) {
+			return "Masculino";
+		}
+		
+		return "Feminino";
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
@@ -189,7 +203,7 @@ public class LevelEducationController implements Initializable{
 		
 		// TableColumn Date of Birth
 		
-		tableColumnBirthDate.setCellFactory(cell -> new TableCell<>() {
+		tableColumnBirthDate.setCellFactory(cell -> new TableCell<Child, LocalDate>() {
 			private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			
 			@Override
@@ -210,6 +224,25 @@ public class LevelEducationController implements Initializable{
 																									 .toInstant()
 																									 .atZone(ZoneId.systemDefault())
 																									 .toLocalDate()));
+		
+		// TableColumn Sex
+		
+		tableColumnSex.setCellFactory(cell -> new TableCell<Child, String>() {
+			@Override
+			protected void updateItem(String sex, boolean empty) {
+				super.updateItem(sex, empty);
+				
+				if(sex == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				setText(sex);
+				setAlignment(Pos.CENTER);
+			}
+		});
+		
+		tableColumnSex.setCellValueFactory(param -> new SimpleStringProperty(formatSex(param.getValue().getSex())));
 	}
 	
 	private void createDialogForm(String absoluteName, Stage parentStage) {
