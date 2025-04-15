@@ -1,5 +1,7 @@
 package util;
 
+import entities.enums.PersonSex;
+import entities.enums.ZscoreClassification;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.stage.Stage;
@@ -20,6 +22,34 @@ public class Utils {
 		}
 		catch(NumberFormatException e) {
 			return null;
+		}
+	}
+	
+	public static String formatSex(PersonSex sex) {
+		
+		if(sex == PersonSex.MALE) {
+			return "Masculino";
+		}
+		
+		return "Feminino";
+	}
+	
+	public static String formatZscoreClassification(ZscoreClassification classification) {
+		
+		if(classification == ZscoreClassification.OBESITY) {
+			return "Obesidade";
+		}
+		else if(classification == ZscoreClassification.OVERWEIGHT) {
+			return "Sobrepeso";
+		}
+		else if(classification == ZscoreClassification.NORMAL) {
+			return "Normal";
+		}
+		else if(classification == ZscoreClassification.MODERATE_MALNUTRITION) {
+			return "Baixo Peso";
+		}
+		else {
+			return "Desnutrição Severa";
 		}
 	}
 }
