@@ -153,15 +153,6 @@ public class LevelEducationController implements Initializable{
 			Alerts.showAlert("Erro", null, "Não foi possível carregar a visualização da escola. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
-	
-	private String formatSex(PersonSex sex) {
-		
-		if(sex == PersonSex.MALE) {
-			return "Masculino";
-		}
-		
-		return "Feminino";
-	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
@@ -242,7 +233,7 @@ public class LevelEducationController implements Initializable{
 			}
 		});
 		
-		tableColumnSex.setCellValueFactory(param -> new SimpleStringProperty(formatSex(param.getValue().getSex())));
+		tableColumnSex.setCellValueFactory(param -> new SimpleStringProperty(Utils.formatSex(param.getValue().getSex())));
 	}
 	
 	private void createDialogForm(String absoluteName, Stage parentStage) {
