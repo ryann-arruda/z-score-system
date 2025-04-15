@@ -25,7 +25,7 @@
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="nutritionistIdentifier" layoutX="511.0" layoutY="10.0" AnchorPane.topAnchor="10.0">
+      <Label fx:id="nutritionistIdentifier" layoutX="511.0" layoutY="10.0" AnchorPane.leftAnchor="585.0" AnchorPane.topAnchor="10.0">
          <font>
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
@@ -46,7 +46,7 @@
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="schoolIdentifier" layoutX="518.0" layoutY="67.0" textFill="#5b59ff" AnchorPane.leftAnchor="518.0">
+      <Label fx:id="schoolIdentifier" layoutX="518.0" layoutY="67.0" textFill="#5b59ff" AnchorPane.leftAnchor="590.0">
          <font>
             <Font name="Trebuchet MS" size="13.0" />
          </font>
