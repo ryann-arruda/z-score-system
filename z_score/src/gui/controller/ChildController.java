@@ -14,6 +14,7 @@ import entities.Nutritionist;
 import entities.service.NutritionistService;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -57,6 +58,9 @@ public class ChildController implements Initializable{
 	
 	@FXML
 	private TableColumn<MeasurementZscore, Double> value;
+	
+	@FXML
+	private TableColumn<MeasurementZscore, String> classification;
 	
 	@FXML
 	private TableColumn<MeasurementZscore, MeasurementZscore> tableColumnEDIT;
@@ -182,6 +186,24 @@ public class ChildController implements Initializable{
 		});
 		
 		value.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getzScore()));
+		
+		// TableColumn Classification
+		classification.setCellFactory(cell -> new TableCell<MeasurementZscore, String>() {
+			@Override
+			protected void updateItem(String classification, boolean empty) {
+				super.updateItem(classification, empty);
+				
+				if(classification == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				setText(classification);
+				setAlignment(Pos.CENTER);
+			}
+		});
+		
+		classification.setCellValueFactory(param -> new SimpleStringProperty(Utils.formatZscoreClassification(param.getValue().getClassification())));
 	}
 	
 	private void initEditButtons() {
