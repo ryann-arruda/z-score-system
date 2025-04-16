@@ -8,10 +8,12 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
+import entities.Calculator;
 import entities.Child;
 import entities.MeasurementZscore;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
+import entities.service.ZscoreTableService;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -114,6 +116,7 @@ public class ChildController implements Initializable{
 			measurementFormController.setNutritionist(nutritionist);
 			measurementFormController.setChild(child);
 			measurementFormController.setNutritionistService(new NutritionistService());
+			measurementFormController.setZscoreCalculator(new Calculator(new ZscoreTableService()));
 			
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Cadastro de Nova Medida Z-score");
