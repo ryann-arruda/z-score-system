@@ -7,12 +7,12 @@ import entities.enums.PersonSex;
 import entities.enums.ZscoreClassification;
 import entities.service.ZscoreTableService;
 
-public class ZscoreCalculator {
+public class Calculator implements ZscoreCalculator{
 	private ZscoreTableService service;
 	private ZscoreTable zscoreTableBoys;
 	private ZscoreTable zscoreTableGirls;
 	
-	public ZscoreCalculator(ZscoreTableService service) {
+	public Calculator(ZscoreTableService service) {
 		this.service = service;
 		
 		getTables();
