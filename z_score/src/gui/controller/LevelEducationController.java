@@ -9,10 +9,11 @@ import java.util.ResourceBundle;
 
 import entities.Child;
 import entities.LevelEducation;
+import entities.MeasurementZscore;
 import entities.Nutritionist;
 import entities.School;
-import entities.enums.PersonSex;
 import entities.service.NutritionistService;
+import gui.listeners.DataChangeListener;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -39,7 +40,7 @@ import javafx.stage.Stage;
 import util.Alerts;
 import util.Utils;
 
-public class LevelEducationController implements Initializable{
+public class LevelEducationController implements Initializable, DataChangeListener{
 	
 	private Nutritionist nutritionist;
 	
@@ -289,6 +290,11 @@ public class LevelEducationController implements Initializable{
 		initRemoveButtons();
 	}
 	
+	@Override
+	public void onDataChanged() {
+		updateTableViewChild();
+	}
+	
 	private void createDialogView(String absoluteName, Stage parentStage, Child child) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
@@ -312,6 +318,7 @@ public class LevelEducationController implements Initializable{
 			childController.setChild(child);
 			childController.setNutritionistService(new NutritionistService());
 			childController.updateTableViewMeasures();
+			childController.subscribeDataChangeListener(this);
 			
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Visualização de Medições do Aluno(a)");
@@ -319,6 +326,12 @@ public class LevelEducationController implements Initializable{
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
 			dialogStage.initModality(Modality.WINDOW_MODAL);
+			
+			Stage currentStage = (Stage) dialogStage.getScene().getWindow();
+			currentStage.setOnCloseRequest(event -> {
+				event.consume();
+			});
+			
 			dialogStage.show();
 		}
 		catch(IOException e) {

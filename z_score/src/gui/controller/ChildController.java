@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import entities.Calculator;
@@ -46,6 +48,8 @@ public class ChildController implements Initializable, DataChangeListener{
 	private Child child;
 	
 	private NutritionistService service;
+	
+	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 	
 	@FXML
 	private Label childName;
@@ -94,8 +98,13 @@ public class ChildController implements Initializable, DataChangeListener{
 		birthDate.setText(sdf.format(child.getDateBirth()));
 	}
 	
+	public void subscribeDataChangeListener(DataChangeListener listener) {
+		dataChangeListeners.add(listener);
+	}
+	
 	@FXML
 	public void onGoBack(ActionEvent event) {
+		notifyDataChangeListeners();
 		Utils.getCurrentStage(event).close();
 	}
 	
@@ -142,6 +151,12 @@ public class ChildController implements Initializable, DataChangeListener{
 		tableViewMeasures.setItems(obsList);
 		initEditButtons();
 		initRemoveButtons();
+	}
+	
+	private void notifyDataChangeListeners() {
+		for(DataChangeListener listener: dataChangeListeners) {
+			listener.onDataChanged();
+		}
 	}
 	
 	@FXML
