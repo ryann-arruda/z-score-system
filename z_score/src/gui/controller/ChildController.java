@@ -14,6 +14,7 @@ import entities.MeasurementZscore;
 import entities.Nutritionist;
 import entities.service.NutritionistService;
 import entities.service.ZscoreTableService;
+import gui.listeners.DataChangeListener;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -38,7 +39,7 @@ import javafx.stage.Stage;
 import util.Alerts;
 import util.Utils;
 
-public class ChildController implements Initializable{
+public class ChildController implements Initializable, DataChangeListener{
 	
 	private Nutritionist nutritionist;
 	
@@ -117,6 +118,7 @@ public class ChildController implements Initializable{
 			measurementFormController.setChild(child);
 			measurementFormController.setNutritionistService(new NutritionistService());
 			measurementFormController.setZscoreCalculator(new Calculator(new ZscoreTableService()));
+			measurementFormController.subscribeDataChangeListener(this);
 			
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Cadastro de Nova Medida Z-score");
@@ -145,6 +147,11 @@ public class ChildController implements Initializable{
 	@FXML
 	public void onAddNewMeasurement(ActionEvent event) {
 		createDialogForm("../../gui/MeasurementForm_view.fxml", Utils.getCurrentStage(event));
+	}
+	
+	@Override
+	public void onDataChanged() {
+		updateTableViewMeasures();
 	}
 
 	@Override

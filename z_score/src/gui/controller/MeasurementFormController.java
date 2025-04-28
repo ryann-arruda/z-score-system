@@ -3,7 +3,9 @@ package gui.controller;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -16,6 +18,7 @@ import entities.ZscoreCalculator;
 import entities.enums.ZscoreClassification;
 import entities.service.NutritionistService;
 import exceptions.FieldValidationException;
+import gui.listeners.DataChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,6 +39,8 @@ public class MeasurementFormController implements Initializable{
 	private Child child;
 	
 	private ZscoreCalculator calculator;
+	
+	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 	
 	@FXML
 	private DatePicker date;
@@ -77,6 +82,10 @@ public class MeasurementFormController implements Initializable{
 		this.child = child;
 	}
 	
+	public void subscribeDataChangeListener(DataChangeListener listener) {
+		dataChangeListeners.add(listener);
+	}
+	
 	private void validateFields() {
 		FieldValidationException exception = new FieldValidationException("Erros when filling in fields");
 		
@@ -107,6 +116,7 @@ public class MeasurementFormController implements Initializable{
 			
 			if(service.update(nutritionist)) {
 				Alerts.showAlert("Sucesso", null, "Medida z-score cadastrada com sucesso!", AlertType.CONFIRMATION);
+				notifyDataChangeListeners();
 				Utils.getCurrentStage(event).close();
 			}
 		}
@@ -145,6 +155,12 @@ public class MeasurementFormController implements Initializable{
 	@FXML
 	public void onCancel(ActionEvent event) {
 		Utils.getCurrentStage(event).close();
+	}
+	
+	private void notifyDataChangeListeners() {
+		for(DataChangeListener listener: dataChangeListeners) {
+			listener.onDataChanged();
+		}
 	}
 
 	@Override
