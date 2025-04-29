@@ -1,8 +1,10 @@
 package gui.controller;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import db.DBException;
@@ -13,6 +15,7 @@ import exceptions.FieldValidationException;
 import gui.listeners.DataChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,9 +23,11 @@ import javafx.scene.control.TextField;
 import util.Alerts;
 import util.Utils;
 
-public class SchoolFormController {
+public class SchoolFormController{
 	
 	private Nutritionist nutritionist;
+	
+	private School school;
 	
 	private NutritionistService service;
 	
@@ -48,6 +53,10 @@ public class SchoolFormController {
 	
 	public void setNutritionist(Nutritionist nutritionist) {
 		this.nutritionist = nutritionist;
+	}
+	
+	public void setSchool(School school) {
+		this.school = school;
 	}
 	
 	public void setNutritionistService(NutritionistService service) {
@@ -113,6 +122,11 @@ public class SchoolFormController {
 	@FXML
 	public void onCancel(ActionEvent event) {
 		Utils.getCurrentStage(event).close();
+	}
+	
+	public void updateFormData() {
+		name.setText(school.getName());
+		nationalRegistryLegalEntities.setText(school.getNationalRegistryLegalEntities());
 	}
 	
 	private void setErrorMessages(Map<String, String> errors) {

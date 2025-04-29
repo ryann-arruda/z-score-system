@@ -93,10 +93,10 @@ public class MainController implements Initializable, DataChangeListener{
 	
 	@FXML
 	public void onAddNewSchool(ActionEvent event) {
-		createDialogForm("../../gui/SchoolForm_view.fxml", Utils.getCurrentStage(event));
+		createDialogForm(new School(), "../../gui/SchoolForm_view.fxml", Utils.getCurrentStage(event));
 	}
 	
-	private void createDialogForm(String absoluteName, Stage parentStage) {
+	private void createDialogForm(School school, String absoluteName, Stage parentStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			
@@ -108,11 +108,13 @@ public class MainController implements Initializable, DataChangeListener{
 			
 			SchoolFormController schoolFormController = loader.getController();
 			schoolFormController.setNutritionist(nutritionist);
+			schoolFormController.setSchool(school);
 			schoolFormController.setNutritionistService(new NutritionistService());
 			schoolFormController.subscribeDataChangeListener(this);
-			
+			schoolFormController.updateFormData();
+
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Cadastro de Escola");
+			dialogStage.setTitle("Dados da Escola");
 			dialogStage.setScene(new Scene(anchorPane));
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
@@ -120,7 +122,8 @@ public class MainController implements Initializable, DataChangeListener{
 			dialogStage.show();
 		}
 		catch(IOException e) {
-			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela de cadastro. Tente novamente mais tarde.", AlertType.ERROR);
+			e.printStackTrace();
+			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela solicitada. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
 	
@@ -258,7 +261,7 @@ public class MainController implements Initializable, DataChangeListener{
 				}
 				
 				button.setPrefWidth(65.0);
-				button.setOnAction(null); // Implementing opening a new view
+				button.setOnAction(event -> createDialogForm(school,"../../gui/SchoolForm_view.fxml", Utils.getCurrentStage(event)));
 				setGraphic(stackPane);
 			}
 		});
