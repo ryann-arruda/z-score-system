@@ -205,7 +205,7 @@ public class ChildController implements Initializable, DataChangeListener{
 					return;
 				}
 				
-				setText(value.toString());
+				setText(String.format("%.4f", value));
 				setAlignment(Pos.CENTER);
 			}
 		});

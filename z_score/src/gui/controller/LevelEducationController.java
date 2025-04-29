@@ -186,7 +186,7 @@ public class LevelEducationController implements Initializable, DataChangeListen
 					return;
 				}
 				
-				setText(zscoreMeasurement.toString());
+				setText(String.format("%.4f", zscoreMeasurement));
 				setAlignment(Pos.CENTER);
 			}
 		});
