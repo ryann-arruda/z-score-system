@@ -18,6 +18,11 @@ public class School {
 		this.educationLevels = new ArrayList<>();
 	}
 	
+	public School() {
+		this.id = null;
+		this.educationLevels = new ArrayList<>();
+	}
+	
 	public Long getId() {
 		return id;
 	}
