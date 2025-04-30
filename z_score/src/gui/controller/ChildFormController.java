@@ -34,6 +34,8 @@ public class ChildFormController implements Initializable{
 	
 	private LevelEducation levelEducation;
 	
+	private Child child;
+	
 	private NutritionistService service;
 	
 	@FXML
@@ -64,12 +66,16 @@ public class ChildFormController implements Initializable{
 		this.nutritionist = nutritionist;
 	}
 	
-	public void setNutritionistService(NutritionistService service) {
-		this.service = service;
-	}
-	
 	public void setLevelEducation(LevelEducation levelEducation) {
 		this.levelEducation = levelEducation;
+	}
+	
+	public void setChild(Child child) {
+		this.child = child;
+	}
+	
+	public void setNutritionistService(NutritionistService service) {
+		this.service = service;
 	}
 	
 	private void validateFields() {
@@ -125,11 +131,11 @@ public class ChildFormController implements Initializable{
 		try {
 			validateFields();
 			
-			Child child = new Child(childName.getText(), getDateBirth(), getSex());
+			getFormData();
 			levelEducation.addChild(child);
 			
 			if(service.update(nutritionist)) {
-				Alerts.showAlert("Sucesso", null, "Cadastro de aluno realizado com sucesso!", AlertType.CONFIRMATION);
+				Alerts.showAlert("Sucesso", null, "Dados de aluno inseridos com sucesso!", AlertType.CONFIRMATION);
 				Utils.getCurrentStage(event).close();
 			}
 		}
@@ -137,13 +143,36 @@ public class ChildFormController implements Initializable{
 			setErrorMessages(e.getErrors());
 		}
 		catch(DBException e) {
-			Alerts.showAlert("Erro", null, "Não foi possível cadastrar um novo aluno. Tente novamente mais tarde.", AlertType.ERROR);
+			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela solicitada. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
 	
 	@FXML
 	public void onCancel(ActionEvent event) {
 		Utils.getCurrentStage(event).close();
+	}
+	
+	private void getFormData() {
+		child.setName(childName.getText());
+		child.setDateBirth(getDateBirth());
+		child.setSex(getSex());
+	}
+	
+	public void updateFormData() {
+		childName.setText(child.getName());
+		
+		if(child.getDateBirth() != null) {
+			childDateBirth.setValue(child.getDateBirth().toInstant()
+														.atZone(ZoneId.systemDefault())
+														.toLocalDate());
+		}
+		
+		if(child.getSex() == PersonSex.FEMALE) {
+			sex.setValue("Feminino");
+		}
+		else if(child.getSex() == PersonSex.MALE){
+			sex.setValue("Masculino");
+		}
 	}
 
 	@Override

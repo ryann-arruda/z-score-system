@@ -237,7 +237,7 @@ public class LevelEducationController implements Initializable, DataChangeListen
 		tableColumnSex.setCellValueFactory(param -> new SimpleStringProperty(Utils.formatSex(param.getValue().getSex())));
 	}
 	
-	private void createDialogForm(String absoluteName, Stage parentStage) {
+	private void createDialogForm(Child child, String absoluteName, Stage parentStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			
@@ -259,6 +259,8 @@ public class LevelEducationController implements Initializable, DataChangeListen
 			childFormController.setNutritionist(nutritionist);
 			childFormController.setLevelEducation(levelEducation);
 			childFormController.setNutritionistService(new NutritionistService());
+			childFormController.setChild(child);
+			childFormController.updateFormData();
 			
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Cadastro de Aluno(a)");
@@ -269,13 +271,13 @@ public class LevelEducationController implements Initializable, DataChangeListen
 			dialogStage.show();
 		}
 		catch(IOException e) {
-			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela de cadastro. Tente novamente mais tarde.", AlertType.ERROR);
+			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela solicitada. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
 	
 	@FXML
 	public void onAddNewChild(ActionEvent event) {
-		createDialogForm("../../gui/ChildForm_view.fxml", Utils.getCurrentStage(event));
+		createDialogForm(new Child(), "../../gui/ChildForm_view.fxml", Utils.getCurrentStage(event));
 	}
 	
 	public void updateTableViewChild() {
@@ -377,7 +379,7 @@ public class LevelEducationController implements Initializable, DataChangeListen
 				}
 				
 				button.setPrefWidth(65.0);
-				button.setOnAction(null);
+				button.setOnAction(event -> createDialogForm(child, "../../gui/ChildForm_view.fxml", Utils.getCurrentStage(event)));
 				setGraphic(stackPane);
 			}
 		});
