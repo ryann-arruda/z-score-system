@@ -1,10 +1,8 @@
 package gui.controller;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import db.DBException;
@@ -15,7 +13,6 @@ import exceptions.FieldValidationException;
 import gui.listeners.DataChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -96,12 +93,12 @@ public class SchoolFormController{
 		try {
 			validateFields();
 			
-			School school = new School(name.getText(), nationalRegistryLegalEntities.getText());
+			getFormData();
 			nutritionist.addSchool(school);
 			notifyDataChangeListeners();
 			
 			if(service.update(nutritionist)) {
-				Alerts.showAlert("Sucesso", null, "Cadastro de escola realizado com sucesso!", AlertType.CONFIRMATION);
+				Alerts.showAlert("Sucesso", null, "Dados da escola inseridos com sucesso!", AlertType.CONFIRMATION);
 				Utils.getCurrentStage(event).close();
 			}
 		}
@@ -109,7 +106,7 @@ public class SchoolFormController{
 			setErrorMessages(e.getErrors());
 		}
 		catch(DBException e) {
-			Alerts.showAlert("Erro", null, "Não foi possível cadastrar uma nova escola. Tente novamente mais tarde.", AlertType.ERROR);
+			Alerts.showAlert("Erro", null, "Não foi possível inserir os dados da escola. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
 	
@@ -122,6 +119,11 @@ public class SchoolFormController{
 	@FXML
 	public void onCancel(ActionEvent event) {
 		Utils.getCurrentStage(event).close();
+	}
+	
+	private void getFormData() {
+		school.setName(name.getText());
+		school.setNationalRegistryLegalEntities(nationalRegistryLegalEntities.getText());
 	}
 	
 	public void updateFormData() {
