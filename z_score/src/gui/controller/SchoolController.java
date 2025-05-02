@@ -126,7 +126,7 @@ public class SchoolController implements Initializable, DataChangeListener{
 		}	
 	}
 	
-	private void createDialogForm(String absoluteName, Stage parentStage) {
+	private void createDialogForm(LevelEducation levelEducation, String absoluteName, Stage parentStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			
@@ -144,7 +144,9 @@ public class SchoolController implements Initializable, DataChangeListener{
 			levelEducationFormController.setNutritionist(nutritionist);
 			levelEducationFormController.setNutritionistService(new NutritionistService());
 			levelEducationFormController.setSchool(school);
+			levelEducationFormController.setLevelEducation(levelEducation);
 			levelEducationFormController.subscribeDataChangeListener(this);
+			levelEducationFormController.updateFormData();
 			
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Cadastro de Nível Educacional");
@@ -161,12 +163,16 @@ public class SchoolController implements Initializable, DataChangeListener{
 	
 	@FXML
 	public void onAddNewEducationLevel(ActionEvent event) {
-		createDialogForm("../../gui/LevelEducationForm_view.fxml", Utils.getCurrentStage(event));
+		createDialogForm(new LevelEducation(), "../../gui/LevelEducationForm_view.fxml", Utils.getCurrentStage(event));
 	}
 	
 	public void updateTableViewLevelEducation() {
 		if(school == null) {
 			throw new IllegalStateException("School entity was null");
+		}
+		
+		for(LevelEducation levelEducation : school.getAllEducationLevels()) {
+			System.out.println(levelEducation.getId());
 		}
 		
 		ObservableList<LevelEducation> obsList = FXCollections.observableArrayList(school.getAllEducationLevels());
@@ -282,7 +288,7 @@ public class SchoolController implements Initializable, DataChangeListener{
 				}
 				
 				button.setPrefWidth(65.0);
-				button.setOnAction(null); // Implementing opening a new view
+				button.setOnAction(event -> createDialogForm(levelEducation, "../../gui/LevelEducationForm_view.fxml", Utils.getCurrentStage(event))); 
 				setGraphic(stackPane);
 			}
 		});

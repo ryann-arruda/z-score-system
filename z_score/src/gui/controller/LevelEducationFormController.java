@@ -26,6 +26,8 @@ public class LevelEducationFormController {
 	
 	private School school;
 	
+	private LevelEducation levelEducation;
+	
 	private NutritionistService service;
 	
 	private List<DataChangeListener> listeners = new ArrayList<>();
@@ -52,6 +54,10 @@ public class LevelEducationFormController {
 	
 	public void setSchool(School school) {
 		this.school = school;
+	}
+	
+	public void setLevelEducation(LevelEducation levelEducation) {
+		this.levelEducation = levelEducation;
 	}
 	
 	public void subscribeDataChangeListener(DataChangeListener listener) {
@@ -82,8 +88,8 @@ public class LevelEducationFormController {
 		
 		try {
 			validateFields();
-			
-			LevelEducation levelEducation = new LevelEducation(levelEducationName.getText());
+
+			getFormData();
 			school.addEducationLevel(levelEducation);
 			notifyDataChangeListeners();
 			
@@ -100,6 +106,10 @@ public class LevelEducationFormController {
 		}
 	}
 	
+	private void getFormData() {
+		levelEducation.setName(levelEducationName.getText());
+	}
+
 	private void notifyDataChangeListeners() {
 		for(DataChangeListener listener : listeners) {
 			listener.onDataChanged();
@@ -109,6 +119,10 @@ public class LevelEducationFormController {
 	@FXML
 	public void onCancel(ActionEvent event) {
 		Utils.getCurrentStage(event).close();
+	}
+	
+	public void updateFormData() {
+		levelEducationName.setText(levelEducation.getName());
 	}
 	
 	private void setErrorMessages(Map<String, String> errors) {
