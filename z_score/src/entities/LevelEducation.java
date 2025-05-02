@@ -15,6 +15,10 @@ public class LevelEducation {
 		children = new ArrayList<>();
 	}
 	
+	public LevelEducation() {
+		children = new ArrayList<>();
+	}
+	
 	public Long getId() {
 		return id;
 	}
