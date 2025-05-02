@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public class SchoolDaoImpl implements SchoolDao{
 		
 		school.setId(rs.getLong("school_id"));
 		
-		List<LevelEducation> educationLevels = getEducationLevels(school.getId());
+		Set<LevelEducation> educationLevels = getEducationLevels(school.getId());
 		
 		for(LevelEducation le : educationLevels) {
 			school.addEducationLevel(le);
@@ -39,9 +40,9 @@ public class SchoolDaoImpl implements SchoolDao{
 		return school;
 	}
 
-	private List<LevelEducation> getEducationLevels(Long id) {
+	private Set<LevelEducation> getEducationLevels(Long id) {
 		LevelEducationDao levelEducDao = DaoFactory.createLevelEducationDao();
-		List<LevelEducation> educationLevels = null;
+		Set<LevelEducation> educationLevels = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
@@ -52,7 +53,7 @@ public class SchoolDaoImpl implements SchoolDao{
 			
 			rs = ps.executeQuery();
 			
-			educationLevels = new ArrayList<>();
+			educationLevels = new LinkedHashSet<>();
 			while(rs.next()) {
 				LevelEducation levelEducation  = levelEducDao.findById(rs.getLong("level_education_id"));
 				
@@ -198,7 +199,7 @@ public class SchoolDaoImpl implements SchoolDao{
 			
 			rs = ps.executeQuery();
 			
-			List<LevelEducation> educationLevels = obj.getAllEducationLevels();
+			Set<LevelEducation> educationLevels = obj.getAllEducationLevels();
 			while(rs.next()) {
 				ps = conn.prepareStatement("DELETE FROM School_LevelEducation WHERE level_education_id = ?");
 				
@@ -251,7 +252,7 @@ public class SchoolDaoImpl implements SchoolDao{
 		LevelEducationDao levelEducDao = DaoFactory.createLevelEducationDao();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		List<Long> educationLevelsIds = null;
+		Set<Long> educationLevelsIds = null;
 		
 		try {			
 			ps = conn.prepareStatement("SELECT level_education_id FROM School_LevelEducation WHERE school_id = ?");
@@ -260,7 +261,7 @@ public class SchoolDaoImpl implements SchoolDao{
 			
 			rs = ps.executeQuery();
 			
-			educationLevelsIds = new ArrayList<>();
+			educationLevelsIds = new LinkedHashSet<>();
 			while(rs.next()) {
 				educationLevelsIds.add(rs.getLong(1));
 			}

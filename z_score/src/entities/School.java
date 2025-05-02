@@ -1,26 +1,26 @@
 package entities;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class School {
 	private Long id;
 	private String name;
 	private String nationalRegistryLegalEntities;
-	private List<LevelEducation> educationLevels;
+	private Set<LevelEducation> educationLevels;
 	
 	public School(String name, String nationalRegistryLegalEntities) {
 		this.id = null;
 		this.name = name;
 		this.nationalRegistryLegalEntities = nationalRegistryLegalEntities;
 		
-		this.educationLevels = new ArrayList<>();
+		this.educationLevels = new LinkedHashSet<>();
 	}
 	
 	public School() {
 		this.id = null;
-		this.educationLevels = new ArrayList<>();
+		this.educationLevels = new LinkedHashSet<>();
 	}
 	
 	public Long getId() {
@@ -65,8 +65,8 @@ public class School {
 		return true;
 	}
 	
-	public List<LevelEducation> getAllEducationLevels() {
-		return new ArrayList<>(educationLevels);
+	public Set<LevelEducation> getAllEducationLevels() {
+		return new LinkedHashSet<>(educationLevels);
 	}
 	
 	public int getNumberStudents() {

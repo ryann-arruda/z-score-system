@@ -56,14 +56,14 @@ public class LevelEducation {
 	public List<Child> getAllChildren(){
 		return new ArrayList<>(children);
 	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(children, name);
-	}
 	
 	public int getNumberStudents() {
 		return children.size();
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(children, id, name);
 	}
 
 	@Override
@@ -75,9 +75,10 @@ public class LevelEducation {
 		if (getClass() != obj.getClass())
 			return false;
 		LevelEducation other = (LevelEducation) obj;
-		return Objects.equals(children, other.children) && Objects.equals(name, other.name);
+		return Objects.equals(children, other.children) && Objects.equals(id, other.id)
+				&& Objects.equals(name, other.name);
 	}
-	
+
 	@Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
