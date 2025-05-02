@@ -3,7 +3,9 @@ package gui.controller;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -15,6 +17,7 @@ import entities.Nutritionist;
 import entities.enums.PersonSex;
 import entities.service.NutritionistService;
 import exceptions.FieldValidationException;
+import gui.listeners.DataChangeListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,6 +40,8 @@ public class ChildFormController implements Initializable{
 	private Child child;
 	
 	private NutritionistService service;
+	
+	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 	
 	@FXML
 	private TextField childName;
@@ -72,6 +77,10 @@ public class ChildFormController implements Initializable{
 	
 	public void setChild(Child child) {
 		this.child = child;
+	}
+	
+	public void subscribeDataChangeListener(DataChangeListener listener) {
+		dataChangeListeners.add(listener);
 	}
 	
 	public void setNutritionistService(NutritionistService service) {
@@ -136,6 +145,7 @@ public class ChildFormController implements Initializable{
 			
 			if(service.update(nutritionist)) {
 				Alerts.showAlert("Sucesso", null, "Dados de aluno inseridos com sucesso!", AlertType.CONFIRMATION);
+				notifyDataChangeListeners();
 				Utils.getCurrentStage(event).close();
 			}
 		}
@@ -172,6 +182,12 @@ public class ChildFormController implements Initializable{
 		}
 		else if(child.getSex() == PersonSex.MALE){
 			sex.setValue("Masculino");
+		}
+	}
+	
+	private void notifyDataChangeListeners() {
+		for(DataChangeListener listener: dataChangeListeners) {
+			listener.onDataChanged();
 		}
 	}
 

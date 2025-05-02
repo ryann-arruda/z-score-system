@@ -260,6 +260,7 @@ public class LevelEducationController implements Initializable, DataChangeListen
 			childFormController.setLevelEducation(levelEducation);
 			childFormController.setNutritionistService(new NutritionistService());
 			childFormController.setChild(child);
+			childFormController.subscribeDataChangeListener(this);
 			childFormController.updateFormData();
 			
 			Stage dialogStage = new Stage();
