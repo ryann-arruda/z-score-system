@@ -171,10 +171,6 @@ public class SchoolController implements Initializable, DataChangeListener{
 			throw new IllegalStateException("School entity was null");
 		}
 		
-		for(LevelEducation levelEducation : school.getAllEducationLevels()) {
-			System.out.println(levelEducation.getId());
-		}
-		
 		ObservableList<LevelEducation> obsList = FXCollections.observableArrayList(school.getAllEducationLevels());
 		tableViewLevelEducation.setItems(obsList);
 		initSeeButtons();
