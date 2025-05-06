@@ -108,7 +108,7 @@ public class ChildController implements Initializable, DataChangeListener{
 		Utils.getCurrentStage(event).close();
 	}
 	
-	private void createDialogForm(String absoluteName, Stage parentStage) {
+	private void createDialogForm(MeasurementZscore measurementZscore, String absoluteName, Stage parentStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			
@@ -125,8 +125,10 @@ public class ChildController implements Initializable, DataChangeListener{
 			MeasurementFormController measurementFormController = loader.getController();
 			measurementFormController.setNutritionist(nutritionist);
 			measurementFormController.setChild(child);
+			measurementFormController.setMeasurementZscore(measurementZscore);
 			measurementFormController.setNutritionistService(new NutritionistService());
 			measurementFormController.setZscoreCalculator(new Calculator(new ZscoreTableService()));
+			measurementFormController.updateFormData();
 			measurementFormController.subscribeDataChangeListener(this);
 			
 			Stage dialogStage = new Stage();
@@ -161,7 +163,7 @@ public class ChildController implements Initializable, DataChangeListener{
 	
 	@FXML
 	public void onAddNewMeasurement(ActionEvent event) {
-		createDialogForm("../../gui/MeasurementForm_view.fxml", Utils.getCurrentStage(event));
+		createDialogForm(new MeasurementZscore(), "../../gui/MeasurementForm_view.fxml", Utils.getCurrentStage(event));
 	}
 	
 	@Override
@@ -247,7 +249,7 @@ public class ChildController implements Initializable, DataChangeListener{
 				}
 				
 				button.setPrefWidth(65.0);
-				button.setOnAction(null);  // Implementing opening a new view
+				button.setOnAction(event -> createDialogForm(measurementZscore, "../../gui/MeasurementForm_view.fxml", Utils.getCurrentStage(event)));
 				setGraphic(stackPane);
 			}
 		});

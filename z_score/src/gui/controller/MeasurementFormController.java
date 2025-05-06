@@ -38,6 +38,8 @@ public class MeasurementFormController implements Initializable{
 	
 	private Child child;
 	
+	private MeasurementZscore measurementZscore;
+	
 	private ZscoreCalculator calculator;
 	
 	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
@@ -70,16 +72,20 @@ public class MeasurementFormController implements Initializable{
 		this.nutritionist = nutritionist;
 	}
 	
+	public void setChild(Child child) {
+		this.child = child;
+	}
+	
+	public void setMeasurementZscore(MeasurementZscore measurementZscore) {
+		this.measurementZscore = measurementZscore;
+	}
+	
 	public void setNutritionistService(NutritionistService service) {
 		this.service = service;
 	}
 	
 	public void setZscoreCalculator(ZscoreCalculator calculator) {
 		this.calculator = calculator;
-	}
-	
-	public void setChild(Child child) {
-		this.child = child;
 	}
 	
 	public void subscribeDataChangeListener(DataChangeListener listener) {
@@ -111,7 +117,7 @@ public class MeasurementFormController implements Initializable{
 		try {
 			validateFields();
 			
-			MeasurementZscore measurementZscore = getFormData();
+			measurementZscore = getFormData();
 			child.addZscore(measurementZscore);
 			
 			if(service.update(nutritionist)) {
@@ -144,6 +150,15 @@ public class MeasurementFormController implements Initializable{
 						    		 weightValue,
 						    		 heightValue,
 						    		 classification);
+	}
+	
+	public void updateFormData() {
+		weight.setText(measurementZscore.getWeight().toString().replace(".", ","));
+		height.setText(measurementZscore.getHeight().toString().replace(".", ","));		
+		
+		if(measurementZscore.getDate() != null) {
+			date.setValue(measurementZscore.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+		}
 	}
 
 	private Date getDate() {
