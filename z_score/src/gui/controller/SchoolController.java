@@ -179,7 +179,7 @@ public class SchoolController implements Initializable, DataChangeListener{
 	}
 	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initialize(URL url, ResourceBundle rb) {
 		// TableColumn Name
 		tableColumnName.setCellFactory(cell -> new TableCell<LevelEducation, String>(){
 			
