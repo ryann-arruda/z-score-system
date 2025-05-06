@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import db.DBException;
 import db.Database;
@@ -28,7 +30,7 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 		
 		levelEducation.setId(rs.getLong("level_education_id"));
 		
-		List<Child> children = getChildrenLevelEducation(levelEducation.getId());
+		Set<Child> children = getChildrenLevelEducation(levelEducation.getId());
 		
 		for(Child child : children) {
 			levelEducation.addChild(child);
@@ -37,9 +39,9 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 		return levelEducation;
 	}
 
-	private List<Child> getChildrenLevelEducation(Long id) {
+	private Set<Child> getChildrenLevelEducation(Long id) {
 		ChildDao childDao = DaoFactory.createChildDao();
-		List<Child> children = null;
+		Set<Child> children = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
@@ -50,7 +52,7 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 			
 			rs = ps.executeQuery();
 			
-			children = new ArrayList<>();
+			children = new LinkedHashSet<>();
 			while(rs.next()) {
 				Child child = childDao.findById(rs.getLong("child_id"));
 				
@@ -194,7 +196,7 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 			
 			rs = ps.executeQuery();
 			
-			List<Child> children = obj.getAllChildren();
+			Set<Child> children = obj.getAllChildren();
 			while(rs.next()) {
 				ps = conn.prepareStatement("DELETE FROM LevelEducation_Child WHERE child_id = ?");
 				
@@ -314,8 +316,8 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 	}
 
 	@Override
-	public List<LevelEducation> findAll() {
-		List<LevelEducation> educationLevels = null;;
+	public Set<LevelEducation> findAll() {
+		Set<LevelEducation> educationLevels = null;;
 		Statement st = null;
 		ResultSet rs = null;
 		
@@ -324,7 +326,7 @@ public class LevelEducationDaoImpl implements LevelEducationDao{
 			
 			rs = st.executeQuery("SELECT * FROM LevelEducation");
 			
-			educationLevels = new ArrayList<>();
+			educationLevels = new LinkedHashSet<>();
 			while(rs.next()) {
 				educationLevels.add(instantiateLevelEducation(rs));
 			}

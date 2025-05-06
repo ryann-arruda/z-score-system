@@ -1,6 +1,6 @@
 package entities.repository;
 
-import java.util.List;
+import java.util.Set;
 
 import entities.LevelEducation;
 
@@ -9,5 +9,5 @@ public interface LevelEducationDao {
 	boolean update(LevelEducation obj);
 	boolean deleteById(Long id);
 	LevelEducation findById(Long id);
-	List<LevelEducation> findAll();
+	Set<LevelEducation> findAll();
 }

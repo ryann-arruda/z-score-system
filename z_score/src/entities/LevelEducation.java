@@ -1,22 +1,22 @@
 package entities;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class LevelEducation {
 	private Long id;
 	private String name;
-	private List<Child> children;
+	private Set<Child> children;
 	
 	public LevelEducation(String name) {
 		this.id = null;
 		this.name = name;
-		children = new ArrayList<>();
+		children = new LinkedHashSet<>();
 	}
 	
 	public LevelEducation() {
-		children = new ArrayList<>();
+		children = new LinkedHashSet<>();
 	}
 	
 	public Long getId() {
@@ -53,8 +53,8 @@ public class LevelEducation {
 		return false;
 	}
 	
-	public List<Child> getAllChildren(){
-		return new ArrayList<>(children);
+	public Set<Child> getAllChildren(){
+		return new LinkedHashSet<>(children);
 	}
 	
 	public int getNumberStudents() {
