@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 
 import entities.Child;
 import entities.LevelEducation;
-import entities.MeasurementZscore;
 import entities.Nutritionist;
 import entities.School;
 import entities.service.NutritionistService;
@@ -37,6 +36,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import util.Alerts;
 import util.Utils;
 
@@ -330,10 +330,9 @@ public class LevelEducationController implements Initializable, DataChangeListen
 			dialogStage.initOwner(parentStage);
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			
+			// Removing the title bar
 			Stage currentStage = (Stage) dialogStage.getScene().getWindow();
-			currentStage.setOnCloseRequest(event -> {
-				event.consume();
-			});
+			currentStage.initStyle(StageStyle.UNDECORATED);
 			
 			dialogStage.show();
 		}
