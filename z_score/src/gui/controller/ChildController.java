@@ -18,6 +18,7 @@ import entities.service.NutritionistService;
 import entities.service.ZscoreTableService;
 import gui.listeners.DataChangeListener;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -68,6 +69,12 @@ public class ChildController implements Initializable, DataChangeListener{
 	
 	@FXML
 	private TableColumn<MeasurementZscore, String> classification;
+	
+	@FXML
+	private TableColumn<MeasurementZscore, Double> weight;
+	
+	@FXML
+	private TableColumn<MeasurementZscore, Double> length;
 	
 	@FXML
 	private TableColumn<MeasurementZscore, MeasurementZscore> tableColumnEDIT;
@@ -231,6 +238,43 @@ public class ChildController implements Initializable, DataChangeListener{
 		});
 		
 		classification.setCellValueFactory(param -> new SimpleStringProperty(Utils.formatZscoreClassification(param.getValue().getClassification())));
+		
+		
+		// TableColumn Weight
+		weight.setCellFactory(cell -> new TableCell<MeasurementZscore, Double>() {
+			@Override
+			protected void updateItem(Double weight, boolean empty) {
+				super.updateItem(weight, empty);
+				
+				if(weight == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				setText(String.format("%.4f", weight));
+				setAlignment(Pos.CENTER);
+			}
+		});
+		
+		weight.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getWeight()));
+		
+		// TableColumn Height
+		length.setCellFactory(cell -> new TableCell<MeasurementZscore, Double>() {
+			@Override
+			protected void updateItem(Double length, boolean empty) {
+				super.updateItem(length, empty);
+				
+				if(length == null) {
+					setGraphic(null);
+					return;
+				}
+				
+				setText(String.format("%.4f", length));
+				setAlignment(Pos.CENTER);
+			}
+		});
+		
+		length.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getHeight()));
 	}
 	
 	private void initEditButtons() {
