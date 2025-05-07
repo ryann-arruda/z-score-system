@@ -153,10 +153,10 @@ public class MeasurementFormController implements Initializable{
 	}
 	
 	public void updateFormData() {
-		weight.setText(measurementZscore.getWeight().toString().replace(".", ","));
-		height.setText(measurementZscore.getHeight().toString().replace(".", ","));		
 		
-		if(measurementZscore.getDate() != null) {
+		if(measurementZscore.getId() != null) {
+			weight.setText(measurementZscore.getWeight().toString().replace(".", ","));
+			height.setText(measurementZscore.getHeight().toString().replace(".", ","));		
 			date.setValue(measurementZscore.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		}
 	}
