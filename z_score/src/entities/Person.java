@@ -50,7 +50,7 @@ public abstract class Person {
 				                  .atZone(ZoneId.systemDefault())
 				                  .toLocalDate();
 		
-		return ChronoUnit.MONTHS.between(currentDate, date);
+		return ChronoUnit.MONTHS.between(date, currentDate);
 	}
 	
 	public PersonSex getSex() {
