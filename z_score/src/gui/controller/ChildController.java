@@ -18,7 +18,6 @@ import entities.service.NutritionistService;
 import entities.service.ZscoreTableService;
 import gui.listeners.DataChangeListener;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -139,7 +138,7 @@ public class ChildController implements Initializable, DataChangeListener{
 			measurementFormController.subscribeDataChangeListener(this);
 			
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Cadastro de Nova Medida Z-score");
+			dialogStage.setTitle("Dados da Medida Z-score");
 			dialogStage.setScene(new Scene(anchorPane));
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
@@ -147,7 +146,7 @@ public class ChildController implements Initializable, DataChangeListener{
 			dialogStage.show();
 		}
 		catch(IOException e) {
-			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela de cadastro de nova medida Z-score. Tente novamente mais tarde.", AlertType.ERROR);
+			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela para inserção de dados da medida Z-score. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
 	
