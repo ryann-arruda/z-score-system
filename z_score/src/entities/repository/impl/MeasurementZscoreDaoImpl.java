@@ -91,6 +91,9 @@ public class MeasurementZscoreDaoImpl implements MeasurementZscoreDao{
 				if(msz != null) {
 					msz.setDate(obj.getDate());
 					msz.setzScore(obj.getzScore());
+					msz.setWeight(obj.getWeight());
+					msz.setHeight(obj.getHeight());
+					msz.setClassification(obj.getClassification());
 					
 					ps = conn.prepareStatement("UPDATE MeasurementZscore SET zscore = ?, zscore_date = ?, weight = ?, height = ?, classification = ? "+
 					                           "WHERE measurement_zscore_id = ?");
