@@ -117,11 +117,11 @@ public class MeasurementFormController implements Initializable{
 		try {
 			validateFields();
 			
-			measurementZscore = getFormData();
+			getFormData();
 			child.addZscore(measurementZscore);
 			
 			if(service.update(nutritionist)) {
-				Alerts.showAlert("Sucesso", null, "Medida z-score cadastrada com sucesso!", AlertType.CONFIRMATION);
+				Alerts.showAlert("Sucesso", null, "Dados da medida z-score inseridos com sucesso com sucesso!", AlertType.CONFIRMATION);
 				notifyDataChangeListeners();
 				Utils.getCurrentStage(event).close();
 			}
@@ -130,26 +130,22 @@ public class MeasurementFormController implements Initializable{
 			setErrorMessages(e.getErrors());
 		}
 		catch(DBException e) {
-			Alerts.showAlert("Erro", null, "Não foi possível cadastrar uma nova medida z-score. Tente novamente mais tarde.", AlertType.ERROR);
+			Alerts.showAlert("Erro", null, "Não foi possível inserir os dados da medida z-score. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
 	
-	private MeasurementZscore getFormData() {
-		Double weightValue = Utils.tryParseToDouble(weight.getText());
-		Double heightValue = Utils.tryParseToDouble(height.getText());
-		Date measurementDate = getDate();
+	private void getFormData() {
+		measurementZscore.setWeight(Utils.tryParseToDouble(weight.getText()));
+		measurementZscore.setHeight(Utils.tryParseToDouble(height.getText()));
+		measurementZscore.setDate(getDate());
 		
-		Map<String, Object> result = calculator.calculateZscore(child, weightValue);
+		Map<String, Object> result = calculator.calculateZscore(child, measurementZscore.getWeight());
 		
 		Double zscoreValue = (Double)result.get("zscoreValue");
+		measurementZscore.setzScore(zscoreValue);
+		
 		ZscoreClassification classification = (ZscoreClassification)result.get("zscoreClassification");
-		
-		
-		return new MeasurementZscore(zscoreValue, 
-						    		 measurementDate,
-						    		 weightValue,
-						    		 heightValue,
-						    		 classification);
+		measurementZscore.setClassification(classification);
 	}
 	
 	public void updateFormData() {
