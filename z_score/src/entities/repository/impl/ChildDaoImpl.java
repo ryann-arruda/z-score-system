@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import db.DBException;
 import db.Database;
@@ -33,7 +35,7 @@ public class ChildDaoImpl implements ChildDao{
 		child.setDateBirth(new Date(rs.getDate("date_birth").getTime()));
 		child.setSex(PersonSex.valueOf(rs.getString("sex")));
 		
-		List<MeasurementZscore> zScores = getMeasurementRelationships(child.getId());
+		Set<MeasurementZscore> zScores = getMeasurementRelationships(child.getId());
 		
 		if(zScores != null) {
 			for(MeasurementZscore msz : zScores) {
@@ -181,7 +183,7 @@ public class ChildDaoImpl implements ChildDao{
 			
 			rs = ps.executeQuery();
 			
-			List<MeasurementZscore> zscores = obj.getAllZscores();
+			Set<MeasurementZscore> zscores = obj.getAllZscores();
 			while(rs.next()) {
 				ps = conn.prepareStatement("DELETE FROM Child_MeasurementZscore WHERE measurement_zscore_id = ?");
 				
@@ -300,11 +302,11 @@ public class ChildDaoImpl implements ChildDao{
 		return child;
 	}
 
-	private List<MeasurementZscore> getMeasurementRelationships(Long id) {
+	private Set<MeasurementZscore> getMeasurementRelationships(Long id) {
 		MeasurementZscoreDao mszDao = DaoFactory.createMeasurementZscoreDao();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		List<MeasurementZscore> zScores = null;
+		Set<MeasurementZscore> zScores = null;
 		
 		try {
 			ps = conn.prepareStatement("SELECT measurement_zscore_id FROM Child_MeasurementZscore WHERE child_id = ?");
@@ -313,7 +315,7 @@ public class ChildDaoImpl implements ChildDao{
 			
 			rs = ps.executeQuery();
 			
-			zScores = new ArrayList<>();
+			zScores = new LinkedHashSet<>();
 			while(rs.next()) {
 				MeasurementZscore msz = mszDao.findById(rs.getLong("measurement_zscore_id"));
 				

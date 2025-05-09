@@ -1,26 +1,26 @@
 package entities;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import entities.enums.PersonSex;
 
 public class Child extends Person{
 	private Long id;
-	private List<MeasurementZscore> zScores;
+	private Set<MeasurementZscore> zScores;
 
 	public Child(String name, Date date_birth, PersonSex sex) {
 		super(name, date_birth, sex);
 		
 		this.id = null;
-		zScores = new ArrayList<>();
+		zScores = new LinkedHashSet<>();
 	}
 	
 	public Child() {
 		super();
 		
-		zScores = new ArrayList<>();
+		zScores = new LinkedHashSet<>();
 	}
 	
 	public Long getId() {
@@ -65,17 +65,17 @@ public class Child extends Person{
 		return false;
 	}
 	
-	public List<MeasurementZscore> getAllZscores(){
-		return new ArrayList<>(zScores);
+	public Set<MeasurementZscore> getAllZscores(){
+		return new LinkedHashSet<>(zScores);
 	}
 	
 	public double getLatestZscoreMeasurement() {
-		int index = zScores.size() - 1;
+		double zScoreValue = 0.0;
 		
-		if(index < 0) {
-			return 0.0;
+		for(MeasurementZscore measure : zScores) {
+			zScoreValue = measure.getzScore();
 		}
 		
-		return zScores.get(index).getzScore();
+		return zScoreValue;
 	}
 }
