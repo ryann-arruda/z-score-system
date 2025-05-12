@@ -102,6 +102,7 @@ public class AuthenticationController implements Initializable{
 			
 			MainController mainController = loader.getController();
 			mainController.setNutritionist(nutritionist);
+			mainController.setNutritionistService(new NutritionistService());
 			mainController.updateTableViewSchool();
 			
 			Stage currentStage = Utils.getCurrentStage(event);

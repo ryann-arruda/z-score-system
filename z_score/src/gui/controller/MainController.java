@@ -2,8 +2,10 @@ package gui.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import db.DBException;
 import entities.Nutritionist;
 import entities.School;
 import entities.service.NutritionistService;
@@ -20,6 +22,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -34,6 +37,8 @@ import util.Utils;
 
 public class MainController implements Initializable, DataChangeListener{	
 	private Nutritionist nutritionist;
+	
+	private NutritionistService service;
 	
 	@FXML
 	private TableView<School> tableViewSchool;
@@ -72,6 +77,10 @@ public class MainController implements Initializable, DataChangeListener{
 		this.nutritionist = nutritionist;
 		this.nutritionistName.setText(nutritionist.getName());
 		this.nutritionistIdentifier.setText(nutritionist.getRegionalCouncilNutritionists());
+	}
+	
+	public void setNutritionistService(NutritionistService service) {
+		this.service = service;
 	}
 	
 	@FXML
@@ -283,9 +292,31 @@ public class MainController implements Initializable, DataChangeListener{
 				}
 				
 				button.setPrefWidth(65.0);
-				button.setOnAction(null); // Implementing opening a new view
+				button.setOnAction(event -> removeSchool(school));
 				setGraphic(stackPane);
 			}
 		});
+	}
+	
+	private void removeSchool(School school) {
+		Optional<ButtonType> result = Alerts.showConfirmation("Confirmação", "Você tem certeza que deseja excluir?");
+		
+		if(result.get() == ButtonType.OK) {
+			if(service == null) {
+				throw new IllegalStateException("Service was null");
+			}
+			
+			try {
+				nutritionist.removeSchool(school);
+				
+				if(service.update(nutritionist)) {
+					Alerts.showAlert("Sucesso", null, "Escola removida com sucesso!", AlertType.CONFIRMATION);
+					updateTableViewSchool();
+				}
+			}
+			catch(DBException e) {
+				Alerts.showAlert("Erro", null, "Não foi possível realizar a ação solicitada. Tente novamente mais tarde.", AlertType.ERROR);
+			}
+		}
 	}
 }
