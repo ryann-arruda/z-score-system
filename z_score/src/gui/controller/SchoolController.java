@@ -149,7 +149,7 @@ public class SchoolController implements Initializable, DataChangeListener{
 			levelEducationFormController.updateFormData();
 			
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Cadastro de Nível Educacional");
+			dialogStage.setTitle("Dados dos Níveis Educacionais");
 			dialogStage.setScene(new Scene(anchorPane));
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
@@ -157,7 +157,7 @@ public class SchoolController implements Initializable, DataChangeListener{
 			dialogStage.show();
 		}
 		catch(IOException e) {
-			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela de cadastro. Tente novamente mais tarde.", AlertType.ERROR);
+			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela solicitada. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
 	
@@ -242,7 +242,7 @@ public class SchoolController implements Initializable, DataChangeListener{
 			currentStage.setTitle("Visualização do Nível Educacional");
 			currentStage.setResizable(false);
 		} catch (IOException e) {
-			Alerts.showAlert("Erro", null, "Não foi possível carregar a visualização do nível educacional. Tente novamente mais tarde.", AlertType.ERROR);
+			Alerts.showAlert("Erro", null, "Não foi possível carregar a visualização do nível educacional selecionado. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
 	
