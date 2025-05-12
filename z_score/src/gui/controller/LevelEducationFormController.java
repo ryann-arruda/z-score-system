@@ -94,7 +94,7 @@ public class LevelEducationFormController {
 			notifyDataChangeListeners();
 			
 			if(service.update(nutritionist)) {
-				Alerts.showAlert("Sucesso", null, "Cadastro de nível educacional realizado com sucesso!", AlertType.CONFIRMATION);
+				Alerts.showAlert("Sucesso", null, "Dados de nível educacional inseridos com sucesso!", AlertType.CONFIRMATION);
 				Utils.getCurrentStage(event).close();
 			}
 		}
@@ -102,7 +102,7 @@ public class LevelEducationFormController {
 			setErrorMessages(e.getErrors());
 		}
 		catch(DBException e) {
-			Alerts.showAlert("Erro", null, "Não foi possível cadastrar um novo nível educacional. Tente novamente mais tarde.", AlertType.ERROR);
+			Alerts.showAlert("Erro", null, "Não foi possível inserir os dados do nível educacional. Tente novamente mais tarde.", AlertType.ERROR);
 		}
 	}
 	
