@@ -241,6 +241,7 @@ public class SchoolController implements Initializable, DataChangeListener{
 			
 			LevelEducationController levelEducationController = loader.getController();
 			levelEducationController.setNutritionist(nutritionist);
+			levelEducationController.setNutritionistService(new NutritionistService());
 			levelEducationController.setSchool(school);
 			levelEducationController.setLevelEducation(levelEducation);
 			levelEducationController.updateTableViewChild();
