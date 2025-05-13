@@ -220,6 +220,7 @@ public class MainController implements Initializable, DataChangeListener{
 			SchoolController schoolController = loader.getController();
 			schoolController.setNutritionist(nutritionist);
 			schoolController.setSchool(school);
+			schoolController.setNutritionistService(new NutritionistService());
 			schoolController.updateTableViewLevelEducation();
 			
 			Stage currentStage = Utils.getCurrentStage(event);
