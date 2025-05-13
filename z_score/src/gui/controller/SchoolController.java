@@ -333,7 +333,7 @@ public class SchoolController implements Initializable, DataChangeListener{
 				school.removeEducationLevel(levelEducation);
 				
 				if(service.update(nutritionist)) {
-					Alerts.showAlert("Sucesso", null, "Escola removida com sucesso!", AlertType.CONFIRMATION);
+					Alerts.showAlert("Sucesso", null, "Nível Educacional removido com sucesso!", AlertType.CONFIRMATION);
 					updateTableViewLevelEducation();
 				}
 			}
