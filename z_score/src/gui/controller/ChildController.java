@@ -8,8 +8,10 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import db.DBException;
 import entities.Calculator;
 import entities.Child;
 import entities.MeasurementZscore;
@@ -30,6 +32,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -314,9 +317,31 @@ public class ChildController implements Initializable, DataChangeListener{
 				}
 				
 				button.setPrefWidth(65.0);
-				button.setOnAction(null); // Implementing opening a new view
+				button.setOnAction(event -> removeMeasurementZscore(measurementZscore));
 				setGraphic(stackPane);
 			}
 		});
+	}
+	
+	private void removeMeasurementZscore(MeasurementZscore measurementZscore) {
+		Optional<ButtonType> result = Alerts.showConfirmation("Confirmação", "Você tem certeza que deseja excluir?");
+		
+		if(result.get() == ButtonType.OK) {
+			if(service == null) {
+				throw new IllegalStateException("Service was null");
+			}
+			
+			try {
+				child.removeZscore(measurementZscore);
+				
+				if(service.update(nutritionist)) {
+					Alerts.showAlert("Sucesso", null, "Medida de z-score removida com sucesso!", AlertType.CONFIRMATION);
+					updateTableViewMeasures();
+				}
+			}
+			catch(DBException e) {
+				Alerts.showAlert("Erro", null, "Não foi possível realizar a ação solicitada. Tente novamente mais tarde.", AlertType.ERROR);
+			}
+		}
 	}
 }
