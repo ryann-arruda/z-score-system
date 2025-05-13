@@ -67,7 +67,7 @@
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="numberStudentsLevelEducation" layoutX="619.0" layoutY="114.0" textFill="#005406">
+      <Label fx:id="numberStudentsLevelEducation" layoutX="619.0" layoutY="114.0" textFill="#005406" AnchorPane.leftAnchor="695.0">
          <font>
             <Font name="Trebuchet MS" size="13.0" />
          </font>
