@@ -12,12 +12,12 @@
 <AnchorPane maxHeight="660.0" maxWidth="510.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="425.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.AuthenticationController">
    <children>
       <ImageView fx:id="logo" fitHeight="150.0" fitWidth="200.0" layoutX="130.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="23.0" />
-      <Label layoutX="42.0" layoutY="196.0" text="Username:">
+      <Label layoutX="65.0" layoutY="197.0" text="Usuário:">
          <font>
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="42.0" layoutY="239.0" text="Password:" AnchorPane.topAnchor="239.0">
+      <Label layoutX="75.0" layoutY="240.0" text="Senha:" AnchorPane.topAnchor="240.0">
          <font>
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
@@ -29,7 +29,7 @@
             <Font name="Trebuchet MS Bold" size="12.0" />
          </font>
       </Label>
-      <Button fx:id="login" layoutX="130.0" layoutY="307.0" mnemonicParsing="false" onAction="#onLogin" prefWidth="200.0" text="Login" textAlignment="CENTER">
+      <Button fx:id="login" layoutX="130.0" layoutY="307.0" mnemonicParsing="false" onAction="#onLogin" prefWidth="200.0" text="Entrar" textAlignment="CENTER">
          <font>
             <Font name="Trebuchet MS Bold" size="14.0" />
          </font>
