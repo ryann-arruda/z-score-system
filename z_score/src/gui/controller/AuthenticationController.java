@@ -59,6 +59,12 @@ public class AuthenticationController implements Initializable{
 			if(user != null){
 				loadMainView(user, event);
 			}
+			else {
+				FieldValidationException exception = new FieldValidationException("Information provided is incorrect");
+				exception.addError("loginError", "Usuário e/ou senha incorretos!");
+				
+				throw exception;
+			}
 		}
 		catch(FieldValidationException e) {
 			setErrorMessages(e.getErrors());
