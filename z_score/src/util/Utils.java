@@ -4,6 +4,7 @@ import entities.enums.PersonSex;
 import entities.enums.ZscoreClassification;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Utils {
@@ -51,5 +52,11 @@ public class Utils {
 		else {
 			return "Desnutrição Severa";
 		}
+	}
+	
+	public static void addIcon(Stage stage, String path) {
+		Image icon = new Image(Utils.class.getResource(path).toString());
+		
+		stage.getIcons().add(icon);
 	}
 }
