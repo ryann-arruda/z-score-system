@@ -146,6 +146,7 @@ public class ChildController implements Initializable, DataChangeListener{
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
 			dialogStage.initModality(Modality.WINDOW_MODAL);
+			Utils.addIcon(dialogStage, "../resources/form.png");
 			dialogStage.show();
 		}
 		catch(IOException e) {
