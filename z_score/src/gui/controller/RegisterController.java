@@ -156,7 +156,7 @@ public class RegisterController implements Initializable{
 		}
 		
 		if(!comparePasswords()) {
-			exception.addError("passwordError", "Insira uma senha válida!");
+			exception.addError("passwordError", "Senhas incompatíveis!");
 		}
 		
 		if(exception.getErrors().size() > 0) {
