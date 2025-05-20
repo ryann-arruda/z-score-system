@@ -59,4 +59,16 @@ public class Utils {
 		
 		stage.getIcons().add(icon);
 	}
+	
+	public static boolean validateRegistrationName(String name) {
+		if(name == null) {
+			return true;
+		}
+		else if(name.trim().equals("")) {
+			return true;
+		}
+		else {
+			return !name.matches("([a-zA-Z]+(\\s|\\.\\s)?)*");
+		}
+	}
 }
