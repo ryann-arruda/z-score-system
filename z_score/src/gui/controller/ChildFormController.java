@@ -87,6 +87,23 @@ public class ChildFormController implements Initializable{
 		this.service = service;
 	}
 	
+	private boolean validateDate() {
+		
+		if(childDateBirth.getValue() == null) {
+			return true;
+		}
+		else {
+			LocalDate dateBirth =  childDateBirth.getValue();
+			LocalDate currentDate = LocalDate.now();
+			
+			if(dateBirth.isAfter(currentDate)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	private void validateFields() {
 		FieldValidationException exception = new FieldValidationException("Erros when filling in fields");
 		
@@ -94,7 +111,7 @@ public class ChildFormController implements Initializable{
 			exception.addError("childNameError", "Insira um nome válido!");
 		}
 		
-		if(childDateBirth.getValue() == null) {
+		if(validateDate()) {
 			exception.addError("childDateBirthError", "Insira uma data de nascimento válida!");
 		}
 		
