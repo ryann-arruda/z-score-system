@@ -107,7 +107,7 @@ public class ChildFormController implements Initializable{
 	private void validateFields() {
 		FieldValidationException exception = new FieldValidationException("Erros when filling in fields");
 		
-		if(childName.getText() == null || childName.getText().trim().equals("")) {
+		if(Utils.validateRegistrationName(childName.getText())) {
 			exception.addError("childNameError", "Insira um nome válido!");
 		}
 		

@@ -134,7 +134,7 @@ public class RegisterController implements Initializable{
 	private void validateFormData() {
 		FieldValidationException exception = new FieldValidationException("Erros when filling in fields");
 		
-		if(name.getText() == null || name.getText().trim().equals("")) {
+		if(Utils.validateRegistrationName(name.getText())) {
 			exception.addError("nameError", "Insira um nome válido!");
 		}
 		
