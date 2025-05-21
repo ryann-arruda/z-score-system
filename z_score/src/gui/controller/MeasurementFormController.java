@@ -92,10 +92,24 @@ public class MeasurementFormController implements Initializable{
 		dataChangeListeners.add(listener);
 	}
 	
+	private boolean validateMeasurementDate() {
+		
+		if(date.getValue() == null) {
+			return true;
+		}
+		
+		LocalDate dateMeasure = date.getValue();
+		LocalDate dateBirth = child.getDateBirth().toInstant()
+												  .atZone(ZoneId.systemDefault())
+												  .toLocalDate();
+		
+		return dateMeasure.isBefore(dateBirth);
+	}
+	
 	private void validateFields() {
 		FieldValidationException exception = new FieldValidationException("Erros when filling in fields");
 		
-		if(date.getValue() == null) {
+		if(validateMeasurementDate()) {
 			exception.addError("dateError", "Insira uma data válida!");
 		}
 		
