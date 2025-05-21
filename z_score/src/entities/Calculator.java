@@ -26,7 +26,7 @@ public class Calculator implements ZscoreCalculator{
 		Map<String, ZscoreTable> tables = service.getZscoreTable();
 		
 		zscoreTableBoys = tables.get("boys");
-		zscoreTableBoys = tables.get("girls");
+		zscoreTableGirls = tables.get("girls");
 	}
 	
 	private ZscoreTableRow getZscoreTableRow(Child child) {
