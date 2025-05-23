@@ -75,7 +75,7 @@
       <Button fx:id="logout" layoutX="777.0" layoutY="6.0" mnemonicParsing="false" onAction="#onLogout" style="-fx-background-color: #fa4a4a;" text="Sair" textFill="WHITE" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
       <TableView fx:id="tableViewChild" layoutY="144.0" prefHeight="327.0" prefWidth="835.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <columns>
-          <TableColumn fx:id="tableColumnName" prefWidth="250.0" text="Nome da Criança" />
+          <TableColumn fx:id="tableColumnName" prefWidth="250.0" text="Nome" />
           <TableColumn fx:id="tableColumnBirthDate" minWidth="0.0" prefWidth="150.0" text="Data de Nascimento" />
             <TableColumn fx:id="tableColumnSex" prefWidth="150.0" text="Sexo" />
             <TableColumn fx:id="tableColumnLastZscoreMeasurement" prefWidth="160.0" text="Última Medida de Z-score" />
