@@ -64,10 +64,23 @@ public class LevelEducationFormController {
 		listeners.add(listener);
 	}
 	
+	private boolean validateLevelEducationName() {
+		String name = levelEducationName.getText();
+		
+		if(name == null) {
+			return true;
+		}
+		else if(name.trim().equals("")) {
+			return true;
+		}
+		
+		return !name.matches("([a-zA-Z]+\\s?)*");
+	}
+	
 	private void validateFields() {
 		FieldValidationException exception = new FieldValidationException("Erros when filling in fields");
 		
-		if(levelEducationName.getText() == null || levelEducationName.getText().trim().equals("")) {
+		if(validateLevelEducationName()) {
 			exception.addError("nameError", "Insira um nome válido!");
 		}
 		
@@ -130,6 +143,9 @@ public class LevelEducationFormController {
 		
 		if(fields.contains("nameError")) {
 			levelEducationNameError.setText(errors.get("nameError"));
+		}
+		else {
+			levelEducationNameError.setText("");
 		}
 	}	
 }
