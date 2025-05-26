@@ -60,10 +60,10 @@ public class LevelEducation {
 	public int getNumberStudents() {
 		return children.size();
 	}
-	
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(children, id, name);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -75,8 +75,7 @@ public class LevelEducation {
 		if (getClass() != obj.getClass())
 			return false;
 		LevelEducation other = (LevelEducation) obj;
-		return Objects.equals(children, other.children) && Objects.equals(id, other.id)
-				&& Objects.equals(name, other.name);
+		return Objects.equals(id, other.id);
 	}
 
 	@Override

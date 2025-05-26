@@ -279,6 +279,11 @@ public class LevelEducationController implements Initializable, DataChangeListen
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
 			dialogStage.initModality(Modality.WINDOW_MODAL);
+			
+			// Removing the title bar
+			Stage currentStage = (Stage) dialogStage.getScene().getWindow();
+			currentStage.initStyle(StageStyle.UNDECORATED);
+			
 			Utils.addIcon(dialogStage, "../resources/form.png");
 			dialogStage.show();
 		}

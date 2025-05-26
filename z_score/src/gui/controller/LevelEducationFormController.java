@@ -104,10 +104,10 @@ public class LevelEducationFormController {
 
 			getFormData();
 			school.addEducationLevel(levelEducation);
-			notifyDataChangeListeners();
 			
 			if(service.update(nutritionist)) {
 				Alerts.showAlert("Sucesso", null, "Dados de nível educacional inseridos com sucesso!", AlertType.CONFIRMATION);
+				notifyDataChangeListeners();
 				Utils.getCurrentStage(event).close();
 			}
 		}

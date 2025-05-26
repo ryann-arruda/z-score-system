@@ -41,6 +41,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import util.Alerts;
 import util.Utils;
 
@@ -147,6 +148,11 @@ public class ChildController implements Initializable, DataChangeListener{
 			dialogStage.initOwner(parentStage);
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			Utils.addIcon(dialogStage, "../resources/form.png");
+			
+			// Removing the title bar
+			Stage currentStage = (Stage) dialogStage.getScene().getWindow();
+			currentStage.initStyle(StageStyle.UNDECORATED);
+			
 			dialogStage.show();
 		}
 		catch(IOException e) {
