@@ -61,7 +61,7 @@ public class School {
 			return false;
 		}
 		
-		educationLevels.remove(el);
+		educationLevels.removeIf(x -> x.getId() == el.getId());
 		return true;
 	}
 	

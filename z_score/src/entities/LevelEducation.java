@@ -46,7 +46,7 @@ public class LevelEducation {
 	
 	public boolean removeChild(Child c) {
 		if(c != null) {
-			children.remove(c);
+			children.removeIf(x -> x.getId() == c.getId());
 			return true;
 		}
 		

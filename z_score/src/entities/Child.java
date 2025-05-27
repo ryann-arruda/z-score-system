@@ -45,7 +45,7 @@ public class Child extends Person{
 			return false;
 		}
 		
-		zScores.remove(mzs);
+		zScores.removeIf(x -> x.getId() == mzs.getId());
 		return true;
 	}
 	

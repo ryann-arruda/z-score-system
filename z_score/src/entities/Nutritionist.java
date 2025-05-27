@@ -77,7 +77,7 @@ public class Nutritionist extends Person{
 	
 	public boolean removeSchool(School s) {
 		if(s != null) {
-			schools.remove(s);
+			schools.removeIf(x -> x.getId() == s.getId());
 			return true;
 		}
 		
