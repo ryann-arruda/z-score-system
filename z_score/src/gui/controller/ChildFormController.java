@@ -3,6 +3,7 @@ package gui.controller;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -99,6 +100,9 @@ public class ChildFormController implements Initializable{
 			if(dateBirth.isAfter(currentDate)) {
 				return true;
 			}
+			else if(ChronoUnit.MONTHS.between(dateBirth, currentDate) > 60) {
+				return true;
+			}
 		}
 		
 		return false;
@@ -112,7 +116,7 @@ public class ChildFormController implements Initializable{
 		}
 		
 		if(validateDate()) {
-			exception.addError("childDateBirthError", "Insira uma data de nascimento válida!");
+			exception.addError("childDateBirthError", "Insira uma data de nascimento válida! (Suportado até 60 meses de idade)");
 		}
 		
 		if(sex.getValue() == null) {
