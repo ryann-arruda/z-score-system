@@ -64,6 +64,22 @@ public class SchoolFormController{
 		dataChangeListeners.add(listener);
 	}
 	
+	private boolean validateNationalRegistryLegalEntities() {
+		String registry = nationalRegistryLegalEntities.getText();
+		
+		if(registry == null) {
+			return true;
+		}
+		else if(registry.trim().equals("")) {
+			return true;
+		}
+		else if(!registry.matches("\\d{2}\\.\\d{3}.\\d{3}/\\d{4}-\\d{2}")) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	private void validateFields() {
 		FieldValidationException exception = new FieldValidationException("Erros when filling in fields");
 		
@@ -71,8 +87,8 @@ public class SchoolFormController{
 			exception.addError("nameError", "Insira um nome válido!");
 		}
 		
-		if(nationalRegistryLegalEntities.getText() == null || nationalRegistryLegalEntities.getText().trim().equals("")) {
-			exception.addError("nationalRegistryLegalEntitiesError", "Insira um CNPJ válido!");
+		if(validateNationalRegistryLegalEntities()) {
+			exception.addError("nationalRegistryLegalEntitiesError", "Insira um CNPJ válido!\nFormato: XX.XXX.XXX/XXXX-XX");
 		}
 		
 		if(exception.getErrors().size() > 0) {
