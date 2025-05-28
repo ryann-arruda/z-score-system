@@ -402,7 +402,7 @@ public class NutritionistDaoImpl implements NutritionistDao{
 		
 		try {
 			if(username != null && password != null) {
-				ps = conn.prepareStatement("SELECT * FROM Nutritionist WHERE nutritionist_username = ? AND nutritionist_password = ?");
+				ps = conn.prepareStatement("SELECT * FROM Nutritionist WHERE nutritionist_username COLLATE utf8mb4_bin = ? AND nutritionist_password COLLATE utf8mb4_bin = ?");
 				ps.setString(1, username);
 				ps.setString(2, password);
 				
