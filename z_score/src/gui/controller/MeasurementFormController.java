@@ -93,17 +93,26 @@ public class MeasurementFormController implements Initializable{
 	}
 	
 	private boolean validateMeasurementDate() {
-		
-		if(date.getValue() == null) {
-			return true;
-		}
-		
 		LocalDate dateMeasure = date.getValue();
 		LocalDate dateBirth = child.getDateBirth().toInstant()
-												  .atZone(ZoneId.systemDefault())
-												  .toLocalDate();
+				  .atZone(ZoneId.systemDefault())
+				  .toLocalDate();
 		
-		return dateMeasure.isBefore(dateBirth);
+		if(dateMeasure == null) {
+			return true;
+		}
+		else if(dateMeasure.isBefore(dateBirth)) {
+			return true;
+		}
+		else {
+			LocalDate currentDate = LocalDate.now();
+			
+			if (dateMeasure.isAfter(currentDate)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	private void validateFields() {
