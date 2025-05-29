@@ -16,7 +16,8 @@ The reference standard tables used in this system only consider the age range co
 
 ## Technologies Used
 
-| ![Image](https://github.com/user-attachments/assets/a534a61d-28a2-47da-b2b7-702c258793fe) | ![Image](https://github.com/user-attachments/assets/257c6749-251b-4c75-9ef4-3146c7d2f134) | ![Image](https://github.com/user-attachments/assets/3e5ade83-2a6d-4812-b5da-1820991c8b82) | ![Image](https://github.com/user-attachments/assets/28eb237b-6099-4f8d-944f-dbc073cb1c3c) |
+| <img src="https://github.com/user-attachments/assets/a534a61d-28a2-47da-b2b7-702c258793fe" width="300">
+ | ![Image](https://github.com/user-attachments/assets/257c6749-251b-4c75-9ef4-3146c7d2f134) | ![Image](https://github.com/user-attachments/assets/3e5ade83-2a6d-4812-b5da-1820991c8b82) | ![Image](https://github.com/user-attachments/assets/28eb237b-6099-4f8d-944f-dbc073cb1c3c) |
 |--------------------------|--------------------------|--------------------------|--------------------------|
 
 ## Author
